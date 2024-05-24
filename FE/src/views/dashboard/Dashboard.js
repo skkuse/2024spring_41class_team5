@@ -1,6 +1,4 @@
-import React from 'react'
-import classNames from 'classnames'
-
+import React, { useState } from 'react';
 import {
   CAvatar,
   CButton,
@@ -19,10 +17,15 @@ import {
   CTableHead,
   CTableHeaderCell,
   CTableRow,
-  CContainer
+  CContainer,
+  CCarousel,
+  CCarouselItem,
+  CCarouselCaption,
+  CImage
   
 } from '@coreui/react'
-import CIcon from '@coreui/icons-react'
+import { CChart } from '@coreui/react-chartjs';
+
 import {
   cibCcAmex,
   cibCcApplePay,
@@ -43,6 +46,7 @@ import {
   cilCloudDownload,
   cilPeople,
   cilUser,
+
   cilUserFemale,
 } from '@coreui/icons'
 
@@ -53,9 +57,8 @@ import avatar4 from 'src/assets/images/avatars/4.jpg'
 import avatar5 from 'src/assets/images/avatars/5.jpg'
 import avatar6 from 'src/assets/images/avatars/6.jpg'
 
-import WidgetsBrand from '../widgets/WidgetsBrand'
-import WidgetsDropdown from '../widgets/WidgetsDropdown'
-import MainChart from './MainChart'
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
 
 
 const Dashboard = () => {
@@ -187,6 +190,15 @@ const Dashboard = () => {
     ...cardStyle,
     height: '420px', 
   };
+  const percentageStyle = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -250%)',
+    fontSize: '24px',
+    fontWeight: 'bold',
+  };
+  const [value, onChange] = useState(new Date());
 
   return (
     <CContainer fluid>
@@ -195,7 +207,29 @@ const Dashboard = () => {
           <CCard style={largeCardStyle}>
             <CCardHeader>탄소 배출량 절감량 디스크</CCardHeader>
             <CCardBody>
-              {/* Content for large card */}
+              <CChart
+                type="doughnut"
+                data={{
+                  datasets: [
+                    {
+                      data: [75, 25], 
+                      backgroundColor: ['#36A2EB', '#FFFFFF'], 
+                      hoverBackgroundColor: ['#36A2EB', '#FFFFFF'], 
+                    },
+                  ],
+                }}
+                options={{
+                  plugins: {
+                    tooltip: {
+                      enabled: false, 
+                    },
+                  },
+                  maintainAspectRatio: false,
+                }}
+              />
+              <div style={percentageStyle}>
+                75%
+              </div>
             </CCardBody>
           </CCard>
         </CCol>
@@ -203,7 +237,18 @@ const Dashboard = () => {
           <CCard style={largeCardStyle}>
             <CCardHeader>절감량 막대</CCardHeader>
             <CCardBody>
-              {/* Content for card */}
+            <CChart
+              type="bar"
+              data={{
+                labels: ['Before', 'After'],
+                datasets: [
+                  {
+                    backgroundColor: '#f87979',
+                    data: [40, 20],
+                  },
+                ],
+              }}
+            />
             </CCardBody>
           </CCard>
         </CCol>
@@ -227,7 +272,22 @@ const Dashboard = () => {
           <CCard style={cardStyle}>
             <CCardHeader>캘린더 날짜 기준 KDE 플롯</CCardHeader>
             <CCardBody>
-              {/* Content for large card */}
+            <CChart
+              type="line" 
+              data={{
+                labels: ["January", "February", "March", "April", "May", "June", "July"],
+                datasets: [
+                  {
+                    label: "My Second dataset",
+                    backgroundColor: "rgba(151, 187, 205, 0.2)",
+                    borderColor: "rgba(151, 187, 205, 1)",
+                    pointBackgroundColor: "rgba(151, 187, 205, 1)",
+                    pointBorderColor: "#fff",
+                    data: [50, 12, 28, 29, 7, 25, 12, 70, 60]
+                  },
+                ],
+              }}
+            />
             </CCardBody>
           </CCard>
         </CCol>
@@ -235,7 +295,7 @@ const Dashboard = () => {
           <CCard style={cardStyle}>
             <CCardHeader>캘린더</CCardHeader>
             <CCardBody>
-              {/* Content for card */}
+            <Calendar onChange={onChange} value={value} />
             </CCardBody>
           </CCard>
         </CCol>
@@ -243,7 +303,26 @@ const Dashboard = () => {
           <CCard style={cardStyle}>
             <CCardHeader>음식 비교</CCardHeader>
             <CCardBody>
-              {/* Content for card */}
+              <CCarousel controls indicators>
+                <CCarouselItem>
+                  <CCarouselCaption className="d-none d-md-block">
+                    <h5>First slide label</h5>
+                    <p>Some representative placeholder content for the first slide.</p>
+                  </CCarouselCaption>
+                </CCarouselItem>
+                <CCarouselItem>
+                  <CCarouselCaption className="d-none d-md-block">
+                    <h5>Second slide label</h5>
+                    <p>Some representative placeholder content for the first slide.</p>
+                  </CCarouselCaption>
+                </CCarouselItem>
+                <CCarouselItem>
+                  <CCarouselCaption className="d-none d-md-block">
+                    <h5>Third slide label</h5>
+                    <p>Some representative placeholder content for the first slide.</p>
+                  </CCarouselCaption>
+                </CCarouselItem>
+              </CCarousel>
             </CCardBody>
           </CCard>
         </CCol>
