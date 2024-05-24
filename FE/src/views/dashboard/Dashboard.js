@@ -179,70 +179,77 @@ const Dashboard = () => {
       activity: 'Last week',
     },
   ]
+  const cardStyle = {
+    height: '200px', 
+    marginBottom: '20px',
+  };
+  const largeCardStyle = {
+    ...cardStyle,
+    height: '420px', 
+  };
 
   return (
-    <>
-      <CContainer>
-        <CCol>
-          <CRow>
-            <CCol>
-              <CCard style={{ width: '18rem' }}>
-                <CCardBody>
-                  <CCardTitle>Card title</CCardTitle>
-                </CCardBody>
-              </CCard>
-            </CCol>
-            <CCol>
-              <CCard style={{ width: '18rem' }}>
-                <CCardBody>
-                  <CCardTitle>Card title</CCardTitle>
-                </CCardBody>
-              </CCard>
-            </CCol>
-          </CRow>
-          <CRow>
-            <CCol>
-              <CCard style={{ width: '18rem' }}>
-                <CCardBody>
-                  <CCardTitle>Card title</CCardTitle>
-                </CCardBody>
-              </CCard>
-            </CCol>
-            <CCol>
-              <CCard style={{ width: '18rem' }}>
-                <CCardBody>
-                  <CCardTitle>Card title</CCardTitle>
-                </CCardBody>
-              </CCard>
-            </CCol>
-          </CRow>
+    <CContainer fluid>
+      <CRow>
+        <CCol lg="6">
+          <CCard style={largeCardStyle}>
+            <CCardHeader>탄소 배출량 절감량 디스크</CCardHeader>
+            <CCardBody>
+              {/* Content for large card */}
+            </CCardBody>
+          </CCard>
         </CCol>
-        <CCol>
-          <CRow>
-            <CCard style={{ width: '18rem' }}>
-              <CCardBody>
-                <CCardTitle>Card title</CCardTitle>
-              </CCardBody>
-            </CCard>
-          </CRow>
-          <CRow>
-           <CCard style={{ width: '18rem' }}>
-              <CCardBody>
-                <CCardTitle>Card title</CCardTitle>
-              </CCardBody>
-            </CCard>
-          </CRow>
-          <CRow>
-           <CCard style={{ width: '18rem' }}>
-              <CCardBody>
-                <CCardTitle>Card title</CCardTitle>
-              </CCardBody>
-            </CCard>
-          </CRow>
+        <CCol lg="3">
+          <CCard style={largeCardStyle}>
+            <CCardHeader>절감량 막대</CCardHeader>
+            <CCardBody>
+              {/* Content for card */}
+            </CCardBody>
+          </CCard>
         </CCol>
-      </CContainer>
-    </>
-  )
+        <CCol g="3">
+          <CCard style={cardStyle}>
+            <CCardHeader>나무 비교</CCardHeader>
+            <CCardBody>
+              {/* Content for card */}
+            </CCardBody>
+          </CCard>
+          <CCard style={cardStyle}>
+            <CCardHeader>교통 수단 비교</CCardHeader>
+            <CCardBody>
+              {/* Content for card */}
+            </CCardBody>
+          </CCard>
+        </CCol>
+      </CRow>
+      <CRow>
+        <CCol lg="6">
+          <CCard style={cardStyle}>
+            <CCardHeader>캘린더 날짜 기준 KDE 플롯</CCardHeader>
+            <CCardBody>
+              {/* Content for large card */}
+            </CCardBody>
+          </CCard>
+        </CCol>
+        <CCol lg="3">
+          <CCard style={cardStyle}>
+            <CCardHeader>캘린더</CCardHeader>
+            <CCardBody>
+              {/* Content for card */}
+            </CCardBody>
+          </CCard>
+        </CCol>
+        <CCol lg="3">
+          <CCard style={cardStyle}>
+            <CCardHeader>음식 비교</CCardHeader>
+            <CCardBody>
+              {/* Content for card */}
+            </CCardBody>
+          </CCard>
+        </CCol>
+      </CRow>
+    </CContainer>
+  );
 }
 
 export default Dashboard
