@@ -28,7 +28,15 @@ export default function EditorWrapper({ setCode }: Props) {
       <label htmlFor="comment" className="sr-only">
         Add your code
       </label>
-      <Editor height="calc(100dvh - 246px)" defaultLanguage="java" value="" />
+      <Editor
+        height="calc(100dvh - 246px)"
+        defaultLanguage="java"
+        value={`public class HelloWorld {
+  public static void main(String[] args) {
+    System.out.println("Hello, World!");
+  }
+}`}
+      />
       <button
         type="submit"
         className="inline-flex items-center rounded-md px-4 py-2 text-sm bg-green-900 text-white hover:bg-green-800"
