@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Request
 
 footprint_router = APIRouter(
     tags=["Footprint"],

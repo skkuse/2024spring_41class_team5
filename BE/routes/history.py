@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Request
 
 history_router = APIRouter(
     tags=["History"],
@@ -8,6 +8,6 @@ history_router = APIRouter(
 def history():
     return {"history"}
 
-@history_router.post("/statistics")
+@history_router.get("/statistics")
 def statistics(request: Request):
     return {"statistics"}
