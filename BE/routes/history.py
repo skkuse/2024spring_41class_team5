@@ -5,5 +5,9 @@ history_router = APIRouter(
 )
 
 @history_router.get("/")
+def history():
+    return {"history"}
 
 @history_router.post("/statistics")
+def statistics(request: Request):
+    return {"statistics"}

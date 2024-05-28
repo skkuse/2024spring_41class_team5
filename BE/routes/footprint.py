@@ -5,5 +5,9 @@ footprint_router = APIRouter(
 )
 
 @footprint_router.post("/compute")
+def compute(request: Request):
+    return {"compute"};
 
 @footprint_router.get("/visulaize")
+def visualize():
+    return {"visualize"};
