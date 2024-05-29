@@ -20,25 +20,24 @@ import 'react-calendar/dist/Calendar.css';
 
 const Dashboard = () => {
   const cardStyle = {
-    height: '200px', 
+    height: '240px', 
     marginBottom: '20px',
   };
   const cardTitleStyle = {
     textAlign: 'center',
     marginTop: '16px',
+    fontSize: '24px',
   };
-
-
   const largeCardStyle = {
     ...cardStyle,
-    height: '420px', 
+    height: '500px', 
   };
   const percentageStyle = {
     position: 'absolute',
     top: '50%',
     left: '50%',
-    transform: 'translate(-50%, 20%)',
-    fontSize: '24px',
+    transform: 'translate(-50%, -40%)',
+    fontSize: '36px',
     fontWeight: 'bold',
   };
   const [value, onChange] = useState(new Date());
@@ -59,35 +58,35 @@ const Dashboard = () => {
           <CCard style={largeCardStyle}>
             <CCardTitle style={cardTitleStyle}>탄소 배출량 절감량</CCardTitle>
             <CCardBody>
-              <CChart
-                type="doughnut"
-                style={{height: '100%'}}
-                data={{
-                  datasets: [
-                    {
-                      data: [75, 25], 
-                      backgroundColor: ['#36A2EB', '#FFFFFF'], 
-                      hoverBackgroundColor: ['#36A2EB', '#FFFFFF'], 
+              <div className="d-flex flex-column justify-content-center align-items-center" style={{ height: '100%' }}>
+                <CChart
+                  type="doughnut"
+                  style={{height: '100%'}}
+                  data={{
+                    datasets: [
+                      {
+                        data: [75, 25], 
+                        backgroundColor: ['#36A2EB', '#FFFFFF'], 
+                        hoverBackgroundColor: ['#36A2EB', '#FFFFFF'], 
+                      },
+                    ],
+                  }}
+                  options={{
+                    plugins: {
+                      tooltip: {
+                        enabled: false, 
+                      },
                     },
-                  ],
-                }}
-                options={{
-                  plugins: {
-                    tooltip: {
-                      enabled: false, 
-                    },
-                  },
-                  maintainAspectRatio: false,
-                  borderWidth: 0,
-                  radius: 120,
-                  cutout: 110,
-                }}
-              />
-              <div style={percentageStyle}>
-                75%
-              </div>
-              <div style={percentageStyle}>
-                탄소 배출량 75% 절감!
+                    maintainAspectRatio: false,
+                    borderWidth: 0,
+                    radius: 116,
+                    cutout: 130,
+                  }}
+                />
+                <div style={percentageStyle}>
+                  75%
+                </div>
+                <h5 style={{marginBottom: '24px'}}> 탄소 배출량을 75% 절감했습니다! </h5>
               </div>
             </CCardBody>
           </CCard>
@@ -95,19 +94,48 @@ const Dashboard = () => {
         <CCol lg="3">
           <CCard style={largeCardStyle}>
             <CCardTitle style={cardTitleStyle}>탄소 배출량 비교</CCardTitle>
-            <CCardBody>
-            <CChart
-              type="bar"
-              data={{
-                labels: ['Before', 'After'],
-                datasets: [
-                  {
-                    backgroundColor: '#f87979',
-                    data: [40, 20],
+            <CCardBody style={{ height: '100%'}}>
+              <CChart
+                type="bar"
+                data={{
+                  labels: ['개선 전', '개선 후'],
+                  datasets: [
+                    {
+                      backgroundColor: ['#f87979', '#36A2EB'],
+                      data: [40, 20],
+                    },
+                  ],
+                }}
+                label="탄소 배출량 비교"
+                options={{
+                  plugins: {
+                    legend: {
+                      display: false
+                    },
+                    tooltip: {
+                      enabled: false,
+                    },
                   },
-                ],
-              }}
-            />
+                  scales: {
+                    x: {
+                      grid: {
+                        display:false
+                      }
+                    },
+                    y: {
+                      grid: {
+                        display:false
+                      },   
+                      ticks: {
+                        display: false
+                      }
+                    }
+                  },
+                  barPercentage: 0.5,
+                  maintainAspectRatio: false,
+                }}
+                style={{ height: '100%' }}
+              />
             </CCardBody>
           </CCard>
         </CCol>
@@ -165,34 +193,53 @@ const Dashboard = () => {
         </CCol>
       </CRow>
       <CRow>
-        <CCol lg="6">
+        <CCol lg="9">
           <CCard style={cardStyle}>
-            <CCardHeader>캘린더 날짜 기준 KDE 플롯</CCardHeader>
+            <CCardTitle style={cardTitleStyle}>탄소 배출량 절감 기록</CCardTitle>
             <CCardBody>
             <CChart
               type="line" 
               data={{
-                labels: ["January", "February", "March", "April", "May", "June", "July"],
+                labels: ["5/1", "5/2", "5/3", "5/4", "5/5", "5/6", "5/7"],
                 datasets: [
                   {
-                    label: "My Second dataset",
                     backgroundColor: "rgba(151, 187, 205, 0.2)",
                     borderColor: "rgba(151, 187, 205, 1)",
                     pointBackgroundColor: "rgba(151, 187, 205, 1)",
                     pointBorderColor: "#fff",
-                    data: [50, 12, 28, 29, 7, 25, 12, 70, 60]
+                    data: [50, 12, 28, 29, 7, 25, 12],
+                    tension: 0.1
                   },
                 ],
               }}
+              options={{
+                plugins: {
+                  legend: {
+                    display: false
+                  },
+                  tooltip: {
+                    enabled: false,
+                  },
+                },
+                scales: {
+                  x: {
+                    grid: {
+                      display:false
+                    }
+                  },
+                  y: {
+                    grid: {
+                      display:false
+                    },   
+                    ticks: {
+                      display: false
+                    }
+                  }
+                },
+                maintainAspectRatio: false,
+              }}
+              style={{ height: '100%' }}
             />
-            </CCardBody>
-          </CCard>
-        </CCol>
-        <CCol lg="3">
-          <CCard style={cardStyle}>
-            <CCardHeader>캘린더</CCardHeader>
-            <CCardBody>
-            <Calendar onChange={onChange} value={value} />
             </CCardBody>
           </CCard>
         </CCol>
