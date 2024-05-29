@@ -1,10 +1,10 @@
 from pydantic import BaseModel
 import openai
 import requests
-
+import os
 
 def get_LLM_response(code_data: str):
-    api_key = "api 키"
+    api_key = 'api key'
     headers = {
       "Content-Type": "application/json",
       "Authorization": f"Bearer {api_key}"
@@ -38,4 +38,8 @@ class RequestModel(BaseModel):
     session: str
     data: str
     
+
+class FixedCode(BaseModel):
+    id: str
+    fixed_code: str
     
