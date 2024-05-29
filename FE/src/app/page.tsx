@@ -6,7 +6,6 @@ import Accordion from '../components/Accordion';
 import styled, { ThemeProvider } from 'styled-components';
 import './globals.css';
 
-
 const inter = Inter({ subsets: ['latin'] });
 
 const GridContainer = styled.div`
@@ -64,78 +63,83 @@ const InfoCell = styled.div`
   padding: 5px 10px;
 `;
 
+const getNextLevelExperience = (lev: number): number => {
+  return Math.floor(100 * Math.pow(1.1, lev - 1)); // 경험치 요구량을 점차 증가시키는 공식
+};
+
 export default function Home() {
   const [counter, setCounter] = useState(0);
   const [username, setUsername] = useState('');
   const [level, setLevel] = useState(1);
   const [experience, setExperience] = useState(0);
-  const [restExperience, setRestExperience] = useState(0);
+  const [target, setTarget] = useState(450); // 서버에서 받아와야 하는 값
 
-  const getNextLevelExperience = (lev: number): number => {
-    return 100 * Math.pow(1.1, lev - 1); // 경험치 요구량을 점차 증가시키는 공식
-  };
-  
-  const CarbonReductionApp = () => {
-    const [username, setUsername] = useState('');
-    const [target, setTarget] = useState(450); // Server에서 받아와야 하는 값
-    const [counter, setCounter] = useState(0);
-    const [experience, setExperience] = useState(0);
-    const [level, setLevel] = useState(1);
-    const [restExperience, setRestExperience] = useState(0);
-  
-    useEffect(() => {
-      // User 이름 받아오기
-      setUsername('황정민');
-    }, []);
-  
-    useEffect(() => {
-      // Dial 표현
-      const duration = 2000;
-      const interval = 10;
-      const increment = target / (duration / interval);
-      let count = 0;
-  
-      const updateCounter = () => {
-        count += increment;
-        if (count >= target) {
-          count = target;
-          clearInterval(counterInterval);
-        }
-        setCounter(Math.floor(count));
-      };
-  
-      const counterInterval = setInterval(updateCounter, interval);
-  
-      return () => clearInterval(counterInterval);
-    }, [target]);
-  
-    // 경험치 증가 및 레벨 업 체크
-    useEffect(() => {
-      if (counter > 0) {
-        setExperience((prev) => prev + counter);
+  useEffect(() => {
+    // User 이름 받아오기
+    setUsername('황정민');
+  }, []);
+
+  useEffect(() => {
+    // Dial 표현
+    const duration = 2000;
+    const interval = 10;
+    const increment = target / (duration / interval);
+    let count = 0;
+
+    const updateCounter = () => {
+      count += increment;
+      if (count >= target) {
+        count = target;
+        clearInterval(counterInterval);
       }
-    }, [counter]);
-  
-    useEffect(() => {
-      const nextLevelExp = getNextLevelExperience(level);
-      if (experience >= nextLevelExp) {
-        setExperience((prevExperience) => prevExperience - nextLevelExp);
-        setLevel((prevLevel) => prevLevel + 1);
+      setCounter(Math.floor(count));
+    };
+
+    const counterInterval = setInterval(updateCounter, interval);
+
+    return () => clearInterval(counterInterval);
+  }, [target]); // target 값이 변경될 때 실행
+
+  useEffect(() => {
+    // 초기 시작 시 counter 증가
+    const duration = 2000;
+    const interval = 10;
+    const increment = target / (duration / interval);
+    let count = 0;
+
+    const updateCounter = () => {
+      count += increment;
+      if (count >= target) {
+        count = target;
+        clearInterval(counterInterval);
       }
-      setRestExperience(nextLevelExp - experience);
-    }, [experience, level]);
-  
-    return (
-      <div>
-        <h1>Welcome, {username}</h1>
-        <p>Current Target: {target}</p>
-        <p>Current Counter: {counter}</p>
-        <p>Experience: {experience}</p>
-        <p>Level: {level}</p>
-        <p>Experience needed for next level: {restExperience}</p>
-      </div>
-    );
-  };
+      setCounter(Math.floor(count));
+    };
+
+    const counterInterval = setInterval(updateCounter, interval);
+
+    return () => clearInterval(counterInterval);
+  }, []); // 초기 마운트 시 실행
+
+  // 경험치 증가 및 레벨 업 체크
+  useEffect(() => {
+    if (counter > 0) {
+      setExperience((prev) => prev + counter);
+    }
+  }, [counter]);
+
+  useEffect(() => {
+    const nextLevelExp = getNextLevelExperience(level);
+    if (experience >= nextLevelExp) {
+      setExperience((prevExperience) => prevExperience - nextLevelExp);
+      setLevel((prevLevel) => prevLevel + 1);
+    }
+  }, [experience, level]);
+
+  const nextLevelExp = getNextLevelExperience(level);
+  const neededForNextLevel = nextLevelExp - experience;
+  const neededCarbonReduction = Math.floor(neededForNextLevel); // 필요한 경험치를 탄소 배출량으로 변환
+
   return (
     <ThemeProvider theme={theme}>
       <div className={inter.className}>
@@ -150,7 +154,7 @@ export default function Home() {
             <div id="progessBarName">
               <FlexContainer>
                 <LeftAlignedText>탄소배출 저감량</LeftAlignedText>
-                <RightAlignedText>다음 레벨까지 {restExperience}</RightAlignedText>
+                <RightAlignedText>다음 레벨까지 {neededCarbonReduction} tC</RightAlignedText>
               </FlexContainer>
             </div>
             <ProgressBar dealt={((experience - getNextLevelExperience(level - 1)) / (getNextLevelExperience(level) - getNextLevelExperience(level - 1))) * 100} />
@@ -160,23 +164,20 @@ export default function Home() {
             <div className="counter" id="counter">{counter}</div>
           </GridItem>
           
-          
-          
-          
           <GridItem className="large-cell" id="history" style={{ backgroundColor: 'green', padding: '10px' }}>
-          <Accordion
-         title="아코디언 제목"
-         date="2024-05-29"
-        details="아코디언 2024-05-29 110tC  25tC  -85tC"
-        code={`<div>
-  // 예시 코드
-  console.log('Hello, world!');
-</div>`}
-          />
             <Accordion
               title="아코디언 제목"
               date="2024-05-29"
-             details="아코디언 2024-05-29 110tC  25tC  -85tC"
+              details="아코디언 2024-05-29 110tC  25tC  -85tC"
+              code={`<div>
+  // 예시 코드
+  console.log('Hello, world!');
+</div>`}
+            />
+            <Accordion
+              title="아코디언 제목"
+              date="2024-05-29"
+              details="아코디언 2024-05-29 110tC  25tC  -85tC"
               code={`<div>
   // 예시 코드
   console.log('Hello, world!');
