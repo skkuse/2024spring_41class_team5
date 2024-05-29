@@ -31,3 +31,56 @@ body {
     text-wrap: balance;
   }
 }
+
+
+
+/* globals.css */
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 10px;
+  height: 300px; /* 그리드 컨테이너의 전체 높이 */
+  width: 600px;  /* 그리드 컨테이너의 전체 너비 */
+}
+
+.grid-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  color: white;
+  height: 100%;
+  width: 100%;
+}
+
+.large-cell {
+  grid-column: 1 / span 3; /* 3개의 열을 차지 */
+  grid-row: 2 / span 2;    /* 2개의 행을 차지 */
+}
+
+#level {
+  text-align: left;
+  color: black;
+}
+
+#username {
+  text-align: left;
+}
+
+#progessBarName {
+  display: flex;
+  justify-content: right;
+  align-items: end;
+  font-size: 10px;
+  color: black;
+}
+
+.counter {
+  font-size: 4em;
+  color: #333;
+}
+
+.arrcodionCell {
+  color: black;
+}

@@ -6,6 +6,7 @@ import Accordion from '../components/Accordion';
 import styled, { ThemeProvider } from 'styled-components';
 import './globals.css';
 
+
 const inter = Inter({ subsets: ['latin'] });
 
 const GridContainer = styled.div`
@@ -43,6 +44,26 @@ const theme = {
   redColor: 'red',
 };
 
+const InfoTable = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: #f7f7f7;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+`;
+
+const InfoRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const InfoCell = styled.div`
+  padding: 5px 10px;
+`;
+
 export default function Home() {
   const [counter, setCounter] = useState(0);
   const [username, setUsername] = useState('');
@@ -50,52 +71,71 @@ export default function Home() {
   const [experience, setExperience] = useState(0);
   const [restExperience, setRestExperience] = useState(0);
 
-  // 다음 레벨에 필요한 경험치 계산 함수
   const getNextLevelExperience = (lev: number): number => {
     return 100 * Math.pow(1.1, lev - 1); // 경험치 요구량을 점차 증가시키는 공식
   };
-
-  useEffect(() => {
-    // User 이름 받아오기
-    setUsername('황정민');
-    
-    // Dial 표현
-    const target = 450;
-    const duration = 2000;
-    const interval = 10;
-    const increment = target / (duration / interval);
-    let count = 0;
-
-    const updateCounter = () => {
-      count += increment;
-      if (count >= target) {
-        count = target;
-        clearInterval(counterInterval);
+  
+  const CarbonReductionApp = () => {
+    const [username, setUsername] = useState('');
+    const [target, setTarget] = useState(450); // Server에서 받아와야 하는 값
+    const [counter, setCounter] = useState(0);
+    const [experience, setExperience] = useState(0);
+    const [level, setLevel] = useState(1);
+    const [restExperience, setRestExperience] = useState(0);
+  
+    useEffect(() => {
+      // User 이름 받아오기
+      setUsername('황정민');
+    }, []);
+  
+    useEffect(() => {
+      // Dial 표현
+      const duration = 2000;
+      const interval = 10;
+      const increment = target / (duration / interval);
+      let count = 0;
+  
+      const updateCounter = () => {
+        count += increment;
+        if (count >= target) {
+          count = target;
+          clearInterval(counterInterval);
+        }
+        setCounter(Math.floor(count));
+      };
+  
+      const counterInterval = setInterval(updateCounter, interval);
+  
+      return () => clearInterval(counterInterval);
+    }, [target]);
+  
+    // 경험치 증가 및 레벨 업 체크
+    useEffect(() => {
+      if (counter > 0) {
+        setExperience((prev) => prev + counter);
       }
-      setCounter(Math.floor(count));
-    };
-
-    const counterInterval = setInterval(updateCounter, interval);
-
-    return () => clearInterval(counterInterval);
-  }, []);
-
-  // 경험치 증가 및 레벨 업 체크
-  useEffect(() => {
-    if (counter > 0) {
-      setExperience((prev) => prev + counter);
-    }
-  }, [counter]);
-
-  useEffect(() => {
-    const nextLevelExp = getNextLevelExperience(level);
-    if (experience >= nextLevelExp) {
-      setExperience(experience - nextLevelExp);
-      setLevel((prev) => prev + 1);
-    }
-    setRestExperience(nextLevelExp - experience);
-  }, [experience, level]);
-
+    }, [counter]);
+  
+    useEffect(() => {
+      const nextLevelExp = getNextLevelExperience(level);
+      if (experience >= nextLevelExp) {
+        setExperience((prevExperience) => prevExperience - nextLevelExp);
+        setLevel((prevLevel) => prevLevel + 1);
+      }
+      setRestExperience(nextLevelExp - experience);
+    }, [experience, level]);
+  
+    return (
+      <div>
+        <h1>Welcome, {username}</h1>
+        <p>Current Target: {target}</p>
+        <p>Current Counter: {counter}</p>
+        <p>Experience: {experience}</p>
+        <p>Level: {level}</p>
+        <p>Experience needed for next level: {restExperience}</p>
+      </div>
+    );
+  };
   return (
     <ThemeProvider theme={theme}>
       <div className={inter.className}>
@@ -119,18 +159,24 @@ export default function Home() {
           <GridItem id="carbonEmission" style={{ backgroundColor: 'blue' }}>
             <div className="counter" id="counter">{counter}</div>
           </GridItem>
+          
+          
+          
+          
           <GridItem className="large-cell" id="history" style={{ backgroundColor: 'green', padding: '10px' }}>
-            <Accordion
-              title="아코디언 제목"
-              details="src: 110tC tgt: 25tC -> -85tC"
-              code={`<div>
+          <Accordion
+         title="아코디언 제목"
+         date="2024-05-29"
+        details="아코디언 2024-05-29 110tC  25tC  -85tC"
+        code={`<div>
   // 예시 코드
   console.log('Hello, world!');
 </div>`}
-            />
+          />
             <Accordion
               title="아코디언 제목"
-              details="src: 110tC tgt: 25tC -> -85tC"
+              date="2024-05-29"
+             details="아코디언 2024-05-29 110tC  25tC  -85tC"
               code={`<div>
   // 예시 코드
   console.log('Hello, world!');
