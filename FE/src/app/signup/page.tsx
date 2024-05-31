@@ -27,7 +27,14 @@ export default function Page() {
             id="password"
           />
         </div>
-
+        <div className="flex items-end gap-4">
+          <label htmlFor="password-confirm">Password Confirm</label>
+          <input
+            className="flex-1 border-solid border-b-2 border-black"
+            type="password"
+            id="password-confirm"
+          />
+        </div>
         <button
           className="rounded px-4 py-2 bg-green-900 text-white hover:bg-green-800"
           type="submit"
