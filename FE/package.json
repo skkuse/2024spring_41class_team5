@@ -9,7 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+<<<<<<< HEAD
     "next": "^14.2.3",
+=======
+    "@monaco-editor/react": "^4.6.0",
+    "monaco-editor": "^0.48.0",
+    "next": "14.2.3",
+>>>>>>> 51072748eb6f9bf33c62062937154bc905b1047a
     "react": "^18",
     "react-dom": "^18"
   },

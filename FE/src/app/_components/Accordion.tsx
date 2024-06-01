@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { faChevronDown, faCopy } from '@fortawesome/free-solid-svg-icons';
 
 const AccordionContainer = styled.div`
   width: 100%;
@@ -31,7 +31,7 @@ const HeaderContent = styled.div`
 const AccordionContent = styled.div<{ isOpen: boolean }>`
   max-height: ${({ isOpen }) => (isOpen ? '1000px' : '0')};
   overflow: hidden;
-  transition: max-height 0.3s ease;
+  transition: max-height 0.8s ease;
   background-color: white;
   color: black;
 `;
@@ -44,7 +44,7 @@ const AccordionDetails = styled.div`
 `;
 
 const CodeEditor = styled.pre`
-  padding: 10px;
+  padding: 20px;
   border-top: 1px solid #ccc;
   background-color: #f5f5f5;
   white-space: pre-wrap;
@@ -61,7 +61,7 @@ const InfoTable = styled.div`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 1px;
-  margin-bottom: 20px;
+  margin-bottom: 5px;
   background-color: #ccc;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -99,8 +99,8 @@ const Accordion: React.FC<AccordionProps> = ({ title, date, details, code }) => 
     <AccordionContainer>
       <AccordionHeader onClick={toggleAccordion}>
         <HeaderContent>
-          <span>{title}</span>
-          <span>{date}</span>
+          <span style={{margin: 10}}>{title}</span>
+          <span style={{margin: 10}}>{date}</span>
         </HeaderContent>
         <FontAwesomeIcon icon={faChevronDown} />
       </AccordionHeader>
@@ -125,7 +125,9 @@ const Accordion: React.FC<AccordionProps> = ({ title, date, details, code }) => 
         </AccordionDetails>
         <CodeEditor>
           <CopyToClipboard text={code}>
-            <CopyButton>복사</CopyButton>
+            <CopyButton>
+              <FontAwesomeIcon icon={faCopy} style={{ marginRight: 5 }}/>
+            </CopyButton>
           </CopyToClipboard>
           {code}
         </CodeEditor>
