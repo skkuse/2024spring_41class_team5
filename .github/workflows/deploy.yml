@@ -17,12 +17,12 @@ jobs:
       - name: Build Docker
         run: |
           cd BE
-          docker build -f Dockerfile -t skkuse/skkuse-docker .
+          docker build -f Dockerfile -t yaongmeow/skkuse-docker .
 
       - name: Push Docker
         run: |
           cd BE
-          docker push skkuse/skkuse-docker:latest
+          docker push yaongmeow/skkuse-docker:latest
 
       - name: SSH Login
         uses: appleboy/ssh-action@master
@@ -33,7 +33,7 @@ jobs:
           port: 22
           script: |
             docker login --username ${{ secrets.DOCKER_ID }} --password ${{ secrets.DOCKER_PASSWORD }}
-            docker pull skkuse/skkuse-docker
+            docker pull yaongmeow/skkuse-docker
             docker stop skkuse-container || true
             docker rm skkuse-container || true
-            docker run -e DB_HOST=${{ secrets.DB_HOST }} -e DB_PORT=${{ secrets.DB_PORT }} -e DB_USER=${{ secrets.DB_USER }} -e DB_PASSWORD=${{ secrets.DB_PASSWORD }} -e DB_DATABASE=${{ secrets.DB_DATABASE }} -e JWT_SECRET_ACCESS=${{ secrets.JWT_SECRET_ACCESS }} -e JWT_SECRET_REFRESH=${{ secrets.JWT_SECRET_REFRESH }} -d -p ${{secrets.EXTERNAL_PORT}}:${{secrets.INTERNAL_PORT}} --name skkuse-container skkuse/skkuse-docker
+            docker run -e DB_HOST=${{ secrets.DB_HOST }} -e DB_PORT=${{ secrets.DB_PORT }} -e DB_USER=${{ secrets.DB_USER }} -e DB_PASSWORD=${{ secrets.DB_PASSWORD }} -e DB_DATABASE=${{ secrets.DB_DATABASE }} -e JWT_SECRET_ACCESS=${{ secrets.JWT_SECRET_ACCESS }} -e JWT_SECRET_REFRESH=${{ secrets.JWT_SECRET_REFRESH }} -d -p ${{secrets.EXTERNAL_PORT}}:${{secrets.INTERNAL_PORT}} --name skkuse-container yaongmeow/skkuse-docker
