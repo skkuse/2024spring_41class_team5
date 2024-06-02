@@ -6,11 +6,6 @@
  * @param passwordConfirm
  * @returns user info
  */
-export const signup = (
-  email: string,
-  studentId: number,
-  password: string,
-  passwordConfirm: string
-) => {
+export const signup = (email: string, studentId: number, password: string) => {
   return "signup";
 };

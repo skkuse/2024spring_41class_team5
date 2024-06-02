@@ -16,7 +16,7 @@ export default function Page() {
       return;
     }
 
-    const userInfo = signup(username, studentId, password, passwordConfirm);
+    const userInfo = signup(username, studentId, password);
     alert(userInfo);
   };
 
