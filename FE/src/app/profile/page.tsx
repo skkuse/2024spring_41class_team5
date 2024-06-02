@@ -1,13 +1,13 @@
+"use client"; // 클라이언트 컴포넌트로 지정
 
-'use client'; // 클라이언트 컴포넌트로 지정
-import React, { useEffect, useState } from 'react';
-import { Inter } from 'next/font/google';
-import ProgressBar from '../_components/ProgressBar';
-import Accordion from '../_components/Accordion';
-import styled, { ThemeProvider } from 'styled-components';
-import './globals.css';
+import React, { useEffect, useState } from "react";
+import { Inter } from "next/font/google";
+import ProgressBar from "../_components/ProgressBar";
+import Accordion from "../_components/Accordion";
+import styled, { ThemeProvider } from "styled-components";
+import "../globals.css";
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ["latin"] });
 
 const GridContainer = styled.div`
   display: grid;
@@ -41,7 +41,7 @@ const RightAlignedText = styled.div`
 `;
 
 const theme = {
-  redColor: 'red',
+  redColor: "red",
 };
 
 const InfoTable = styled.div`
@@ -70,14 +70,14 @@ const getNextLevelExperience = (lev: number): number => {
 
 export default function Home() {
   const [counter, setCounter] = useState(0);
-  const [username, setUsername] = useState('');
+  const [username, setUsername] = useState("");
   const [level, setLevel] = useState(1);
   const [experience, setExperience] = useState(0);
   const [target, setTarget] = useState(450); // 서버에서 받아와야 하는 값
 
   useEffect(() => {
     // User 이름 받아오기
-    setUsername('황정민');
+    setUsername("황정민");
   }, []);
 
   useEffect(() => {
@@ -97,7 +97,7 @@ export default function Home() {
     };
 
     const counterInterval = setInterval(updateCounter, interval);
-    
+
     return () => clearInterval(counterInterval);
   }, [target]); // target 값이 변경될 때 실행
 
@@ -124,28 +124,45 @@ export default function Home() {
     <ThemeProvider theme={theme}>
       <div className={inter.className}>
         <GridContainer>
-          <GridItem id="userIcon" style={{  }}>
+          <GridItem id="userIcon" style={{}}>
             새싹 이미지
           </GridItem>
 
-          <GridItem id="userInfo" style={{ }}>
+          <GridItem id="userInfo" style={{}}>
             <div id="level">Level: {level}</div>
-            <div id="username" style={{ textAlign: 'left', color: 'black' }}>{username} 님</div>
+            <div id="username" style={{ textAlign: "left", color: "black" }}>
+              {username} 님
+            </div>
             <div id="progessBarName">
               <FlexContainer>
                 <LeftAlignedText>탄소배출 저감량</LeftAlignedText>
-                <RightAlignedText>다음 레벨까지 {neededCarbonReduction} tC</RightAlignedText>
+                <RightAlignedText>
+                  다음 레벨까지 {neededCarbonReduction} tC
+                </RightAlignedText>
               </FlexContainer>
             </div>
-            <ProgressBar dealt={((experience - getNextLevelExperience(level - 1)) / (getNextLevelExperience(level) - getNextLevelExperience(level - 1))) * 100} />
+            <ProgressBar
+              dealt={
+                ((experience - getNextLevelExperience(level - 1)) /
+                  (getNextLevelExperience(level) -
+                    getNextLevelExperience(level - 1))) *
+                100
+              }
+            />
           </GridItem>
 
-          <GridItem id="carbonEmission" style={{ }}>
-            <div className="counter" id="counter">{counter}</div>
+          <GridItem id="carbonEmission" style={{}}>
+            <div className="counter" id="counter">
+              {counter}
+            </div>
           </GridItem>
-          
-          <GridItem className="large-cell" id="history" style={{padding: '10px' }}>
-          <Accordion
+
+          <GridItem
+            className="large-cell"
+            id="history"
+            style={{ padding: "10px" }}
+          >
+            <Accordion
               title="아코디언 제목"
               date="2024-05-29"
               details="아코디언 2024-05-29 110tC  25tC  -85tC"
@@ -163,10 +180,7 @@ export default function Home() {
   console.log('Hello, world!');
 </div>`}
             />
-            
-            
           </GridItem>
-
         </GridContainer>
       </div>
     </ThemeProvider>
