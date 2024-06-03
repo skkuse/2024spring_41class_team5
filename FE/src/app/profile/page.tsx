@@ -1,68 +1,9 @@
 'use client' // 클라이언트 컴포넌트로 지정
 
-import React, { useEffect, useState } from 'react'
-import { Inter } from 'next/font/google'
+import { useEffect, useState } from 'react'
 import ProgressBar from './_components/ProgressBar'
 import Accordion from './_components/Accordion'
-import styled, { ThemeProvider } from 'styled-components'
 import '../globals.css'
-
-const inter = Inter({ subsets: ['latin'] })
-
-const GridContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: auto;
-  gap: 10px;
-  margin: 20px 20px; /* 양 옆에 20px 마진 추가 */
-`
-
-const GridItem = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 24px;
-  color: white;
-  flex-direction: column; /* 세로 정렬을 위해 추가 */
-`
-
-const FlexContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-`
-
-const LeftAlignedText = styled.div`
-  text-align: left; /* 텍스트를 왼쪽으로 정렬 */
-`
-
-const RightAlignedText = styled.div`
-  text-align: right; /* 텍스트를 오른쪽으로 정렬 */
-`
-
-const theme = {
-  redColor: 'red',
-}
-
-const InfoTable = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-  margin-bottom: 20px;
-  padding: 10px;
-  background-color: #f7f7f7;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-`
-
-const InfoRow = styled.div`
-  display: flex;
-  justify-content: space-between;
-`
-
-const InfoCell = styled.div`
-  padding: 5px 10px;
-`
 
 const getNextLevelExperience = (lev: number): number => {
   return Math.floor(100 * Math.pow(1.1, lev - 1)) // 경험치 요구량을 점차 증가시키는 공식
@@ -121,61 +62,57 @@ export default function Home() {
   const neededCarbonReduction = Math.floor(neededForNextLevel) // 필요한 경험치를 탄소 배출량으로 변환
 
   return (
-    <ThemeProvider theme={theme}>
-      <div className={inter.className}>
-        <GridContainer>
-          <GridItem id="userIcon" style={{}}>
-            새싹 이미지
-          </GridItem>
+    <main>
+      <section className="grid grid-cols-3 gap-2 m-4">
+        <div className="flex flex-col items-center justify-center" id="userIcon">
+          새싹 이미지
+        </div>
 
-          <GridItem id="userInfo" style={{}}>
-            <div id="level">Level: {level}</div>
-            <div id="username" style={{ textAlign: 'left', color: 'black' }}>
-              {username} 님
+        <div className="flex flex-col items-center justify-center" id="userInfo">
+          <div id="level">Level: {level}</div>
+          <div id="username">{username} 님</div>
+          <div id="progessBarName">
+            <div className="flex justify-between w-full">
+              <div className="text-left">탄소배출 저감량</div>
+              <div className="text-right">다음 레벨까지 {neededCarbonReduction} tC</div>
             </div>
-            <div id="progessBarName">
-              <FlexContainer>
-                <LeftAlignedText>탄소배출 저감량</LeftAlignedText>
-                <RightAlignedText>다음 레벨까지 {neededCarbonReduction} tC</RightAlignedText>
-              </FlexContainer>
-            </div>
-            <ProgressBar
-              dealt={
-                ((experience - getNextLevelExperience(level - 1)) /
-                  (getNextLevelExperience(level) - getNextLevelExperience(level - 1))) *
-                100
-              }
-            />
-          </GridItem>
+          </div>
+          <ProgressBar
+            dealt={
+              ((experience - getNextLevelExperience(level - 1)) /
+                (getNextLevelExperience(level) - getNextLevelExperience(level - 1))) *
+              100
+            }
+          />
+        </div>
 
-          <GridItem id="carbonEmission" style={{}}>
-            <div className="counter" id="counter">
-              {counter}
-            </div>
-          </GridItem>
+        <div className="flex flex-col items-center justify-center" id="carbonEmission">
+          <div className="counter" id="counter">
+            {counter}
+          </div>
+        </div>
 
-          <GridItem className="large-cell" id="history" style={{ padding: '10px' }}>
-            <Accordion
-              title="아코디언 제목"
-              date="2024-05-29"
-              details="아코디언 2024-05-29 110tC  25tC  -85tC"
-              code={`<div>
+        <div className="flex flex-col items-center justify-center large-cell" id="history">
+          <Accordion
+            title="아코디언 제목"
+            date="2024-05-29"
+            details="아코디언 2024-05-29 110tC  25tC  -85tC"
+            code={`<div>
   // 예시 코드
   console.log('Hello, world!');
 </div>`}
-            />
-            <Accordion
-              title="아코디언 제목"
-              date="2024-05-29"
-              details="아코디언 2024-05-29 110tC  25tC  -85tC"
-              code={`<div>
+          />
+          <Accordion
+            title="아코디언 제목"
+            date="2024-05-29"
+            details="아코디언 2024-05-29 110tC  25tC  -85tC"
+            code={`<div>
   // 예시 코드
   console.log('Hello, world!');
 </div>`}
-            />
-          </GridItem>
-        </GridContainer>
-      </div>
-    </ThemeProvider>
+          />
+        </div>
+      </section>
+    </main>
   )
 }
