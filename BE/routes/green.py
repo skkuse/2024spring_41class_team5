@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 from green_function import *
-import pymysql
+#import pymysql
+from database import create_session
 
 
 green_router = APIRouter(
@@ -8,8 +9,10 @@ green_router = APIRouter(
 )
 
 
-conn = pymysql.connect(host = 'localhost', user='wonyeong', password = 'your_password', db = 'sample', charset = 'utf8')
-cur = conn.cursor()
+# conn = pymysql.connect(host = 'localhost', user='wonyeong', password = 'your_password', db = 'sample', charset = 'utf8')
+# cur = conn.cursor()
+
+conn, cur = create_session()
 
 
 @green_router.post("/")
