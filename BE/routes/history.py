@@ -15,7 +15,7 @@ def history(request: Request):
     
     conn, cur = create_session()
     query = (
-        "SELECT codes.original_code, codes.merged_code, codes.date, footprints.original_fp, footprints.merged_fp "
+        "SELECT codes.code_id, codes.original_code, codes.merged_code, codes.date, footprints.original_fp, footprints.merged_fp "
         "FROM users "
         "JOIN codes ON users.user_id = codes.user_id "
         "JOIN footprints ON codes.code_id = footprints.code_id "
@@ -24,7 +24,8 @@ def history(request: Request):
 
     cur.execute(query)
     row = cur.fetchall()
-    return row
+    res = {"user_id": user_id, "codes": row}
+    return res
 
 @history_router.get("/statistics")
 def statistics(request: Request):
