@@ -38,10 +38,9 @@ def root():
     for record in row:
         original_fp += record['original_fp']
         merged_fp += record['merged_fp']
-    total_fp = original_fp - merged_fp
 
     cur.execute("SELECT * FROM users")
     row = cur.fetchall()
     total_user = len(row)
 
-    return {"totalFootPrint" : total_fp, "totalUser" : total_user}
+    return {"total_original_fp" : original_fp, "total_merged_fp": merged_fp, "total_users" : total_user}
