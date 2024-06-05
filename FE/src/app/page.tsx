@@ -1,6 +1,5 @@
 import Script from 'next/script'
 import './style.css'
-import './globals.css'
 
 export default function Page() {
   return (
