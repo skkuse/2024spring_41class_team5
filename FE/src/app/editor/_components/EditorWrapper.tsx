@@ -39,7 +39,7 @@ export default function EditorWrapper({ setCode }: Props) {
       />
       <button
         type="submit"
-        className="inline-flex items-center rounded-md px-4 py-2 text-sm bg-green-900 text-white hover:bg-green-800"
+        className="rounded px-4 py-2 bg-green-900 text-white hover:bg-green-800"
       >
         Submit
       </button>

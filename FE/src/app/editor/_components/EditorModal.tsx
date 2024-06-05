@@ -3,32 +3,34 @@
 import EditorWrapper from "./EditorWrapper";
 import DiffEditorWrapper from "./DiffEditorWrapper";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { getSuggestedCode, getGreenCodeRuntime } from "../_lib/api";
 
 interface Props {
   setIsView: Dispatch<SetStateAction<boolean>>;
+  setRuntime: Dispatch<SetStateAction<number>>;
 }
 
-export default function EditorModal({ setIsView }: Props) {
-  const [code, setCode] = useState("");
-  const [suggestion, setSuggestion] = useState("");
-  const [greenCode, setGreenCode] = useState("");
-  const [runtime, setRuntime] = useState(null);
+export default function EditorModal({ setIsView, setRuntime }: Props) {
+  const [code, setCode] = useState(""); // user typed code
+  const [suggestedCode, setSuggestedCode] = useState(""); // suggested code by LLM
+  const [greenCode, setGreenCode] = useState(""); // user merged code
 
   useEffect(() => {
     if (code == "") return;
-    alert(code);
-    // TODO: LLM 호출
+    alert("user typed code: " + code);
+    const suggestedCode = getSuggestedCode(code);
+    setSuggestedCode(suggestedCode);
+    alert("LLM suggested code: " + suggestedCode);
   }, [code]);
 
   useEffect(() => {
     if (greenCode == "") return;
-    alert(greenCode);
-    // TODO: 코드 실행
+    alert("user submitted green code: " + greenCode);
+    const runtime = getGreenCodeRuntime(greenCode);
+    setRuntime(runtime);
+    alert("green code's runtime: " + runtime);
+    setIsView(false);
   }, [greenCode]);
-
-  useEffect(() => {
-    // TODO: 탄소배출량 계산
-  }, [runtime]);
 
   return (
     <div className="flex-1 flex flex-col gap-4">
@@ -37,7 +39,7 @@ export default function EditorModal({ setIsView }: Props) {
       ) : (
         <DiffEditorWrapper
           code={code}
-          suggestion={suggestion}
+          suggestion={suggestedCode}
           setGreenCode={setGreenCode}
         />
       )}
