@@ -20,7 +20,6 @@ export default function Page() {
     marginBottom: '20px',
   }
   const cardTitleStyle = {
-    textAlign: 'center',
     marginTop: '16px',
     fontSize: '24px',
   }
@@ -29,20 +28,31 @@ export default function Page() {
     height: '500px',
   }
   const percentageStyle = {
-    position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -40%)',
     fontSize: '36px',
     fontWeight: 'bold',
   }
-  const plantImages = ['images/lavender.png', 'images/maple.png', 'images/pine.png']
+  const plantImages = [
+    'images/icons/lavender.png',
+    'images/icons/maple.png',
+    'images/icons/pine.png',
+  ]
   const plantData = [1.6, 2.2, 6.7]
 
-  const transportImages = ['images/bicycle.png', 'images/car.png', 'images/airplane.png']
+  const transportImages = [
+    'images/icons/bicycle.png',
+    'images/icons/car.png',
+    'images/icons/airplane.png',
+  ]
   const transportData = [1.6, 2.2, 6.7]
 
-  const foodImages = ['images/coffee.png', 'images/chicken.png', 'images/hamburger.png']
+  const foodImages = [
+    'images/icons/coffee.png',
+    'images/icons/chicken.png',
+    'images/icons/hamburger.png',
+  ]
   const foodData = [1.6, 2.2, 6.7]
 
   return (
@@ -75,9 +85,6 @@ export default function Page() {
                       },
                     },
                     maintainAspectRatio: false,
-                    borderWidth: 0,
-                    radius: 116,
-                    cutout: 130,
                   }}
                 />
                 <div style={percentageStyle}>75%</div>
@@ -101,7 +108,6 @@ export default function Page() {
                     },
                   ],
                 }}
-                label="탄소 배출량 비교"
                 options={{
                   plugins: {
                     legend: {
@@ -126,7 +132,6 @@ export default function Page() {
                       },
                     },
                   },
-                  barPercentage: 0.5,
                   maintainAspectRatio: false,
                 }}
                 style={{ height: '100%' }}
@@ -134,7 +139,7 @@ export default function Page() {
             </CCardBody>
           </CCard>
         </CCol>
-        <CCol g="3">
+        <CCol lg="3">
           <CCard style={cardStyle}>
             <CCardTitle style={cardTitleStyle}>식물 비교</CCardTitle>
             <CCardBody>
