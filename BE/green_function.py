@@ -11,7 +11,7 @@ PSF=1.0
 CARBON_INTENSITY=500
 USAGE = 1
 POWER_DRAW_FOR_CPU = 12 # Any
-POWER_DRAW_FOR_MEMORY_PER_GB = 0.3725 # how many GBs??
+POWER_DRAW_FOR_MEMORY_PER_GB = 0.3725 * 16 # how many GBs??
 
 
 def get_LLM_response(code_data: str):
