@@ -6,6 +6,14 @@ from datetime import date
 import subprocess
 import time
 
+PUE=1.67
+PSF=1.0
+CARBON_INTENSITY=500
+USAGE = 1
+POWER_DRAW_FOR_CPU = 12 # Any
+POWER_DRAW_FOR_MEMORY_PER_GB = 0.3725 # how many GBs??
+
+
 def get_LLM_response(code_data: str):
     api_key = 'api key'
     headers = {
@@ -58,6 +66,11 @@ def execute_java_code(code: str):
         "execution_time": execution_time
     }
 
+
+def calculate_carbon_footprint(runtime: float):
+    energy_needed = runtime * (POWER_DRAW_FOR_CPU * USAGE + POWER_DRAW_FOR_MEMORY_PER_GB ) * PUE * PSF
+    carbon_footprint = energy_needed * CARBON_INTENSITY
+    return carbon_footprint
 
 
 
