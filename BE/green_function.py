@@ -2,6 +2,9 @@ from pydantic import BaseModel
 import openai
 import requests
 import os
+from datetime import date
+import subprocess
+import time
 
 def get_LLM_response(code_data: str):
     api_key = 'api key'
@@ -32,7 +35,32 @@ def get_LLM_response(code_data: str):
     point = response.json()["choices"][0]["message"]["content"]
     return point
   
-  
+
+def execute_java_code(code: str):
+    with open("TempJavaProgram.java", "w") as file:
+        file.write(code)
+    compile_process = subprocess.run(["javac", "TempJavaProgram.java"], capture_output=True, text=True)
+    if compile_process.returncode != 0:
+        return {"error": "Compilation Failed", "details": compile_process.stderr}
+    start_time = time.time()
+    execute_process = subprocess.run(["java", "TempJavaProgram"], capture_output=True, text=True)
+    end_time = time.time()
+    
+    if execute_process.returncode != 0:
+        return {"error": "Execution Failed", "details": execute_process.stderr}
+    
+    execution_time = end_time - start_time
+    
+    os.remove("TempJavaProgram.java")
+    os.remove("TempJavaProgram.class")
+    return {
+        "output": execute_process.stdout,
+        "execution_time": execution_time
+    }
+
+
+
+
   
 class RequestModel(BaseModel):
     session: str
@@ -43,3 +71,15 @@ class FixedCode(BaseModel):
     id: str
     fixed_code: str
     
+
+class CodeCreateRequest(BaseModel):
+    original_code: str
+    merged_code: str
+
+class CodeResponse(BaseModel):
+    id: str
+    original_code: str
+    merged_code: str
+    original_fp: float
+    merged_fp: float
+    date: date
