@@ -8,4 +8,4 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
-ENTRYPOINT ["uvicorn", "main:app", "--host=0.0.0.0", "log.txt", "2>&1"]
+ENTRYPOINT ["uvicorn", "main:app", "--host=0.0.0.0", "./log/log.txt", "2>&1"]
