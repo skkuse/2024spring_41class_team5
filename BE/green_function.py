@@ -2,6 +2,17 @@ from pydantic import BaseModel
 import openai
 import requests
 import os
+from datetime import date
+import subprocess
+import time
+
+PUE=1.67
+PSF=1.0
+CARBON_INTENSITY=500
+USAGE = 1
+POWER_DRAW_FOR_CPU = 12 # Any
+POWER_DRAW_FOR_MEMORY_PER_GB = 0.3725 # how many GBs??
+
 
 def get_LLM_response(code_data: str):
     api_key = 'api key'
@@ -32,7 +43,37 @@ def get_LLM_response(code_data: str):
     point = response.json()["choices"][0]["message"]["content"]
     return point
   
-  
+
+def execute_java_code(code: str):
+    with open("TempJavaProgram.java", "w") as file:
+        file.write(code)
+    compile_process = subprocess.run(["javac", "TempJavaProgram.java"], capture_output=True, text=True)
+    if compile_process.returncode != 0:
+        return {"error": "Compilation Failed", "details": compile_process.stderr}
+    start_time = time.time()
+    execute_process = subprocess.run(["java", "TempJavaProgram"], capture_output=True, text=True)
+    end_time = time.time()
+    
+    if execute_process.returncode != 0:
+        return {"error": "Execution Failed", "details": execute_process.stderr}
+    
+    execution_time = end_time - start_time
+    
+    os.remove("TempJavaProgram.java")
+    os.remove("TempJavaProgram.class")
+    return {
+        "output": execute_process.stdout,
+        "execution_time": execution_time
+    }
+
+
+def calculate_carbon_footprint(runtime: float):
+    energy_needed = runtime * (POWER_DRAW_FOR_CPU * USAGE + POWER_DRAW_FOR_MEMORY_PER_GB ) * PUE * PSF
+    carbon_footprint = energy_needed * CARBON_INTENSITY
+    return carbon_footprint
+
+
+
   
 class RequestModel(BaseModel):
     session: str
@@ -43,3 +84,15 @@ class FixedCode(BaseModel):
     id: str
     fixed_code: str
     
+
+class CodeCreateRequest(BaseModel):
+    original_code: str
+    merged_code: str
+
+class CodeResponse(BaseModel):
+    id: str
+    original_code: str
+    merged_code: str
+    original_fp: float
+    merged_fp: float
+    date: date
