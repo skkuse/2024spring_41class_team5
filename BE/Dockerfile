@@ -6,7 +6,9 @@ COPY requirements.txt .
 
 RUN pip install -r requirements.txt
 
-RUN mkdir logs
+RUN mkdir -p /workspace/logs
+
+RUN touch /workspace/logs/log.txt
 
 COPY . .
 
