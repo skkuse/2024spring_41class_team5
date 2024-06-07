@@ -9,7 +9,6 @@ green_router = APIRouter(
     tags=["Green"],
 )
 
-
 conn = pymysql.connect(host = 'localhost', user='wonyeong', password = 'your_password', db = 'backend', charset = 'utf8')
 cur = conn.cursor()
 
