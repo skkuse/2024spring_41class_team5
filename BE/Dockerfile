@@ -10,5 +10,6 @@ RUN mkdir -p /workspace/logs
 
 RUN touch /workspace/logs/log.txt
 
-COPY . .
+CMD ["sh", "-c", "uvicorn main:app --host=0.0.0.0 > /workspace/logs/log.txt 2>&1"]
 
+COPY . .
