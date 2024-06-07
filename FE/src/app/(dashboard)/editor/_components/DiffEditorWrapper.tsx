@@ -1,36 +1,28 @@
-"use client";
+'use client'
 
-import { DiffEditor } from "@monaco-editor/react";
-import { Dispatch, FormEvent, SetStateAction } from "react";
+import { DiffEditor } from '@monaco-editor/react'
+import { Dispatch, FormEvent, SetStateAction } from 'react'
 
 interface Props {
-  code: string;
-  suggestion: string;
-  setGreenCode: Dispatch<SetStateAction<string>>;
+  code: string
+  suggestion: string
+  setGreenCode: Dispatch<SetStateAction<string>>
 }
 
-export default function DiffEditorWrapper({
-  code,
-  suggestion,
-  setGreenCode,
-}: Props) {
+export default function DiffEditorWrapper({ code, suggestion, setGreenCode }: Props) {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+    event.preventDefault()
 
-    const lines = event.currentTarget.querySelectorAll(".view-lines")[1];
+    const lines = event.currentTarget.querySelectorAll('.view-lines')[1]
     const code = Array.from(lines.children)
       .map((line: any) => line.textContent)
-      .join("\n");
+      .join('\n')
 
-    setGreenCode(code);
-  };
+    setGreenCode(code)
+  }
 
   return (
-    <form
-      action="#"
-      onSubmit={handleSubmit}
-      className="flex flex-col gap-4 items-end flex-1"
-    >
+    <form action="#" onSubmit={handleSubmit} className="flex flex-col gap-4 items-end">
       <label htmlFor="comment" className="sr-only">
         Add your code
       </label>
@@ -48,5 +40,5 @@ export default function DiffEditorWrapper({
         Submit
       </button>
     </form>
-  );
+  )
 }

@@ -1,30 +1,26 @@
-"use client";
+'use client'
 
-import { Editor } from "@monaco-editor/react";
-import { Dispatch, FormEvent, SetStateAction } from "react";
+import { Editor } from '@monaco-editor/react'
+import { Dispatch, FormEvent, SetStateAction } from 'react'
 
 interface Props {
-  setCode: Dispatch<SetStateAction<string>>;
+  setCode: Dispatch<SetStateAction<string>>
 }
 
 export default function EditorWrapper({ setCode }: Props) {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+    event.preventDefault()
 
-    const lines = event.currentTarget.querySelector(".view-lines");
+    const lines = event.currentTarget.querySelector('.view-lines')
     const code = Array.from(lines!.children)
       .map((line: any) => line.textContent)
-      .join("\n");
+      .join('\n')
 
-    setCode(code);
-  };
+    setCode(code)
+  }
 
   return (
-    <form
-      action="#"
-      onSubmit={handleSubmit}
-      className="flex flex-col gap-4 items-end flex-1"
-    >
+    <form action="#" onSubmit={handleSubmit} className="flex flex-col gap-4 items-end">
       <label htmlFor="comment" className="sr-only">
         Add your code
       </label>
@@ -44,5 +40,5 @@ export default function EditorWrapper({ setCode }: Props) {
         Submit
       </button>
     </form>
-  );
+  )
 }
