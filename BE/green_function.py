@@ -61,10 +61,9 @@ def execute_java_code(code: str):
     
     os.remove("TempJavaProgram.java")
     os.remove("TempJavaProgram.class")
-    return {
-        "output": execute_process.stdout,
-        "execution_time": execution_time
-    }
+    return (execute_process.stdout, execution_time)
+
+    
 
 
 def calculate_carbon_footprint(runtime: float):
