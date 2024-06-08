@@ -15,7 +15,7 @@ POWER_DRAW_FOR_MEMORY_PER_GB = 0.3725 * 16 # how many GBs??
 
 
 def get_LLM_response(code_data: str):
-    api_key = 'api key'
+    api_key = os.environ.get("OPENAI_API_KEY")
     headers = {
       "Content-Type": "application/json",
       "Authorization": f"Bearer {api_key}"

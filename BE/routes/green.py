@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Request
 from green_function import *
 import pymysql
 from database import create_session
@@ -24,9 +24,9 @@ async def get_green(request: RequestModel):
 
     
 @green_router.post("/codes")
-async def process_code(request: CodeCreateRequest):
+async def process_code(request: CodeCreateRequest, request1: Request):
     conn, cur = create_session()
-    token = request.headers.get('Bearer')
+    token = request1.headers.get('Bearer')
     message, user = jwt_decoder(token, os.environ.get('JWT_SECRET_KEY_ACCESS'))
     user_id = user.get('user_id')
     original_code = request.original_code
