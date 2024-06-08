@@ -39,4 +39,5 @@ jobs:
             -e JWT_SECRET_REFRESH=${{ secrets.JWT_SECRET_REFRESH }} \
             -d -p ${{secrets.EXTERNAL_PORT}}:${{secrets.INTERNAL_PORT}} \
             -v /root/logs:/workspace/logs \
-            --name skkuse-container yaongmeow/skkuse-docker
+            --name skkuse-container yaongmeow/skkuse-docker \
+            uvicorn main:app --host=0.0.0.0 --port=${{secrets.INTERNAL_PORT}}
