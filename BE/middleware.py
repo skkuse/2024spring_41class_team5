@@ -10,7 +10,8 @@ auth_api = [ '/footprint/compute', '/footprint/visualize', '/history', '/history
 class authentication_check(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next: RequestResponseEndpoint):
         if request.url.path in auth_api:
-            access_token = request.headers.get('Bearer')
+            auth_header = request.headers.get('Authorization')
+            access_token = auth_header.split(' ')[1]
             if access_token:
                 message, user = jwt_decoder(access_token, os.environ.get('JWT_SECRET_KEY_ACCESS'))
                 conn, cur = create_session()
