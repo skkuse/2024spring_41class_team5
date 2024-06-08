@@ -6,9 +6,14 @@ from routes.green import green_router
 from routes.history import history_router
 from routes.statistics import statistics_router
 from middleware import authentication_check
+from fastapi.middleware.cors import CORSMiddleware
 
 from dotenv import load_dotenv
 import os
+
+origins = [
+    "*",
+]
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 load_dotenv(os.path.join(BASE_DIR, ".env"))
@@ -16,6 +21,13 @@ load_dotenv(os.path.join(BASE_DIR, ".env"))
 app = FastAPI()
 
 app.add_middleware(authentication_check)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 app.include_router(auth_router, prefix="/auth")
 app.include_router(footprint_router, prefix="/footprint")
