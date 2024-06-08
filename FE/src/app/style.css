@@ -154,7 +154,7 @@ canvas {
   position: absolute;
   top: 0;
   left: 0;
-  content: 'Content';
+  content: 'Eco-Merge 이용자 수 \A __명';
   white-space: pre;
   transform: translateY(-100%);
   font-size: 25px;
@@ -177,7 +177,7 @@ canvas {
   position: absolute;
   top: 0;
   left: 0;
-  content: 'Content';
+  content: 'Eco-Merge 이용자 수 \A __명';
   white-space: pre;
   transform: translateY(100%);
   font-size: 25px;

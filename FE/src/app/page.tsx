@@ -2,6 +2,38 @@ import Script from 'next/script'
 import './style.css'
 
 export default function Page() {
+  const teamMembers = [
+    {
+      name: "김주영",
+      email: "mailto:illuminoplanet@gmail.com",
+      github: "https://github.com/illuminoplanet",
+    },
+    {
+      name: "배정우",
+      email: "mailto:bae.jungwoo@gmail.com",
+      github: "https://github.com/BaeJungWoo",
+    },
+    {
+      name: "이송목",
+      email: "mailto:lsm3645@g.skku.edu",
+      github: "https://github.com/fine-pine",
+    },
+    {
+      name: "이병철",
+      email: "mailto:bc6817@gmail.com",
+      github: "https://github.com/2btlFe",
+    },
+    {
+      name: "이원영",
+      email: "mailto:lwy970327@gmail.com",
+      github: "https://github.com/wonleeyoung",
+    },
+    {
+      name: "황정민",
+      email: "mailto:hwang@example.com",
+      github: "https://github.com/yaongmeow",
+    },
+  ];
   return (
     <>
       {/* product-description */}
@@ -100,252 +132,23 @@ export default function Page() {
       <div className="team-page">
         <div className="container">
           <div className="row">
-            <div className="col-12 col-sm-6 col-md-4 col-lg-4">
-              <div className="our-team">
-                <div className="picture">
-                  <img className="img-fluid" src="images/banners/user_profile.webp" />
+            {teamMembers.map((member, index) => (
+              <div key={index} className="col-12 col-sm-6 col-md-4 col-lg-4">
+                <div className="our-team">
+                  <div className="picture">
+                    <img className="img-fluid" src="images/banners/user_profile.webp" alt={member.name} />
+                  </div>
+                  <div className="team-content">
+                    <h3 className="name">{member.name}</h3>
+                    <h4 className="title">Web Developer</h4>
+                  </div>
+                  <ul className="social">
+                    <li><a href={member.email} className="fa fa-envelope" aria-hidden="true"></a></li>
+                    <li><a href={member.github} className="fa fa-github" aria-hidden="true"></a></li>
+                  </ul>
                 </div>
-                <div className="team-content">
-                  <h3 className="name">김주영</h3>
-                  <h4 className="title">Web Developer</h4>
-                </div>
-                <ul className="social">
-                  <li>
-                    <a
-                      href="https://github.com/skkuse/2024spring_41class_team5"
-                      className="fa fa-envelope"
-                      aria-hidden="true"
-                    />
-                  </li>
-                  <li>
-                    <a
-                      href="https://github.com/skkuse/2024spring_41class_team5"
-                      className="fa fa-github"
-                      aria-hidden="true"
-                    />
-                  </li>
-                  <li>
-                    <a
-                      href="https://github.com/skkuse/2024spring_41class_team5"
-                      className="fa fa-instagram"
-                      aria-hidden="true"
-                    />
-                  </li>
-                  <li>
-                    <a
-                      href="https://github.com/skkuse/2024spring_41class_team5"
-                      className="fa fa-linkedin"
-                      aria-hidden="true"
-                    />
-                  </li>
-                </ul>
               </div>
-            </div>
-            <div className="col-12 col-sm-6 col-md-4 col-lg-4">
-              <div className="our-team">
-                <div className="picture">
-                  <img className="img-fluid" src="images/banners/user_profile.webp" />
-                </div>
-                <div className="team-content">
-                  <h3 className="name">배정우</h3>
-                  <h4 className="title">Web Developer</h4>
-                </div>
-                <ul className="social">
-                  <li>
-                    <a
-                      href="https://github.com/skkuse/2024spring_41class_team5"
-                      className="fa fa-envelope"
-                      aria-hidden="true"
-                    />
-                  </li>
-                  <li>
-                    <a
-                      href="https://github.com/skkuse/2024spring_41class_team5"
-                      className="fa fa-github"
-                      aria-hidden="true"
-                    />
-                  </li>
-                  <li>
-                    <a
-                      href="https://github.com/skkuse/2024spring_41class_team5"
-                      className="fa fa-instagram"
-                      aria-hidden="true"
-                    />
-                  </li>
-                  <li>
-                    <a
-                      href="https://github.com/skkuse/2024spring_41class_team5"
-                      className="fa fa-linkedin"
-                      aria-hidden="true"
-                    />
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div className="col-12 col-sm-6 col-md-4 col-lg-4">
-              <div className="our-team">
-                <div className="picture">
-                  <img className="img-fluid" src="images/banners/user_profile.webp" />
-                </div>
-                <div className="team-content">
-                  <h3 className="name">이송목</h3>
-                  <h4 className="title">Web Developer</h4>
-                </div>
-                <ul className="social">
-                  <li>
-                    <a
-                      href="https://github.com/skkuse/2024spring_41class_team5"
-                      className="fa fa-envelope"
-                      aria-hidden="true"
-                    />
-                  </li>
-                  <li>
-                    <a
-                      href="https://github.com/skkuse/2024spring_41class_team5"
-                      className="fa fa-github"
-                      aria-hidden="true"
-                    />
-                  </li>
-                  <li>
-                    <a
-                      href="https://github.com/skkuse/2024spring_41class_team5"
-                      className="fa fa-instagram"
-                      aria-hidden="true"
-                    />
-                  </li>
-                  <li>
-                    <a
-                      href="https://github.com/skkuse/2024spring_41class_team5"
-                      className="fa fa-linkedin"
-                      aria-hidden="true"
-                    />
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div className="col-12 col-sm-6 col-md-4 col-lg-4">
-              <div className="our-team">
-                <div className="picture">
-                  <img className="img-fluid" src="images/banners/user_profile.webp" />
-                </div>
-                <div className="team-content">
-                  <h3 className="name">이병철</h3>
-                  <h4 className="title">Web Developer</h4>
-                </div>
-                <ul className="social">
-                  <li>
-                    <a
-                      href="https://github.com/skkuse/2024spring_41class_team5"
-                      className="fa fa-envelope"
-                      aria-hidden="true"
-                    />
-                  </li>
-                  <li>
-                    <a
-                      href="https://github.com/skkuse/2024spring_41class_team5"
-                      className="fa fa-github"
-                      aria-hidden="true"
-                    />
-                  </li>
-                  <li>
-                    <a
-                      href="https://github.com/skkuse/2024spring_41class_team5"
-                      className="fa fa-instagram"
-                      aria-hidden="true"
-                    />
-                  </li>
-                  <li>
-                    <a
-                      href="https://github.com/skkuse/2024spring_41class_team5"
-                      className="fa fa-linkedin"
-                      aria-hidden="true"
-                    />
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div className="col-12 col-sm-6 col-md-4 col-lg-4">
-              <div className="our-team">
-                <div className="picture">
-                  <img className="img-fluid" src="images/banners/user_profile.webp" />
-                </div>
-                <div className="team-content">
-                  <h3 className="name">이원영</h3>
-                  <h4 className="title">Web Developer</h4>
-                </div>
-                <ul className="social">
-                  <li>
-                    <a
-                      href="https://github.com/skkuse/2024spring_41class_team5"
-                      className="fa fa-envelope"
-                      aria-hidden="true"
-                    />
-                  </li>
-                  <li>
-                    <a
-                      href="https://github.com/skkuse/2024spring_41class_team5"
-                      className="fa fa-github"
-                      aria-hidden="true"
-                    />
-                  </li>
-                  <li>
-                    <a
-                      href="https://github.com/skkuse/2024spring_41class_team5"
-                      className="fa fa-instagram"
-                      aria-hidden="true"
-                    />
-                  </li>
-                  <li>
-                    <a
-                      href="https://github.com/skkuse/2024spring_41class_team5"
-                      className="fa fa-linkedin"
-                      aria-hidden="true"
-                    />
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div className="col-12 col-sm-6 col-md-4 col-lg-4">
-              <div className="our-team">
-                <div className="picture">
-                  <img className="img-fluid" src="images/banners/user_profile.webp" />
-                </div>
-                <div className="team-content">
-                  <h3 className="name">황정민</h3>
-                  <h4 className="title">Web Developer</h4>
-                </div>
-                <ul className="social">
-                  <li>
-                    <a
-                      href="https://github.com/skkuse/2024spring_41class_team5"
-                      className="fa fa-envelope"
-                      aria-hidden="true"
-                    />
-                  </li>
-                  <li>
-                    <a
-                      href="https://github.com/skkuse/2024spring_41class_team5"
-                      className="fa fa-github"
-                      aria-hidden="true"
-                    />
-                  </li>
-                  <li>
-                    <a
-                      href="https://github.com/skkuse/2024spring_41class_team5"
-                      className="fa fa-instagram"
-                      aria-hidden="true"
-                    />
-                  </li>
-                  <li>
-                    <a
-                      href="https://github.com/skkuse/2024spring_41class_team5"
-                      className="fa fa-linkedin"
-                      aria-hidden="true"
-                    />
-                  </li>
-                </ul>
-              </div>
-            </div>
+              ))}
           </div>
         </div>
       </div>
