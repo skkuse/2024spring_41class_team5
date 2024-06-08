@@ -9,8 +9,9 @@ history_router = APIRouter(
 
 @history_router.get("/")
 def history(request: Request):
-    token = request.headers.get('Bearer')
-    message, user = jwt_decoder(token, os.environ.get('JWT_SECRET_KEY_ACCESS'))
+    auth_header = request.headers.get('Authorization')
+    access_token = auth_header.split(' ')[1]
+    message, user = jwt_decoder(access_token, os.environ.get('JWT_SECRET_KEY_ACCESS'))
     user_id = user.get('user_id')
     
     conn, cur = create_session()
@@ -26,8 +27,3 @@ def history(request: Request):
     row = cur.fetchall()
     res = {"user_id": user_id, "codes": row}
     return res
-
-@history_router.get("/statistics")
-def statistics(request: Request):
-    conn, cur = create_session()
-    return {"statistics"}
