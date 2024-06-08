@@ -26,17 +26,17 @@ jobs:
           password: ${{ secrets.SERVER_PASSWORD }}
           port: 22
           script: |
-          docker login --username ${{ secrets.DOCKER_ID }} --password ${{ secrets.DOCKER_PASSWORD }}
-          docker pull yaongmeow/skkuse-docker
-          docker stop skkuse-container || true
-          docker rm skkuse-container || true
-          docker run -e DB_HOST=${{ secrets.DB_HOST }} \
-          -e DB_PORT=${{ secrets.DB_PORT }} \
-          -e DB_USER=${{ secrets.DB_USER }} \
-          -e DB_PASS=${{ secrets.DB_PASS }} \
-          -e DB_NAME=${{ secrets.DB_NAME }} \
-          -e JWT_SECRET_ACCESS=${{ secrets.JWT_SECRET_ACCESS }} \
-          -e JWT_SECRET_REFRESH=${{ secrets.JWT_SECRET_REFRESH }} \
-          -d -p ${{secrets.EXTERNAL_PORT}}:${{secrets.INTERNAL_PORT}} \
-          -v /root/logs:/workspace/logs \
-          --name skkuse-container yaongmeow/skkuse-docker
+            docker login --username ${{ secrets.DOCKER_ID }} --password ${{ secrets.DOCKER_PASSWORD }}
+            docker pull yaongmeow/skkuse-docker
+            docker stop skkuse-container || true
+            docker rm skkuse-container || true
+            docker run -e DB_HOST=${{ secrets.DB_HOST }} \
+            -e DB_PORT=${{ secrets.DB_PORT }} \
+            -e DB_USER=${{ secrets.DB_USER }} \
+            -e DB_PASS=${{ secrets.DB_PASS }} \
+            -e DB_NAME=${{ secrets.DB_NAME }} \
+            -e JWT_SECRET_ACCESS=${{ secrets.JWT_SECRET_ACCESS }} \
+            -e JWT_SECRET_REFRESH=${{ secrets.JWT_SECRET_REFRESH }} \
+            -d -p ${{secrets.EXTERNAL_PORT}}:${{secrets.INTERNAL_PORT}} \
+            -v /root/logs:/workspace/logs \
+            --name skkuse-container yaongmeow/skkuse-docker
