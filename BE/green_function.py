@@ -11,11 +11,11 @@ PSF=1.0
 CARBON_INTENSITY=500
 USAGE = 1
 POWER_DRAW_FOR_CPU = 12 # Any
-POWER_DRAW_FOR_MEMORY_PER_GB = 0.3725 # how many GBs??
+POWER_DRAW_FOR_MEMORY_PER_GB = 0.3725 * 16 # how many GBs??
 
 
 def get_LLM_response(code_data: str):
-    api_key = 'api key'
+    api_key = os.environ.get("OPENAI_API_KEY")
     headers = {
       "Content-Type": "application/json",
       "Authorization": f"Bearer {api_key}"
@@ -61,10 +61,9 @@ def execute_java_code(code: str):
     
     os.remove("TempJavaProgram.java")
     os.remove("TempJavaProgram.class")
-    return {
-        "output": execute_process.stdout,
-        "execution_time": execution_time
-    }
+    return (execute_process.stdout, execution_time)
+
+    
 
 
 def calculate_carbon_footprint(runtime: float):
