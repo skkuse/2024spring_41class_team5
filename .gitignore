@@ -39,3 +39,9 @@ fe/next-env.d.ts
 
 FE/.next
 FE/node_modules
+
+.DS_Store
+.env
+venv/
+__pycache__/
+
