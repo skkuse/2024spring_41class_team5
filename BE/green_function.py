@@ -5,6 +5,7 @@ import os
 from datetime import date
 import subprocess
 import time
+import re
 
 PUE=1.67
 PSF=1.0
@@ -28,16 +29,15 @@ def get_LLM_response(code_data: str):
           "content": [
             {
               "type": "text",
-              "text": '''The code I'm currently providing doesn't take into account the carbon footprint of running the code. 
-              For example, meaningless loops increase the execution time of the code, which increases the time it takes to perform the code,
-              which increases the carbon footprint. Please convert the code I've provided below to code that has the same functionality but minimizes the carbon footprint.
-              Give me only code. Don't say anything else. \n\n''' + code_data
-
+              "text": '''"The code provided below has unnecessarily long execution time.
+              It can be optimized to reduce the execution time without changing the output.
+              Please optimize the code to make it more efficient while keeping the output the same.
+              Just provide the optimized code without any additional explanation." \n\n''' + code_data
             },
           ]
         }
       ],
-      "max_tokens": 500
+      "max_tokens": 1000,
     }
     response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
     point = response.json()["choices"][0]["message"]["content"]
@@ -45,22 +45,30 @@ def get_LLM_response(code_data: str):
   
 
 def execute_java_code(code: str):
-    with open("TempJavaProgram.java", "w") as file:
+    match = re.search(r'public\s+class\s+(\w+)', code)
+    if not match:
+        class_name = "NoClassName"
+    elif match:
+        class_name = match.group(1)
+
+    with open(class_name + ".java", "w") as file:
         file.write(code)
-    compile_process = subprocess.run(["javac", "TempJavaProgram.java"], capture_output=True, text=True)
+    compile_process = subprocess.run(["javac", class_name+".java"], capture_output=True, text=True)
     if compile_process.returncode != 0:
-        return {"error": "Compilation Failed", "details": compile_process.stderr}
+        print('Compilation Failed')
+        return ("Compilation Failed", compile_process.stderr)
     start_time = time.time()
-    execute_process = subprocess.run(["java", "TempJavaProgram"], capture_output=True, text=True)
+    execute_process = subprocess.run(["java", class_name], capture_output=True, text=True)
     end_time = time.time()
     
     if execute_process.returncode != 0:
-        return {"error": "Execution Failed", "details": execute_process.stderr}
+        print('Execution Failed')
+        return ("Execution Failed", execute_process.stderr)
     
     execution_time = end_time - start_time
     
-    os.remove("TempJavaProgram.java")
-    os.remove("TempJavaProgram.class")
+    os.remove(class_name+".java")
+    os.remove(class_name+".class")
     return (execute_process.stdout, execution_time)
 
     
@@ -75,8 +83,7 @@ def calculate_carbon_footprint(runtime: float):
 
   
 class RequestModel(BaseModel):
-    session: str
-    data: str
+    code: str
     
 
 class FixedCode(BaseModel):
