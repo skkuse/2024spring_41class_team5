@@ -19,8 +19,8 @@ def jwt_decoder(token: str, key: str):
     
 def access_token_gen(user:UserTokenInfo):
     payload = {
-        'exp': datetime.utcnow() + timedelta(minutes=40),
-        'iat': datetime.utcnow(),
+        'exp': str(datetime.utcnow() + timedelta(minutes=40)),
+        'iat': str(datetime.utcnow()),
         'scope': 'access_token',
         'data': {
             'user_id': user.user_id,
@@ -38,8 +38,8 @@ def access_token_gen(user:UserTokenInfo):
 
 def refresh_token_gen(user:UserTokenInfo):
     payload = {
-        'exp': datetime.utcnow() + timedelta(days=7),
-        'iat': datetime.utcnow(),
+        'exp': str(datetime.utcnow() + timedelta(days=7)),
+        'iat': str(datetime.utcnow()),
         'scope': 'access_token',
         'data': {
             'user_id': user.user_id,
