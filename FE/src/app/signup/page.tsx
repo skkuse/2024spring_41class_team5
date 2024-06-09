@@ -56,7 +56,7 @@ export default function Page() {
           <input
             className="flex-1 border-solid border-b-2 border-black"
             type="password"
-            id="passwordConfirm "
+            id="passwordConfirm"
             required
           />
         </div>

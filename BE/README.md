@@ -8,7 +8,7 @@ python3 -m venv venv
 
 ### 작업 환경 (가상환경) 세팅
 ```bash
-souce venv/bin/activate
+source venv/bin/activate
 pip install -r requirements.txt
 ```
 

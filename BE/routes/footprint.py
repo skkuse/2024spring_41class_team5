@@ -4,10 +4,12 @@ footprint_router = APIRouter(
     tags=["Footprint"],
 )
 
+
 @footprint_router.post("/compute")
 def compute(request: Request):
-    return {"compute"};
+    return {"compute"}
 
-@footprint_router.get("/visulaize")
+
+@footprint_router.get("/visualize")
 def visualize():
-    return {"visualize"};
+    return {"visualize"}

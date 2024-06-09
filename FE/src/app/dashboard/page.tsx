@@ -17,30 +17,27 @@ import {
 } from '@coreui/react'
 import './_styles/style.scss'
 
+function parseHistoryData(historyData) {
+  const today = new Date().toISOString().split('T')[0];
+  const todayEntries = historyData.filter(entry => entry.date.startsWith(today))
+
+  if (todayEntries.length === 0) {
+    return {
+      percentage: 80,
+      original_fp: 100,
+      merged_fp: 20,
+    };
+  }
+  const latestTodayEntry = todayEntries[todayEntries.length - 1];
+
+  let orignal_fp = latestTodayEntry.original_fp
+  let merged_fp = latestTodayEntry.merged_fp
+  return null;
+}
+
 export default function Page() {
   const [isCodeSubmitted, setIsCodeSubmitted] = useState(true)
   const [historyData, setHistoryData] = useState([])
-
-  useEffect(() => {
-    const fetchHistory = async () => {
-      try {
-        const response = await axios.get('/history', {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('access_token')}`,
-          },
-        });
-
-        const data = response.data.codes;
-        setHistoryData(data);
-
-        const today = new Date().toISOString().split('T')[0];
-        const hasTodayEntry = data.some(entry => entry.date.startsWith(today));
-
-        setIsCodeSubmitted(!hasTodayEntry);
-      } catch (error) {
-        console.error('Error fetching history:', error);
-      }
-    };
 
   const plantImages = [
     'images/icons/lavender.png',
@@ -62,6 +59,34 @@ export default function Page() {
     'images/icons/hamburger.png',
   ]
   const foodData = [1.6, 2.2, 6.7]
+
+  useEffect(() => {
+    const fetchHistory = async () => {
+      try {
+        const response = await axios.get('http://127.0.0.1:8000/history', {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+            "Access-Control-Allow-Origin": "*"
+          },
+        });
+
+        const data = response.data.codes;
+        setHistoryData(data);
+
+        const today = new Date().toISOString().split('T')[0];
+        const hasTodayEntry = data.some(entry => entry.date.startsWith(today));
+
+        setIsCodeSubmitted(!hasTodayEntry);
+      } 
+      catch (error) {
+        console.error('Error fetching history:', error);
+      }
+    };
+
+    fetchHistory();
+  }, []);
+
+  const displayData = parseHistoryData(historyData);
 
   return (
     <CContainer fluid className="select-none">
@@ -85,7 +110,7 @@ export default function Page() {
                     data={{
                       datasets: [
                         {
-                          data: [75, 25],
+                          data: [displayData.percentage, 100 - displayData.percentage],
                           backgroundColor: ['white', 'transparent'],
                           borderWidth: 0,
                         },
@@ -101,9 +126,9 @@ export default function Page() {
                       maintainAspectRatio: false,
                     }}
                   />
-                  <div className="percentage">75%</div>
+                  <div className="percentage">{displayData.percentage} %</div>
                 </div>
-                <h3 className="mt-8 mb-1 font-light text-white">You reduced 75% of carbon emission!</h3>
+                <h3 className="mt-8 mb-1 font-light text-white">You reduced carbon emission by {displayData.percentage}!</h3>
               </div>
             </CCardBody>
           </CCard>
@@ -119,7 +144,7 @@ export default function Page() {
                   datasets: [
                     {
                       backgroundColor: ['#01565b', '#E2F397'],
-                      data: [40, 20],
+                      data: [displayData.original_fp, displayData.merged_fp],
                     },
                   ],
                 }}
