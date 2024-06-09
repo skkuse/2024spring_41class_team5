@@ -15,7 +15,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="flex min-h-[100dvh] w-full max-w-12c m-auto flex-col gap-12">
+      <body className="flex min-h-[100dvh] w-full max-w-12c m-auto flex-col gap-10">
         <Header />
         {children}
       </body>

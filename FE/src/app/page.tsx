@@ -36,17 +36,17 @@ export default function Page() {
             <h1 className="green-title">Why should you use Eco-Merge</h1>
           </div>
           <div className="col-4">
-            <div className="card card1">
+            <div className="green-card card1">
               <img src="images/banners/carbon_graph.png" alt="" />
             </div>
           </div>
           <div className="col-4">
-            <div className="card card2">
+            <div className="green-card card2">
               <img src="images/banners/tree.webp" alt="" />
             </div>
           </div>
           <div className="col-4">
-            <div className="card card3">
+            <div className="green-card card3">
               <img src="images/banners/carbon_emission.webp" alt="" />
             </div>
           </div>

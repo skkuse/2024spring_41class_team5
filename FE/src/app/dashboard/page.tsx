@@ -44,35 +44,41 @@ export default function Page() {
     <CContainer fluid>
       <CRow style={{height: '500px'}}>
         <CCol md="6">
-          <CCard className='card-container large'>
+          <CCard className='card-container large' style={{backgroundImage: 'url(images/backgrounds/eco.jpg)', backgroundSize: 'cover'}}>
             <CCardTitle style={cardTitleStyle}>탄소 배출 절감량</CCardTitle>
             <CCardBody>
               <div
                 className="d-flex flex-column justify-content-center align-items-center"
                 style={{ height: '100%' }}
               >
-                <CChart
-                  type="doughnut"
-                  style={{ height: '100%' }}
-                  data={{
-                    datasets: [
-                      {
-                        data: [75, 25],
-                        backgroundColor: ['#36A2EB', '#FFFFFF'],
-                        hoverBackgroundColor: ['#36A2EB', '#FFFFFF'],
+                <div className="d-flex flex-column justify-content-center align-items-center"
+                  style={{ position: 'relative'}}
+                >
+                  <CChart
+                    type="doughnut"
+                    style={{ height: '100%' }}
+                    data={{
+                      datasets: [
+                        {
+                          data: [75, 25],
+                          backgroundColor: ['#36A2EB', '#FFFFFF'],
+                          hoverBackgroundColor: ['#36A2EB', '#FFFFFF'],
+                        },
+                      ],
+                    }}
+                    options={{
+                      plugins: {
+                        tooltip: {
+                          enabled: false,
+                        },
                       },
-                    ],
-                  }}
-                  options={{
-                    plugins: {
-                      tooltip: {
-                        enabled: false,
-                      },
-                    },
-                    maintainAspectRatio: false,
-                  }}
-                />
-                <div className="percentage">75%</div>
+                      cutout: '90%',
+                      radius: '90%',
+                      maintainAspectRatio: false,
+                    }}
+                  />
+                  <div className="percentage">75%</div>
+                </div>
                 <h5 style={{ marginBottom: '24px' }}> 탄소 배출량을 75% 절감했습니다! </h5>
               </div>
             </CCardBody>
