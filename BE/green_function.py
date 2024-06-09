@@ -67,8 +67,8 @@ def execute_java_code(code: str):
     
     execution_time = end_time - start_time
     
-    os.remove("FindMaxValue.java")
-    os.remove("FindMaxValue.class")
+    os.remove(class_name+".java")
+    os.remove(class_name+".class")
     return (execute_process.stdout, execution_time)
 
     
