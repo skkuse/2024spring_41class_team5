@@ -1,5 +1,8 @@
 'use client'
 
+import React, { useState, useEffect } from 'react'
+import Link from 'next/link'
+import axios from 'axios'
 import { CChart } from '@coreui/react-chartjs'
 import {
   CContainer,
@@ -15,10 +18,30 @@ import {
 import './_styles/style.scss'
 
 export default function Page() {
-  const cardTitleStyle = {
-    marginTop: '16px',
-    fontSize: '24px',
-  }
+  const [isCodeSubmitted, setIsCodeSubmitted] = useState(true)
+  const [historyData, setHistoryData] = useState([])
+
+  useEffect(() => {
+    const fetchHistory = async () => {
+      try {
+        const response = await axios.get('/history', {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+          },
+        });
+
+        const data = response.data.codes;
+        setHistoryData(data);
+
+        const today = new Date().toISOString().split('T')[0];
+        const hasTodayEntry = data.some(entry => entry.date.startsWith(today));
+
+        setIsCodeSubmitted(!hasTodayEntry);
+      } catch (error) {
+        console.error('Error fetching history:', error);
+      }
+    };
+
   const plantImages = [
     'images/icons/lavender.png',
     'images/icons/maple.png',
@@ -41,19 +64,21 @@ export default function Page() {
   const foodData = [1.6, 2.2, 6.7]
 
   return (
-    <CContainer fluid>
-      <CRow style={{height: '500px'}}>
+    <CContainer fluid className="select-none">
+      {isCodeSubmitted && (
+        <div className="overlay">
+          <div className="overlay-content">
+            <h2>Please submit code first</h2>
+            <Link href="/editor">Submit Code</Link> 
+          </div>
+        </div>
+      )}
+      <CRow>
         <CCol md="6">
-          <CCard className='card-container large' style={{backgroundImage: 'url(images/backgrounds/eco.jpg)', backgroundSize: 'cover'}}>
-            <CCardTitle style={cardTitleStyle}>탄소 배출 절감량</CCardTitle>
+          <CCard className='card-container bg-black section-doughnut large border-0'>
             <CCardBody>
-              <div
-                className="d-flex flex-column justify-content-center align-items-center"
-                style={{ height: '100%' }}
-              >
-                <div className="d-flex flex-column justify-content-center align-items-center"
-                  style={{ position: 'relative'}}
-                >
+              <div className="h-full d-flex flex-column justify-content-center align-items-center">
+                <div className="h-64 d-flex flex-column justify-content-center align-items-center">
                   <CChart
                     type="doughnut"
                     style={{ height: '100%' }}
@@ -61,33 +86,32 @@ export default function Page() {
                       datasets: [
                         {
                           data: [75, 25],
-                          backgroundColor: ['#36A2EB', '#FFFFFF'],
-                          hoverBackgroundColor: ['#36A2EB', '#FFFFFF'],
+                          backgroundColor: ['white', 'transparent'],
+                          borderWidth: 0,
                         },
                       ],
                     }}
                     options={{
                       plugins: {
-                        tooltip: {
-                          enabled: false,
-                        },
+                        tooltip: { enabled: false },
                       },
-                      cutout: '90%',
-                      radius: '90%',
+                      events: [],
+                      cutout: '94%',
+                      radius: '100%',
                       maintainAspectRatio: false,
                     }}
                   />
                   <div className="percentage">75%</div>
                 </div>
-                <h5 style={{ marginBottom: '24px' }}> 탄소 배출량을 75% 절감했습니다! </h5>
+                <h3 className="mt-8 mb-1 font-light text-white">You reduced 75% of carbon emission!</h3>
               </div>
             </CCardBody>
           </CCard>
         </CCol>
         <CCol md="3">
           <CCard className='card-container large'>
-            <CCardTitle style={cardTitleStyle}>Before & After</CCardTitle>
-            <CCardBody style={{ height: '100%' }}>
+            <CCardTitle className="card-title">Before & After</CCardTitle>
+            <CCardBody>
               <CChart
                 type="bar"
                 data={{
@@ -101,13 +125,10 @@ export default function Page() {
                 }}
                 options={{
                   plugins: {
-                    legend: {
-                      display: false,
-                    },
-                    tooltip: {
-                      enabled: false,
-                    },
+                    legend: { display: false },
+                    tooltip: {  enabled: false },
                   },
+                  events: [],
                   scales: {
                     x: {
                       grid: {
@@ -118,135 +139,83 @@ export default function Page() {
                       grid: {
                         display: false,
                       },
-                      ticks: {
-                        display: false,
-                      },
                     },
                   },
                   maintainAspectRatio: false,
                 }}
                 style={{ height: '100%' }}
+          
               />
             </CCardBody>
           </CCard>
         </CCol>
         <CCol md="3">
-          <CCard className='card-container' style={{backgroundColor: '#E2F397', border: '0px', borderRadius: '16px'}}>
-            <CCardTitle className="card-title">Comparing to Plant</CCardTitle>
-            <CCardBody style={{padding: '0px'}}>
-              <CCarousel controls dark style={{height: '100%'}}>
-                <CCarouselItem>
-                  <div
-                    className="d-flex flex-column justify-content-center align-items-center"
-                    style={{ marginTop: '20px'}}
-                  >
-                    <div className="carousel-container-item d-flex flex-column justify-content-center align-items-center">
-                      <CImage
-                        src={plantImages[0]}
-                        alt="lavender"
-                        style={{ height: '56px', width: '56px', marginTop: '20px'}}
-                      />
-                      <h5 style={{ marginTop: '4px', marginBottom: '0px'}}> {plantData[0]}</h5>
-                      <p style={{color: '#686D76'}}>Lavenders</p>
+        <CCard className="card-container border-0">
+            <div className="flex flex-col h-100 rounded-xl bg-lime-200"> 
+              <CCardTitle className="card-title">Comparing to Plant</CCardTitle>
+              <CCardBody className='h-100 p-0'>
+                <CCarousel className='h-100' controls dark interval={false} >
+                  <CCarouselItem>
+                    <div className="carousel-container-item m-auto mt-0.25 d-flex flex-column justify-content-center align-items-center">
+                      <CImage src={plantImages[0]} className="h-14 w-14 mt-4"/>
+                      <h5 className="mt-1 mb-0"> {plantData[0]}</h5>
+                      <p className="text-gray-400">Lavendar</p>
                     </div>
-                  </div>
-                </CCarouselItem>
-                <CCarouselItem>
-                  <div
-                    className="d-flex flex-column justify-content-center align-items-center"
-                    style={{ marginTop: '20px'}}
-                  >
-                    <div className="carousel-container-item d-flex flex-column justify-content-center align-items-center">
-                      <CImage
-                        src={plantImages[1]}
-                        alt="mapletree"
-                        style={{ height: '56px', width: '56px', marginTop: '20px'}}
-                      />
-                      <h5 style={{ marginTop: '4px', marginBottom: '0px'}}> {plantData[1]}</h5>
-                      <p style={{color: '#686D76'}}>Maple Trees</p>
+                  </CCarouselItem>
+                  <CCarouselItem>
+                    <div className="carousel-container-item m-auto mt-0.25 d-flex flex-column justify-content-center align-items-center">
+                      <CImage src={plantImages[1]} className="h-14 w-14 mt-4"/>
+                      <h5 className="mt-1 mb-0"> {plantData[1]}</h5>
+                      <p className="text-gray-400">Maple Tree</p>
                     </div>
-                  </div>
-                </CCarouselItem>
-                <CCarouselItem>
-                  <div
-                    className="d-flex flex-column justify-content-center align-items-center"
-                    style={{ marginTop: '20px'}}
-                  >
-                    <div className="carousel-container-item d-flex flex-column justify-content-center align-items-center">
-                      <CImage
-                        src={plantImages[2]}
-                        alt="pinetree"
-                        style={{ height: '56px', width: '56px', marginTop: '20px'}}
-                      />
-                      <h5 style={{ marginTop: '4px', marginBottom: '0px'}}> {plantData[2]}</h5>
-                      <p style={{color: '#686D76'}}>Pine Trees</p>
+                  </CCarouselItem>
+                  <CCarouselItem>
+                    <div className="carousel-container-item m-auto mt-0.25 d-flex flex-column justify-content-center align-items-center">
+                    <CImage src={plantImages[2]} className="h-14 w-14 mt-4"/>
+                      <h5 className="mt-1 mb-0"> {plantData[2]}</h5>
+                      <p className="text-gray-400">Pine Tree</p>
                     </div>
-                  </div>
-                </CCarouselItem>
-              </CCarousel>
-            </CCardBody>
+                  </CCarouselItem>
+                </CCarousel>
+              </CCardBody>
+            </div>
           </CCard>
-          <CCard className='card-container' style={{backgroundColor: '#5BAA8A', border: '0px', borderRadius: '16px'}}>
-            <CCardTitle className="card-title" style={{color: "white"}}>Comparing to Traffic</CCardTitle>
-            <CCardBody style={{padding: '0px'}}>
-              <CCarousel controls dark style={{height: '100%'}}>
-                <CCarouselItem>
-                  <div
-                    className="d-flex flex-column justify-content-center align-items-center"
-                    style={{ marginTop: '20px'}}
-                  >
-                    <div className="carousel-container-item d-flex flex-column justify-content-center align-items-center">
-                      <CImage
-                        src={transportImages[0]}
-                        alt="bicycle"
-                        style={{ height: '56px', width: '56px', marginTop: '20px'}}
-                      />
-                      <h5 style={{ marginTop: '4px', marginBottom: '0px'}}> {transportData[0]}km</h5>
-                      <p style={{color: '#686D76'}}>Bicycle</p>
+          <CCard className="card-container border-0">
+            <div className="flex flex-col h-100 rounded-xl bg-emerald-500"> 
+              <CCardTitle className="card-title text-white">Comparing to Transport</CCardTitle>
+              <CCardBody className='p-0 grow'>
+                <CCarousel className='h-full' controls interval={false}>
+                  <CCarouselItem>
+                    <div className="carousel-container-item m-auto mt-0.25 mb-10 d-flex flex-column justify-content-center align-items-center">
+                      <CImage src={transportImages[0]} className="h-14 w-14 mt-4"/>
+                      <h5 className="mt-1 mb-0"> {transportData[0]} km</h5>
+                      <p className="text-gray-400">Bicycle</p>
                     </div>
-                  </div>
-                </CCarouselItem>
-                <CCarouselItem>
-                  <div
-                    className="d-flex flex-column justify-content-center align-items-center"
-                    style={{ marginTop: '20px'}}
-                  >
-                    <div className="carousel-container-item d-flex flex-column justify-content-center align-items-center">
-                      <CImage
-                        src={transportImages[1]}
-                        alt="car"
-                        style={{ height: '56px', width: '56px', marginTop: '20px'}}
-                      />
-                      <h5 style={{ marginTop: '4px', marginBottom: '0px'}}> {transportData[1]}km</h5>
-                      <p style={{color: '#686D76'}}>Car</p>
+                  </CCarouselItem>
+                  <CCarouselItem>
+                    <div className="carousel-container-item m-auto mt-0.25 d-flex flex-column justify-content-center align-items-center">
+                      <CImage src={transportImages[1]} className="h-14 w-14 mt-4"/>
+                      <h5 className="mt-1 mb-0"> {transportData[1]} km</h5>
+                      <p className="text-gray-400">Car</p>
                     </div>
-                  </div>
-                </CCarouselItem>
-                <CCarouselItem>
-                  <div
-                    className="d-flex flex-column justify-content-center align-items-center"
-                    style={{ marginTop: '20px'}}
-                  >
-                    <div className="carousel-container-item d-flex flex-column justify-content-center align-items-center">
-                      <CImage
-                        src={transportImages[2]}
-                        alt="airplane"
-                        style={{ height: '56px', width: '56px', marginTop: '20px'}}
-                      />
-                      <h5 style={{ marginTop: '4px', marginBottom: '0px'}}> {transportData[2]}km</h5>
-                      <p style={{color: '#686D76'}}>Airplane</p>
+                  </CCarouselItem>
+                  <CCarouselItem>
+                    <div className="carousel-container-item m-auto mt-0.25 d-flex flex-column justify-content-center align-items-center">
+                    <CImage src={transportImages[2]} className="h-14 w-14 mt-4"/>
+                      <h5 className="mt-1 mb-0"> {transportData[2]} km</h5>
+                      <p className="text-gray-400">Airplane</p>
                     </div>
-                  </div>
-                </CCarouselItem>
-              </CCarousel>
-            </CCardBody>
+                  </CCarouselItem>
+                </CCarousel>
+              </CCardBody>
+            </div>
           </CCard>
         </CCol>
       </CRow>
       <CRow>
         <CCol md="9">
           <CCard className='card-container'>
-            <CCardTitle style={cardTitleStyle}>탄소 배출량 절감 기록</CCardTitle>
+            <CCardTitle className="card-title">Carbon Reduce History</CCardTitle>
             <CCardBody>
               <CChart
                 type="line"
@@ -295,62 +264,36 @@ export default function Page() {
           </CCard>
         </CCol>
         <CCol md="3">
-          <CCard className='card-container' style={{backgroundColor: '#01565b', border: '0px', borderRadius: '16px'}}>
-            <CCardTitle className="card-title" style={{color: "white"}}>Comparing to Food</CCardTitle>
-            <CCardBody style={{padding: '0px'}}>
-              <CCarousel controls dark style={{height: '100%'}}>
-                <CCarouselItem>
-                  <div
-                    className="d-flex flex-column justify-content-center align-items-center"
-                    style={{ marginTop: '20px'}}
-                  >
-                    <div className="carousel-container-item d-flex flex-column justify-content-center align-items-center">
-                      <CImage
-                        src={foodImages[0]}
-                        alt="bicycle"
-                        style={{ height: '56px', width: '56px', marginTop: '20px'}}
-                      />
-                      <h5 style={{ marginTop: '4px', marginBottom: '0px'}}> {foodData[0]}</h5>
-                      <p style={{color: '#686D76'}}>Coffee</p>
+          <CCard className="card-container border-0">
+            <div className="flex flex-col h-full rounded-xl bg-teal-900"> 
+              <CCardTitle className="card-title text-white">Comparing to Food</CCardTitle>
+              <CCardBody className='p-0 grow'>
+                <CCarousel className='w-100 h-full' controls interval={false}>
+                  <CCarouselItem>
+                    <div className="carousel-container-item m-auto mt-0.25 d-flex flex-column justify-content-center align-items-center">
+                      <CImage src={foodImages[0]} className="h-14 w-14 mt-4"/>
+                      <h5 className="mt-1 mb-0"> {foodData[0]}</h5>
+                      <p className="text-gray-400">Coffee</p>
                     </div>
-                  </div>
-                </CCarouselItem>
-                <CCarouselItem>
-                  <div
-                    className="d-flex flex-column justify-content-center align-items-center"
-                    style={{ marginTop: '20px'}}
-                  >
-                    <div className="carousel-container-item d-flex flex-column justify-content-center align-items-center">
-                      <CImage
-                        src={foodImages[1]}
-                        alt="car"
-                        style={{ height: '56px', width: '56px', marginTop: '20px'}}
-                      />
-                      <h5 style={{ marginTop: '4px', marginBottom: '0px'}}> {foodData[1]}</h5>
-                      <p style={{color: '#686D76'}}>Chicken</p>
+                  </CCarouselItem>
+                  <CCarouselItem>
+                    <div className="carousel-container-item m-auto mt-0.25 d-flex flex-column justify-content-center align-items-center">
+                      <CImage src={foodImages[1]} className="h-14 w-14 mt-4"/>
+                      <h5 className="mt-1 mb-0"> {foodData[1]}</h5>
+                      <p className="text-gray-400">Chicken</p>
                     </div>
-                  </div>
-                </CCarouselItem>
-                <CCarouselItem>
-                  <div
-                    className="d-flex flex-column justify-content-center align-items-center"
-                    style={{ marginTop: '20px'}}
-                  >
-                    <div className="carousel-container-item d-flex flex-column justify-content-center align-items-center">
-                      <CImage
-                        src={foodImages[2]}
-                        alt="airplane"
-                        style={{ height: '56px', width: '56px', marginTop: '20px'}}
-                      />
-                      <h5 style={{ marginTop: '4px', marginBottom: '0px'}}> {foodData[2]}</h5>
-                      <p style={{color: '#686D76'}}>Burger</p>
+                  </CCarouselItem>
+                  <CCarouselItem>
+                    <div className="carousel-container-item m-auto mt-0.25 d-flex flex-column justify-content-center align-items-center">
+                    <CImage src={foodImages[2]} className="h-14 w-14 mt-4"/>
+                      <h5 className="mt-1 mb-0"> {foodData[2]}</h5>
+                      <p className="text-gray-400">Hamburger</p>
                     </div>
-                  </div>
-                </CCarouselItem>
-              </CCarousel>
-            </CCardBody>
+                  </CCarouselItem>
+                </CCarousel>
+              </CCardBody>
+            </div>
           </CCard>
-          
         </CCol>
       </CRow>
     </CContainer>
