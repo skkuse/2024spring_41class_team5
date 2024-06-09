@@ -23,9 +23,9 @@ def access_token_gen(user:UserTokenInfo):
         'iat': str(datetime.utcnow()),
         'scope': 'access_token',
         'data': {
-            'user_id': user.user_id,
-            'user_name': user.user_name,
-            'student_id': user.student_id
+            'user_id': str(user.user_id),
+            'user_name': str(user.user_name),
+            'student_id': str(user.student_id)
         }
     }
     access_token = jwt.encode(
@@ -42,9 +42,9 @@ def refresh_token_gen(user:UserTokenInfo):
         'iat': str(datetime.utcnow()),
         'scope': 'access_token',
         'data': {
-            'user_id': user.user_id,
-            'user_name': user.user_name,
-            'student_id': user.student_id
+            'user_id': str(user.user_id),
+            'user_name': str(user.user_name),
+            'student_id': str(user.student_id)
         }
     }
     refresh_token = jwt.encode(
