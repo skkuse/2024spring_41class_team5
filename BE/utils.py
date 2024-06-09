@@ -30,7 +30,7 @@ def access_token_gen(user:UserTokenInfo):
     }
     access_token = jwt.encode(
         payload,
-        os.environ.get('JWT_SECRET_KEY_ACCESS'),
+        str(os.environ.get('JWT_SECRET_KEY_ACCESS')),
         algorithm='HS256'
     )
     return access_token
@@ -49,7 +49,7 @@ def refresh_token_gen(user:UserTokenInfo):
     }
     refresh_token = jwt.encode(
         payload,
-        os.environ.get('JWT_SECRET_KEY_REFRESH'),
+        str(os.environ.get('JWT_SECRET_KEY_REFRESH')),
         algorithm='HS256'
     )
     return refresh_token
