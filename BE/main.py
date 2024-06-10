@@ -12,7 +12,7 @@ from dotenv import load_dotenv
 import os
 
 origins = [
-    "*",
+    "http://localhost:3000",
 ]
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
