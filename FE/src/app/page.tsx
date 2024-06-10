@@ -2,12 +2,52 @@
 import Script from 'next/script'
 import './style.css'
 import { useState, useEffect } from 'react';
+import styled from 'styled-components';
 
 interface ApiResponse {
   total_original_fp: number;
   total_merged_fp: number;
   total_users: number;
 }
+
+const Card = styled.div`
+  margin-top: 100px !important;
+  width: 400px;
+  margin: auto;
+  height: 400px;
+  position: relative;
+  transition: transform 4s ease-in;
+  overflow: hidden;
+  border: 4px solid #fff;
+`;
+
+const CardContent = styled.div`
+  &:hover .before,
+  &:hover .after {
+    transform: translateY(0%);
+  }
+`;
+
+const CardOverlay = styled.div<{ $position: string }>`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 25px;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-color: rgba(2, 60, 40, 0.3);
+  z-index: 1;
+  transition: transform 0.4s ease-in;
+  border: 4px solid #04380f;
+  box-sizing: border-box;
+  transform: ${({ $position }) => ($position === 'before' ? 'translateY(-100%)' : 'translateY(100%))')};
+  transform: ${({ $position }) => ($position === 'after' ? 'translateY(+100%)' : 'translateY(+100%))')};
+`;
 
 export default function Page() {
   const teamMembers = [
@@ -62,15 +102,28 @@ export default function Page() {
     fetchData();
   }, []);
 
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
-  const reduced_fp = data ? data.total_original_fp - data.total_merged_fp : null;
+
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = '/scripts/index.js';
+    script.async = true;
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
+  // if (error) {
+  //   return <div>Error: {error}</div>;
+  // }
+  const reduced_fp = data ? Math.round((data.total_original_fp - data.total_merged_fp)*100)/100 : null;
+  const total_user = data ? data.total_users : null;
 
   return (
     <>
-
-    <div>
+    {/* api test */}
+    {/* <div>
       <h1>Data from API</h1>
       <h1>Total Users: {data ? data.total_users : 'Loading...'}</h1>
       <h1>reduced_fp: {reduced_fp !== null ? reduced_fp : 'Loading...'}</h1>
@@ -79,7 +132,7 @@ export default function Page() {
       ) : (
         'Loading...'
       )}
-    </div>
+    </div> */}
 
       {/* product-description */}
       <div className="product-description">
@@ -105,6 +158,7 @@ export default function Page() {
           </div>
         </div>
       </div>
+
       {/* Effect */}
       <div className="green-effect">
         <div className="row position-relative">
@@ -112,22 +166,47 @@ export default function Page() {
             <h1 className="green-title">Why should you use Eco-Merge</h1>
           </div>
           <div className="col-4">
-            <div className="card card1">
-              <img src="images/banners/carbon_graph.png" alt="" />
-            </div>
+            <Card>
+              <CardContent>
+                <img src="images/banners/carbon_emission.webp" alt="Tree" style={{ width: '100%', height: '400px', transition: 'transform 1s ease-in' }} />
+                <CardOverlay className="before" $position="before">
+                  매년 비효율적인 코드로 인한 <br /> 탄소 배출량이 증가하고 있습니다
+                </CardOverlay>
+                <CardOverlay className="after" $position="after">
+                  매년 비효율적인 코드로 인한 <br /> 탄소 배출량이 증가하고 있습니다
+                </CardOverlay>
+              </CardContent>
+            </Card>
           </div>
           <div className="col-4">
-            <div className="card card2">
-              <img src="images/banners/tree.webp" alt="" />
-            </div>
+            <Card>
+              <CardContent>
+                <img src="images/banners/tree.webp" alt="Tree" style={{ width: '100%', height: '400px', transition: 'transform 1s ease-in' }} />
+                <CardOverlay className="before" $position="before">
+                  Eco-Merge로 지구 상에서  <br /> {reduced_fp}g의 탄소 배출 절감을 <br />  이뤄냈습니다 
+                </CardOverlay>
+                <CardOverlay className="after" $position="after">
+                  Eco-Merge로 지구 상에서  <br /> {reduced_fp}g의 탄소 배출 절감을 <br />  이뤄냈습니다 
+                </CardOverlay>
+              </CardContent>
+            </Card>
           </div>
           <div className="col-4">
-            <div className="card card3">
-              <img src="images/banners/carbon_emission.webp" alt="" />
-            </div>
+            <Card>
+              <CardContent>
+                <img src="images/banners/nature_protector.webp" alt="Tree" style={{ width: '100%', height: '400px', transition: 'transform 1s ease-in' }} />
+                <CardOverlay className="before" $position="before">
+                  현재 {total_user}명이 <br /> Eco-Merge를 이용해서 <br /> 탄소 배출 절감에 <br /> 참여하고 있습니다
+                </CardOverlay>
+                <CardOverlay className="after" $position="after">
+                  현재 {total_user}명이 <br /> Eco-Merge를 이용해서 <br /> 탄소 배출 절감에 <br /> 참여하고 있습니다
+                </CardOverlay>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </div>
+
       {/* user-manual */}
       <div className="title">
         <h1>How to Use</h1>
@@ -197,7 +276,7 @@ export default function Page() {
           </div>
         </div>
       </div>
-      <Script src="/scripts/index.js" />
+      {/* <Script src="/scripts/index.js" /> */}
     </>
   )
 }
