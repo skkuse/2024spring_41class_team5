@@ -33,7 +33,10 @@ async def process_code(request: CodeCreateRequest, request1: Request):
     #print(user_id)
     auth_header = request1.headers.get('Authorization')
     access_token = auth_header.split(' ')[1]
-    message, user = jwt_decoder(access_token, os.environ.get('JWT_SECRET_KEY_ACCESS'))
+    print(str(os.environ.get('JWT_SECRET_KEY_ACCESS')))
+    message, user = jwt_decoder(access_token, str(os.environ.get('JWT_SECRET_KEY_ACCESS')))
+    print(message)
+    print(user)
     user_id = user.get('user_id')
     #user_id = '2309f0e1-c49d-49df-81e5-dee742fcda85'
     original_code = request.original_code

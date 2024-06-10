@@ -14,6 +14,7 @@ class authentication_check(BaseHTTPMiddleware):
             access_token = auth_header.split(' ')[1]
             if access_token:
                 message, user = jwt_decoder(access_token, os.environ.get('JWT_SECRET_KEY_ACCESS'))
+                print(message)
                 conn, cur = create_session()
                 cur.execute(f"SELECT * FROM users WHERE user_id = '{user['user_id']}'")
                 row = cur.fetchone()

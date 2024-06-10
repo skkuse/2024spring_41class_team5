@@ -6,6 +6,7 @@ import jwt
 def jwt_decoder(token: str, key: str):
     try:
         payload = jwt.decode(token, key, algorithms=['HS256'])
+        print(payload)
         user = {
             'user_id': payload['data']['user_id'],
             'user_name': payload['data']['user_name'],
@@ -19,18 +20,19 @@ def jwt_decoder(token: str, key: str):
     
 def access_token_gen(user:UserTokenInfo):
     payload = {
-        'exp': str(datetime.utcnow() + timedelta(minutes=40)),
-        'iat': str(datetime.utcnow()),
+        'exp': datetime.now() + timedelta(minutes=40),
+        'iat': datetime.now(),
         'scope': 'access_token',
         'data': {
-            'user_id': str(user.user_id),
-            'user_name': str(user.user_name),
-            'student_id': str(user.student_id)
+            'user_id': user.user_id,
+            'user_name': user.user_name,
+            'student_id': user.student_id
         }
     }
+    print (os.environ.get('JWT_SECRET_KEY_ACCESS'))
     access_token = jwt.encode(
         payload,
-        str(os.environ.get('JWT_SECRET_KEY_ACCESS')),
+        os.environ.get('JWT_SECRET_KEY_ACCESS'),
         algorithm='HS256'
     )
     return access_token
@@ -38,18 +40,18 @@ def access_token_gen(user:UserTokenInfo):
 
 def refresh_token_gen(user:UserTokenInfo):
     payload = {
-        'exp': str(datetime.utcnow() + timedelta(days=7)),
-        'iat': str(datetime.utcnow()),
+        'exp': datetime.now() + timedelta(days=7),
+        'iat': datetime.now(),
         'scope': 'access_token',
         'data': {
-            'user_id': str(user.user_id),
-            'user_name': str(user.user_name),
-            'student_id': str(user.student_id)
+            'user_id': user.user_id,
+            'user_name': user.user_name,
+            'student_id': user.student_id
         }
     }
     refresh_token = jwt.encode(
         payload,
-        str(os.environ.get('JWT_SECRET_KEY_REFRESH')),
+        os.environ.get('JWT_SECRET_KEY_REFRESH'),
         algorithm='HS256'
     )
     return refresh_token
