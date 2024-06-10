@@ -1,24 +1,26 @@
 'use client'
 
 import { DiffEditor } from '@monaco-editor/react'
-import { Dispatch, FormEvent, SetStateAction } from 'react'
+import { FormEvent, MouseEvent } from 'react'
+import { submitCode } from '../_lib/api'
 
 interface Props {
-  code: string
-  suggestion: string
-  setGreenCode: Dispatch<SetStateAction<string>>
+  originalCode: string
+  modifiedCode: string
 }
 
-export default function DiffEditorWrapper({ code, suggestion, setGreenCode }: Props) {
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+export default function DiffEditorWrapper({ originalCode, modifiedCode }: Props) {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
     const lines = event.currentTarget.querySelectorAll('.view-lines')[1]
-    const code = Array.from(lines.children)
+    const mergedCode = Array.from(lines.children)
       .map((line: any) => line.textContent)
       .join('\n')
 
-    setGreenCode(code)
+    alert('user submitted green code: ' + mergedCode)
+    const runtime = await submitCode(originalCode, mergedCode)
+    if (!isNaN(runtime)) alert("merged code's runtime: " + runtime)
   }
 
   return (
@@ -29,16 +31,18 @@ export default function DiffEditorWrapper({ code, suggestion, setGreenCode }: Pr
       <DiffEditor
         height="calc(100dvh - 246px)"
         language="java"
-        original={code}
-        modified={suggestion}
+        original={originalCode}
+        modified={modifiedCode}
         options={{ glyphMargin: true }}
       />
-      <button
-        type="submit"
-        className="rounded px-4 py-2 bg-green-900 text-white hover:bg-green-800"
-      >
-        Submit
-      </button>
+      <div className="flex items-center gap-2">
+        <button
+          type="submit"
+          className="rounded px-4 py-2 bg-green-900 text-white hover:bg-green-800"
+        >
+          Submit
+        </button>
+      </div>
     </form>
   )
 }

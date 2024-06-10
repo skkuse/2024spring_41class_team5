@@ -2,12 +2,14 @@
 
 import { Editor } from '@monaco-editor/react'
 import { Dispatch, FormEvent, SetStateAction } from 'react'
+import { getCode } from '../_lib/api'
 
 interface Props {
   setCode: Dispatch<SetStateAction<string>>
+  setModifiedCode: Dispatch<SetStateAction<string>>
 }
 
-export default function EditorWrapper({ setCode }: Props) {
+export default function EditorWrapper({ setCode, setModifiedCode }: Props) {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
@@ -17,6 +19,11 @@ export default function EditorWrapper({ setCode }: Props) {
       .join('\n')
 
     setCode(code)
+
+    alert('user typed code: ' + code)
+    const genCode = await getCode(code)
+    if (genCode) setModifiedCode(genCode)
+    alert('LLM suggested code: ' + genCode)
   }
 
   return (
@@ -27,10 +34,10 @@ export default function EditorWrapper({ setCode }: Props) {
       <Editor
         height="calc(100dvh - 246px)"
         defaultLanguage="java"
-        value={`public class HelloWorld {
-  public static void main(String[] args) {
-    System.out.println("Hello, World!");
-  }
+        value={`class HelloWorld {
+    public static void main(String[] args) {
+        System.out.println("Hello, World!");
+    }
 }`}
       />
       <button
