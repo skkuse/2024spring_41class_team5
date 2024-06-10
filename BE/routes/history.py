@@ -69,6 +69,22 @@ def history(request: Request):
                 "original_fp": 16.7,
                 "merged_fp": 13.4,
             },
+            {
+                "code_id": "8",
+                "original_code": "",
+                "merged_code": "",
+                "date": "2024-06-09",
+                "original_fp": 18.9,
+                "merged_fp": 15.1,
+            },
+            {
+                "code_id": "9",
+                "original_code": "",
+                "merged_code": "",
+                "date": "2024-06-10",
+                "original_fp": 20.3,
+                "merged_fp": 17.5,
+            },
         ],
     }
     return res

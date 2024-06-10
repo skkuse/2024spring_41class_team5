@@ -26,13 +26,34 @@ function parseHistoryData(historyData) {
       percentage: 80,
       original_fp: 100,
       merged_fp: 20,
+      plantData: [1.6, 2.2, 6.7],
+      transportData: [1.6, 2.2, 6.7],
+      foodData: [1.6, 2.2, 6.7],
     };
   }
   const latestTodayEntry = todayEntries[todayEntries.length - 1];
 
-  let orignal_fp = latestTodayEntry.original_fp
+  let original_fp = latestTodayEntry.original_fp
   let merged_fp = latestTodayEntry.merged_fp
-  return null;
+
+  let percentage = Math.round(merged_fp / original_fp * 100);
+
+  // https://www.carbonindependent.org/22.html
+
+  const plantConst = [];
+
+  let plantData = [1.6, 2.2, 6.7];
+  let transportData = [1.6, 2.2, 6.7];
+  let foodData = [1.6, 2.2, 6.7];
+
+  return {
+    percentage,
+    original_fp,
+    merged_fp,
+    plantData,
+    transportData,
+    foodData,
+  }
 }
 
 export default function Page() {
@@ -44,21 +65,16 @@ export default function Page() {
     'images/icons/maple.png',
     'images/icons/pine.png',
   ]
-  const plantData = [1.6, 2.2, 6.7]
-
   const transportImages = [
     'images/icons/bicycle.png',
     'images/icons/car.png',
     'images/icons/airplane.png',
   ]
-  const transportData = [1.6, 2.2, 6.7]
-
   const foodImages = [
     'images/icons/coffee.png',
     'images/icons/chicken.png',
     'images/icons/hamburger.png',
   ]
-  const foodData = [1.6, 2.2, 6.7]
 
   useEffect(() => {
     const fetchHistory = async () => {
@@ -70,7 +86,8 @@ export default function Page() {
           },
         });
 
-        const data = response.data.codes;
+        let data = response.data.codes;
+        data = data.sort((a, b) => new Date(a.date) - new Date(b.date));
         setHistoryData(data);
 
         const today = new Date().toISOString().split('T')[0];
@@ -82,7 +99,6 @@ export default function Page() {
         console.error('Error fetching history:', error);
       }
     };
-
     fetchHistory();
   }, []);
 
@@ -93,11 +109,16 @@ export default function Page() {
       {isCodeSubmitted && (
         <div className="overlay">
           <div className="overlay-content">
-            <h2>Please submit code first</h2>
-            <Link href="/editor">Submit Code</Link> 
+            <h2 className='overlay-heading'>Please submit code first</h2>
+            <Link href="/editor" className='overlay-button'>
+              Submit Code
+            </Link>
           </div>
         </div>
       )}
+      <Link href="/editor" className='overlay-button'>
+        Re-submit Code
+      </Link>
       <CRow>
         <CCol md="6">
           <CCard className='card-container bg-black section-doughnut large border-0'>
@@ -128,7 +149,7 @@ export default function Page() {
                   />
                   <div className="percentage">{displayData.percentage} %</div>
                 </div>
-                <h3 className="mt-8 mb-1 font-light text-white">You reduced carbon emission by {displayData.percentage}!</h3>
+                <h3 className="mt-8 mb-1 font-light text-white">You reduced carbon emission to {displayData.percentage}%!</h3>
               </div>
             </CCardBody>
           </CCard>
@@ -183,21 +204,21 @@ export default function Page() {
                   <CCarouselItem>
                     <div className="carousel-container-item m-auto mt-0.25 d-flex flex-column justify-content-center align-items-center">
                       <CImage src={plantImages[0]} className="h-14 w-14 mt-4"/>
-                      <h5 className="mt-1 mb-0"> {plantData[0]}</h5>
+                      <h5 className="mt-1 mb-0"> {displayData.plantData[0]}</h5>
                       <p className="text-gray-400">Lavendar</p>
                     </div>
                   </CCarouselItem>
                   <CCarouselItem>
                     <div className="carousel-container-item m-auto mt-0.25 d-flex flex-column justify-content-center align-items-center">
                       <CImage src={plantImages[1]} className="h-14 w-14 mt-4"/>
-                      <h5 className="mt-1 mb-0"> {plantData[1]}</h5>
+                      <h5 className="mt-1 mb-0"> {displayData.plantData[1]}</h5>
                       <p className="text-gray-400">Maple Tree</p>
                     </div>
                   </CCarouselItem>
                   <CCarouselItem>
                     <div className="carousel-container-item m-auto mt-0.25 d-flex flex-column justify-content-center align-items-center">
                     <CImage src={plantImages[2]} className="h-14 w-14 mt-4"/>
-                      <h5 className="mt-1 mb-0"> {plantData[2]}</h5>
+                      <h5 className="mt-1 mb-0"> {displayData.plantData[2]}</h5>
                       <p className="text-gray-400">Pine Tree</p>
                     </div>
                   </CCarouselItem>
@@ -213,21 +234,21 @@ export default function Page() {
                   <CCarouselItem>
                     <div className="carousel-container-item m-auto mt-0.25 mb-10 d-flex flex-column justify-content-center align-items-center">
                       <CImage src={transportImages[0]} className="h-14 w-14 mt-4"/>
-                      <h5 className="mt-1 mb-0"> {transportData[0]} km</h5>
+                      <h5 className="mt-1 mb-0"> {displayData.transportData[0]} km</h5>
                       <p className="text-gray-400">Bicycle</p>
                     </div>
                   </CCarouselItem>
                   <CCarouselItem>
                     <div className="carousel-container-item m-auto mt-0.25 d-flex flex-column justify-content-center align-items-center">
                       <CImage src={transportImages[1]} className="h-14 w-14 mt-4"/>
-                      <h5 className="mt-1 mb-0"> {transportData[1]} km</h5>
+                      <h5 className="mt-1 mb-0"> {displayData.transportData[1]} km</h5>
                       <p className="text-gray-400">Car</p>
                     </div>
                   </CCarouselItem>
                   <CCarouselItem>
                     <div className="carousel-container-item m-auto mt-0.25 d-flex flex-column justify-content-center align-items-center">
                     <CImage src={transportImages[2]} className="h-14 w-14 mt-4"/>
-                      <h5 className="mt-1 mb-0"> {transportData[2]} km</h5>
+                      <h5 className="mt-1 mb-0"> {displayData.transportData[2]} km</h5>
                       <p className="text-gray-400">Airplane</p>
                     </div>
                   </CCarouselItem>
@@ -297,21 +318,21 @@ export default function Page() {
                   <CCarouselItem>
                     <div className="carousel-container-item m-auto mt-0.25 d-flex flex-column justify-content-center align-items-center">
                       <CImage src={foodImages[0]} className="h-14 w-14 mt-4"/>
-                      <h5 className="mt-1 mb-0"> {foodData[0]}</h5>
+                      <h5 className="mt-1 mb-0"> {displayData.foodData[0]}</h5>
                       <p className="text-gray-400">Coffee</p>
                     </div>
                   </CCarouselItem>
                   <CCarouselItem>
                     <div className="carousel-container-item m-auto mt-0.25 d-flex flex-column justify-content-center align-items-center">
                       <CImage src={foodImages[1]} className="h-14 w-14 mt-4"/>
-                      <h5 className="mt-1 mb-0"> {foodData[1]}</h5>
+                      <h5 className="mt-1 mb-0"> {displayData.foodData[1]}</h5>
                       <p className="text-gray-400">Chicken</p>
                     </div>
                   </CCarouselItem>
                   <CCarouselItem>
                     <div className="carousel-container-item m-auto mt-0.25 d-flex flex-column justify-content-center align-items-center">
                     <CImage src={foodImages[2]} className="h-14 w-14 mt-4"/>
-                      <h5 className="mt-1 mb-0"> {foodData[2]}</h5>
+                      <h5 className="mt-1 mb-0"> {displayData.foodData[2]}</h5>
                       <p className="text-gray-400">Hamburger</p>
                     </div>
                   </CCarouselItem>

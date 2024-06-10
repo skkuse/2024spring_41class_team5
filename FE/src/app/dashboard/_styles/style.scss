@@ -67,9 +67,23 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000; // Ensure it is on top of other elements
+  z-index: 1000; 
 }
 
 .overlay-content {
   text-align: center;
+}
+
+.overlay-heading {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.overlay-button {
+  background-color: #10b981;
+  color: white;
+  text-decoration: none;
+
+  border-radius: 0.4rem;
+  padding: 0.3rem;
 }
