@@ -16,8 +16,7 @@ export default function Page() {
       return
     }
 
-    const userInfo = signup(username, studentId, password)
-    alert(userInfo)
+    await signup(username, studentId, password)
   }
 
   return (
