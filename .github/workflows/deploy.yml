@@ -38,7 +38,7 @@ jobs:
             -e JWT_SECRET_KEY_ACCESS=${{ secrets.JWT_SECRET_KEY_ACCESS }} \
             -e JWT_SECRET_KEY_REFRESH=${{ secrets.JWT_SECRET_KEY_REFRESH }} \
             -e CLIENT_SECRET=${{ secrets.CLIENT_SECRET }} \
-            -e API_KEY=${{ secrets.API_KEY }} \
+            -e OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }} \
             -d -p ${{secrets.EXTERNAL_PORT}}:${{secrets.INTERNAL_PORT}} \
             -v /root/logs:/workspace/logs \
             --name skkuse-container yaongmeow/skkuse-docker \
