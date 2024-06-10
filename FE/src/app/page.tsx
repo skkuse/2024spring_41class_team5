@@ -1,5 +1,13 @@
+"use client"
 import Script from 'next/script'
 import './style.css'
+import { useState, useEffect } from 'react';
+
+interface ApiResponse {
+  total_original_fp: number;
+  total_merged_fp: number;
+  total_users: number;
+}
 
 export default function Page() {
   const teamMembers = [
@@ -30,12 +38,49 @@ export default function Page() {
     },
     {
       name: "황정민",
-      email: "mailto:hwang@example.com",
+      email: "mailto:minnie_00@naver.com",
       github: "https://github.com/yaongmeow",
     },
   ];
+
+  const [data, setData] = useState<ApiResponse | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://223.130.143.176/statistics');
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const result: ApiResponse = await response.json();
+        setData(result);
+      } catch (error: any) {
+        setError(error.message);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+  const reduced_fp = data ? data.total_original_fp - data.total_merged_fp : null;
+
   return (
     <>
+
+    <div>
+      <h1>Data from API</h1>
+      <h1>Total Users: {data ? data.total_users : 'Loading...'}</h1>
+      <h1>reduced_fp: {reduced_fp !== null ? reduced_fp : 'Loading...'}</h1>
+      {data ? (
+        <pre>{JSON.stringify(data, null, 2)}</pre>
+      ) : (
+        'Loading...'
+      )}
+    </div>
+
       {/* product-description */}
       <div className="product-description">
         <div className="container mt-5">
