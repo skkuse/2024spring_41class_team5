@@ -3,7 +3,9 @@ import os
 from models import UserTokenInfo
 import jwt
 
-def jwt_decoder(token: str, key: str):
+def jwt_decoder(token: str, key):
+    secret_key = key
+    print(f"Secret Key: {secret_key} (Type: {type(secret_key)})")
     try:
         payload = jwt.decode(token, key, algorithms=['HS256'])
         print(payload)
