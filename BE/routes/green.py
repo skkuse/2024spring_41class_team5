@@ -19,7 +19,7 @@ green_router = APIRouter(
 
 @green_router.post("/")
 async def get_green(request: RequestModel):
-    response = get_LLM_response(request.data)
+    response = get_LLM_response(request.code)
     return {"code" : response}
 
     
