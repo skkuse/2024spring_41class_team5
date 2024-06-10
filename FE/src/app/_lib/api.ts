@@ -11,6 +11,7 @@ export const refresh = async () => {
     {
       headers: {
         Authorization: 'Bearer ' + process.env.NEXT_PUBLIC_CLIENT_SECRET,
+        'Cache-Control': 'no-cache',
       },
     },
   )

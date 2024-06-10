@@ -11,6 +11,7 @@ export const signup = async (username: string, studentId: number, password: stri
     {
       headers: {
         Authorization: 'Basic ' + studentId + ':' + password,
+        'Cache-Control': 'no-cache',
       },
     },
   )

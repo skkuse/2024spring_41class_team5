@@ -16,6 +16,7 @@ export const login = async (studentId: number, password: string) => {
     {
       headers: {
         Authorization: 'Basic ' + studentId + ':' + password,
+        'Cache-Control': 'no-cache',
       },
     },
   )
