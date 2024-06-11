@@ -1,6 +1,7 @@
 from utils import access_token_gen, jwt_decoder, refresh_token_gen
 from fastapi import APIRouter, Request
 import uuid
+import base64
 import jwt
 import sys, os
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
@@ -15,6 +16,7 @@ auth_router = APIRouter(
 def register(request: Request, user: UserName):
     auth_header = request.headers.get('Authorization')
     signup_info = auth_header.split(' ')[1]
+    signup_info = base64.b64decode(signup_info).decode('utf-8')
     student_id, password = signup_info.split(':')
     user_name = user.username
     conn, cur = create_session()
@@ -39,8 +41,9 @@ def register(request: Request, user: UserName):
 @auth_router.post("/login")
 def login(request: Request):
     auth_header = request.headers.get('Authorization')
-    signup_info = auth_header.split(' ')[1]
-    student_id, password = signup_info.split(':')
+    login_info = auth_header.split(' ')[1]
+    login_info = base64.b64decode(login_info).decode('utf-8')
+    student_id, password = login_info.split(':')
     conn, cur = create_session()
     cur.execute("SELECT * FROM users WHERE student_id = %s AND password = %s", (student_id, password))
     row = cur.fetchone()
