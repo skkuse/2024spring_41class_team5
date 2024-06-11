@@ -15,7 +15,7 @@ export const login = async (studentId: number, password: string) => {
     },
     {
       headers: {
-        Authorization: 'Basic ' + studentId + ':' + password,
+        Authorization: 'Basic ' + window.btoa(studentId + ':' + password),
         'Cache-Control': 'no-cache',
       },
     },

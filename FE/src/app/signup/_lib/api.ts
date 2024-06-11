@@ -10,7 +10,7 @@ export const signup = async (username: string, studentId: number, password: stri
     },
     {
       headers: {
-        Authorization: 'Basic ' + studentId + ':' + password,
+        Authorization: 'Basic ' + window.btoa(studentId + ':' + password),
         'Cache-Control': 'no-cache',
       },
     },
