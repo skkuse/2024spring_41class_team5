@@ -63,7 +63,7 @@ export default function Page() {
           className="rounded px-4 py-2 bg-green-900 text-white hover:bg-green-800"
           type="submit"
         >
-          Login
+          Signup
         </button>
       </form>
     </main>
