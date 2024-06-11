@@ -20,10 +20,8 @@ export default function EditorWrapper({ setCode, setModifiedCode }: Props) {
 
     setCode(code)
 
-    alert('user typed code: ' + code)
     const genCode = await getCode(code)
     if (genCode) setModifiedCode(genCode)
-    alert('LLM suggested code: ' + genCode)
   }
 
   return (

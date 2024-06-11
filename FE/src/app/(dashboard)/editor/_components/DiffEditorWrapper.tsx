@@ -18,7 +18,6 @@ export default function DiffEditorWrapper({ originalCode, modifiedCode }: Props)
       .map((line: any) => line.textContent)
       .join('\n')
 
-    alert('user submitted green code: ' + mergedCode)
     const runtime = await submitCode(originalCode, mergedCode)
     if (!isNaN(runtime)) alert("merged code's runtime: " + runtime)
   }

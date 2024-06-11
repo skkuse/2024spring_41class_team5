@@ -1,0 +1,84 @@
+.ball {
+  border-radius: 100%;
+
+  width: 32px;
+  height: 32px;
+
+  position: absolute;
+  left: calc(50% - 16px);
+  /* @keyframes duration | timing-function | delay |
+iteration-count | direction | fill-mode | play-state | name */
+
+  animation: bounce 0.5s cubic-bezier(0.36, -0.01, 0.86, 0.63) infinite
+      alternate,
+    move 3s linear infinite;
+}
+
+.shadow {
+  border-radius: 100%;
+  width: 32px;
+  height: 2px;
+  background-color: black;
+  filter: blur(2px);
+
+  position: absolute;
+  top: calc(55% + 32px);
+  left: calc(50% - 16px);
+
+  animation: shadow 0.5s cubic-bezier(0.36, -0.01, 0.86, 0.63) infinite
+      alternate,
+    move 3s linear infinite;
+  z-index: -1;
+}
+
+.crosspaths {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  gap: 16px;
+
+  height: 32px;
+  width: 200px;
+
+  position: absolute;
+  top: calc(55% + 24px);
+  left: calc(50% - 100px);
+  z-index: -2;
+}
+
+.crosspath {
+  width: 16px;
+  height: 64px;
+  rotate: 30deg;
+  background-color: gray;
+}
+
+@keyframes bounce {
+  from {
+    top: 40%;
+  }
+  to {
+    top: 55%;
+  }
+}
+
+@keyframes move {
+  from {
+    left: 40%;
+  }
+  to {
+    left: 60%;
+  }
+}
+
+@keyframes shadow {
+  from {
+    opacity: 0;
+    transform: scale(0);
+  }
+  to {
+    opacity: 0.5;
+    transform: scale(100%);
+  }
+}

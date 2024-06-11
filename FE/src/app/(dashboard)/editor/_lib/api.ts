@@ -30,7 +30,6 @@ export const getCode = async (code: string) => {
  * @returns code excution runtime or null if error
  */
 export const submitCode = async (originalCode: string, mergedCode: string) => {
-  console.log('submit4')
   const response = await axios.post(
     `${host}/green/codes`,
     {
