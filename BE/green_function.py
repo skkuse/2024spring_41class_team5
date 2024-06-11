@@ -46,6 +46,7 @@ def get_LLM_response(code_data: str):
 
 def execute_java_code(code: str):
     code = code.replace('\u00A0', ' ')
+    
     code = code.replace("\xc2\xa0", " ")
     match = re.search(r'public\s+class\s+(\w+)', code)
     if not match:
