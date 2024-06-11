@@ -1,16 +1,15 @@
-"use client";
+'use client'
 
-import { FormEvent } from "react";
-import { login } from "./_lib/api";
+import { FormEvent } from 'react'
+import { login } from './_lib/api'
 
 export default function Page() {
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const studentId = Number(e.currentTarget.studentId.value);
-    const password = e.currentTarget.password.value;
-    const userInfo = await login(studentId, password);
-    alert(userInfo);
-  };
+    e.preventDefault()
+    const studentId = Number(e.currentTarget.studentId.value)
+    const password = e.currentTarget.password.value
+    await login(studentId, password)
+  }
 
   return (
     <main className="flex flex-col gap-8 text-center w-6c mx-auto">
@@ -42,5 +41,5 @@ export default function Page() {
         </button>
       </form>
     </main>
-  );
+  )
 }

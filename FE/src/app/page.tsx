@@ -1,6 +1,6 @@
 import Script from 'next/script'
 import './style.css'
-import './dashboard/_styles/style.scss'
+import './(dashboard)/dashboard/_styles/style.scss'
 
 export default function Page() {
   return (
