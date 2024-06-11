@@ -46,7 +46,7 @@ const CardOverlay = styled.div<{ $position: string }>`
   border: 4px solid #04380f;
   box-sizing: border-box;
   transform: ${({ $position }) => ($position === 'before' ? 'translateY(-100%)' : 'translateY(100%))')};
-  transform: ${({ $position }) => ($position === 'after' ? 'translateY(+100%)' : 'translateY(+100%))')};
+  transform: ${({ $position }) => ($position === 'after' ? 'translateY(+100%)' : 'translateY(-100%))')};
 `;
 
 export default function Page() {
