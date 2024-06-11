@@ -1,6 +1,7 @@
 "use client"
 import Script from 'next/script'
 import './style.css'
+import './(dashboard)/dashboard/_styles/style.scss'
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
@@ -48,6 +49,7 @@ const CardOverlay = styled.div<{ $position: string }>`
   transform: ${({ $position }) => ($position === 'before' ? 'translateY(-100%)' : 'translateY(100%))')};
   transform: ${({ $position }) => ($position === 'after' ? 'translateY(+100%)' : 'translateY(-100%))')};
 `;
+
 
 export default function Page() {
   const teamMembers = [
