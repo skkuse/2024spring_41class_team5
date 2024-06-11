@@ -127,17 +127,20 @@ export default function Page() {
     'images/icons/hamburger.png',
   ]
 
+  const host = process.env.NEXT_PUBLIC_API_HOST
   useEffect(() => {
     const fetchHistory = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/history', {
+        const response = await axios.get(`${host}/history`, {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('access_token')}`,
-            "Access-Control-Allow-Origin": "*"
+            Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),
+            'Cache-Control': 'no-cache',
           },
         });
 
         let data = response.data.codes;
+
+        console.log(data)
         data = data.sort((a, b) => new Date(a.date) - new Date(b.date));
         setHistoryData(data);
 
