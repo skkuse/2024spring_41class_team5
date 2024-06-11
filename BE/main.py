@@ -1,4 +1,6 @@
-from fastapi import FastAPI
+from urllib.request import Request
+from fastapi import FastAPI, Request
+from utils import jwt_decoder
 
 from routes.auth import auth_router
 from routes.green import green_router
@@ -32,3 +34,11 @@ app.include_router(auth_router, prefix="/auth")
 app.include_router(green_router, prefix="/green")
 app.include_router(history_router, prefix="/history")
 app.include_router(statistics_router, prefix="/statistics")
+
+
+@app.get("/my_info")
+def my_info(request: Request):
+    auth_header = request.headers.get('Authorization')
+    access_token = auth_header.split(' ')[1]
+    message, user = jwt_decoder(access_token, os.environ.get('JWT_SECRET_KEY_ACCESS'))
+    return user

@@ -5,7 +5,7 @@ import os
 from database import create_session
 from utils import jwt_decoder
 
-auth_api = [ '/footprint/compute', '/footprint/visualize', '/history', '/history/statistics', '/green' ]
+auth_api = [ '/history', '/history/statistics', '/green', '/green/codes', '/my_info' ]
 
 class authentication_check(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next: RequestResponseEndpoint):
