@@ -18,17 +18,17 @@ import {
 import './_styles/style.scss'
 
 function computeCompareData(merged_fp) {
-  const coffee = 280 // g per cup // https://www.ucl.ac.uk/news/2021/jan/analysis-heres-carbon-cost-your-daily-coffee-and-how-make-it-climate-friendly
-  const chicken = 1820 // g per cheicken // https://www.co2everything.com/co2e-of/chicken
-  const hamburger = 2350 // g per burger // https://plantbasednews.org/news/environment/big-mac-carbon-footprint/
+  const coffee = 280000 // mg per cup // https://www.ucl.ac.uk/news/2021/jan/analysis-heres-carbon-cost-your-daily-coffee-and-how-make-it-climate-friendly
+  const chicken = 1820000 // mg per cheicken // https://www.co2everything.com/co2e-of/chicken
+  const hamburger = 2350000 // mg per burger // https://plantbasednews.org/news/environment/big-mac-carbon-footprint/
 
-  const oak = 18870 // g per year // https://www.fortomorrow.eu/en/blog/co2-tree
-  const maple =  9980 // g per year // https://8billiontrees.com/carbon-offsets-credits/carbon-ecological-footprint-calculators/how-much-carbon-does-a-tree-capture/#:~:text=Maple%20trees%20absorb%20about%2022,on%20how%20long%20they%20live.
-  const pine =  14390 // g per year // https://www.fortomorrow.eu/en/blog/co2-tree
+  const oak = 18870 * 1000 / 365 // mg per day // https://www.fortomorrow.eu/en/blog/co2-tree
+  const maple =  9980 * 1000 / 365 // mg per day // https://8billiontrees.com/carbon-offsets-credits/carbon-ecological-footprint-calculators/how-much-carbon-does-a-tree-capture/#:~:text=Maple%20trees%20absorb%20about%2022,on%20how%20long%20they%20live.
+  const pine =  14390 * 1000 / 365 // mg per day // https://www.fortomorrow.eu/en/blog/co2-tree
 
-  const bicycle = 21 // g per km // https://www.cyclinguk.org/article/how-much-carbon-can-you-save-cycling-work#:~:text=Riding%20a%20conventional%20bike%20accounts,14.8g%20for%20e%2Dcycles.
-  const car = 171 // g per km // https://www.bbc.com/news/science-environment-49349566
-  const airplane = 195 // g per km // https://www.bbc.com/news/science-environment-49349566
+  const bicycle = 21 // mg per m // https://www.cyclinguk.org/article/how-much-carbon-can-you-save-cycling-work#:~:text=Riding%20a%20conventional%20bike%20accounts,14.8g%20for%20e%2Dcycles.
+  const car = 171 // mg per m // https://www.bbc.com/news/science-environment-49349566
+  const airplane = 195 // mg per m // https://www.bbc.com/news/science-environment-49349566
 
   const plantData = [merged_fp / oak, merged_fp / maple, merged_fp / pine]
   const transportData = [merged_fp / bicycle, merged_fp / car, merged_fp / airplane]
@@ -37,7 +37,7 @@ function computeCompareData(merged_fp) {
   return {
     plantData: plantData.map(data => Math.round(data * 10000) / 10000),
     transportData: transportData.map(data => Math.round(data * 100) / 100),
-    foodData: foodData.map(data => Math.round(data * 100) / 100),
+    foodData: foodData.map(data => Math.round(data * 10000) / 10000),
   }
 }
 
@@ -203,7 +203,7 @@ export default function Page() {
                   />
                   <div className="percentage">{displayData.percentage} %</div>
                 </div>
-                <h3 className="mt-8 mb-1 font-light text-white">You reduced carbon emission by {displayData.reduce}g!</h3>
+                <h3 className="mt-8 mb-1 font-light text-white">You reduced carbon emission by {displayData.reduce} mg!</h3>
               </div>
             </CCardBody>
           </CCard>
@@ -258,21 +258,21 @@ export default function Page() {
                   <CCarouselItem>
                     <div className="carousel-container-item m-auto mt-0.25 d-flex flex-column justify-content-center align-items-center">
                       <CImage src={plantImages[0]} className="h-14 w-14 mt-4"/>
-                      <h5 className="mt-1 mb-0"> {displayData.plantData[0]} year</h5>
+                      <h5 className="mt-1 mb-0"> {displayData.plantData[0]} day</h5>
                       <p className="text-gray-400">Oak Tree</p>
                     </div>
                   </CCarouselItem>
                   <CCarouselItem>
                     <div className="carousel-container-item m-auto mt-0.25 d-flex flex-column justify-content-center align-items-center">
                       <CImage src={plantImages[1]} className="h-14 w-14 mt-4"/>
-                      <h5 className="mt-1 mb-0"> {displayData.plantData[1]} year</h5>
+                      <h5 className="mt-1 mb-0"> {displayData.plantData[1]} day</h5>
                       <p className="text-gray-400">Maple Tree</p>
                     </div>
                   </CCarouselItem>
                   <CCarouselItem>
                     <div className="carousel-container-item m-auto mt-0.25 d-flex flex-column justify-content-center align-items-center">
                     <CImage src={plantImages[2]} className="h-14 w-14 mt-4"/>
-                      <h5 className="mt-1 mb-0"> {displayData.plantData[2]} year</h5>
+                      <h5 className="mt-1 mb-0"> {displayData.plantData[2]} day</h5>
                       <p className="text-gray-400">Pine Tree</p>
                     </div>
                   </CCarouselItem>
@@ -288,21 +288,21 @@ export default function Page() {
                   <CCarouselItem>
                     <div className="carousel-container-item m-auto mt-0.25 mb-10 d-flex flex-column justify-content-center align-items-center">
                       <CImage src={transportImages[0]} className="h-14 w-14 mt-4"/>
-                      <h5 className="mt-1 mb-0"> {displayData.transportData[0]} km</h5>
+                      <h5 className="mt-1 mb-0"> {displayData.transportData[0]} m</h5>
                       <p className="text-gray-400">Bicycle</p>
                     </div>
                   </CCarouselItem>
                   <CCarouselItem>
                     <div className="carousel-container-item m-auto mt-0.25 d-flex flex-column justify-content-center align-items-center">
                       <CImage src={transportImages[1]} className="h-14 w-14 mt-4"/>
-                      <h5 className="mt-1 mb-0"> {displayData.transportData[1]} km</h5>
+                      <h5 className="mt-1 mb-0"> {displayData.transportData[1]} m</h5>
                       <p className="text-gray-400">Car</p>
                     </div>
                   </CCarouselItem>
                   <CCarouselItem>
                     <div className="carousel-container-item m-auto mt-0.25 d-flex flex-column justify-content-center align-items-center">
                     <CImage src={transportImages[2]} className="h-14 w-14 mt-4"/>
-                      <h5 className="mt-1 mb-0"> {displayData.transportData[2]} km</h5>
+                      <h5 className="mt-1 mb-0"> {displayData.transportData[2]} m</h5>
                       <p className="text-gray-400">Airplane</p>
                     </div>
                   </CCarouselItem>
