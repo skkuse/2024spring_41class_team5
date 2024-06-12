@@ -23,8 +23,8 @@ function computeCompareData(merged_fp) {
   const hamburger = 2350 // g per burger // https://plantbasednews.org/news/environment/big-mac-carbon-footprint/
 
   const oak = 18870 // g per year // https://www.fortomorrow.eu/en/blog/co2-tree
-  const maple =  9980 // g per year // https://8billiontrees.com/carbon-offsets-credits/carbon-ecological-footprint-calculators/how-much-carbon-does-a-tree-capture/#:~:text=Maple%20trees%20absorb%20about%2022,on%20how%20long%20they%20live.
-  const pine =  14390 // g per year // https://www.fortomorrow.eu/en/blog/co2-tree
+  const maple = 9980 // g per year // https://8billiontrees.com/carbon-offsets-credits/carbon-ecological-footprint-calculators/how-much-carbon-does-a-tree-capture/#:~:text=Maple%20trees%20absorb%20about%2022,on%20how%20long%20they%20live.
+  const pine = 14390 // g per year // https://www.fortomorrow.eu/en/blog/co2-tree
 
   const bicycle = 21 // g per km // https://www.cyclinguk.org/article/how-much-carbon-can-you-save-cycling-work#:~:text=Riding%20a%20conventional%20bike%20accounts,14.8g%20for%20e%2Dcycles.
   const car = 171 // g per km // https://www.bbc.com/news/science-environment-49349566
@@ -35,9 +35,9 @@ function computeCompareData(merged_fp) {
   const foodData = [merged_fp / coffee, merged_fp / chicken, merged_fp / hamburger]
 
   return {
-    plantData: plantData.map(data => Math.round(data * 10000) / 10000),
-    transportData: transportData.map(data => Math.round(data * 100) / 100),
-    foodData: foodData.map(data => Math.round(data * 100) / 100),
+    plantData: plantData.map((data) => Math.round(data * 10000) / 10000),
+    transportData: transportData.map((data) => Math.round(data * 100) / 100),
+    foodData: foodData.map((data) => Math.round(data * 100) / 100),
   }
 }
 
@@ -50,24 +50,23 @@ function getRecord(historyData) {
     const currentDate = new Date(today)
     currentDate.setDate(today.getDate() - i)
     const dateString = currentDate.toISOString().split('T')[0]
-    
-    const dailyEntries = historyData.filter(entry => entry.date.startsWith(dateString));
-    const dailySum = dailyEntries.reduce((sum, entry) => sum + entry.merged_fp, 0);
+
+    const dailyEntries = historyData.filter((entry) => entry.date.startsWith(dateString))
+    const dailySum = dailyEntries.reduce((sum, entry) => sum + entry.merged_fp, 0)
 
     if (i == 0) {
       dates.unshift('Today')
-    }
-    else {
+    } else {
       dates.unshift(dateString)
     }
     history.unshift(dailySum)
-  } 
+  }
   return { history, dates }
 }
 
 function parseHistoryData(historyData) {
   const today = new Date().toISOString().split('T')[0]
-  const todayEntries = historyData.filter(entry => entry.date.startsWith(today))
+  const todayEntries = historyData.filter((entry) => entry.date.startsWith(today))
 
   if (todayEntries.length === 0) {
     return {
@@ -78,7 +77,10 @@ function parseHistoryData(historyData) {
       plantData: [1.6, 2.2, 6.7],
       transportData: [1.6, 2.2, 6.7],
       foodData: [1.6, 2.2, 6.7],
-      record: { history: [50, 12, 28, 29, 7, 25, 12], dates: ['5/1', '5/2', '5/3', '5/4', '5/5', '5/6', 'Today'] },
+      record: {
+        history: [50, 12, 28, 29, 7, 25, 12],
+        dates: ['5/1', '5/2', '5/3', '5/4', '5/5', '5/6', 'Today'],
+      },
     }
   }
   const latestTodayEntry = todayEntries[todayEntries.length - 1]
@@ -86,7 +88,7 @@ function parseHistoryData(historyData) {
   let original_fp = latestTodayEntry.original_fp
   let merged_fp = latestTodayEntry.merged_fp
 
-  let percentage = Math.round(merged_fp / original_fp * 100)
+  let percentage = Math.round((merged_fp / original_fp) * 100)
   let reduce = Math.round((original_fp - merged_fp) * 100) / 100
 
   let compareData = computeCompareData(merged_fp)
@@ -97,7 +99,7 @@ function parseHistoryData(historyData) {
 
   return {
     percentage,
-    reduce, 
+    reduce,
     original_fp,
     merged_fp,
     plantData,
@@ -111,11 +113,7 @@ export default function Page() {
   const [isCodeSubmitted, setIsCodeSubmitted] = useState(true)
   const [historyData, setHistoryData] = useState([])
 
-  const plantImages = [
-    'images/icons/oak.png',
-    'images/icons/maple.png',
-    'images/icons/pine.png',
-  ]
+  const plantImages = ['images/icons/oak.png', 'images/icons/maple.png', 'images/icons/pine.png']
   const transportImages = [
     'images/icons/bicycle.png',
     'images/icons/car.png',
@@ -136,46 +134,45 @@ export default function Page() {
             Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),
             'Cache-Control': 'no-cache',
           },
-        });
+        })
 
-        let data = response.data.codes;
+        let data = response.data.codes
 
         console.log(data)
-        data = data.sort((a, b) => new Date(a.date) - new Date(b.date));
-        setHistoryData(data);
+        data = data.sort((a, b) => new Date(a.date) - new Date(b.date))
+        setHistoryData(data)
 
-        const today = new Date().toISOString().split('T')[0];
-        const hasTodayEntry = data.some(entry => entry.date.startsWith(today));
+        const today = new Date().toISOString().split('T')[0]
+        const hasTodayEntry = data.some((entry) => entry.date.startsWith(today))
 
-        setIsCodeSubmitted(!hasTodayEntry);
-      } 
-      catch (error) {
-        console.error('Error fetching history:', error);
+        setIsCodeSubmitted(!hasTodayEntry)
+      } catch (error) {
+        console.error('Error fetching history:', error)
       }
-    };
-    fetchHistory();
-  }, []);
+    }
+    fetchHistory()
+  }, [])
 
-  const displayData = parseHistoryData(historyData);
+  const displayData = parseHistoryData(historyData)
 
   return (
     <CContainer fluid className="select-none">
       {isCodeSubmitted && (
         <div className="overlay">
           <div className="overlay-content">
-            <h2 className='overlay-heading'>Please submit code first</h2>
-            <Link href="/editor" className='overlay-button'>
+            <h2 className="overlay-heading">Please submit code first</h2>
+            <Link href="/editor" className="overlay-button">
               Submit Code
             </Link>
           </div>
         </div>
       )}
-      <Link href="/editor" className='overlay-button'>
+      <Link href="/editor" className="overlay-button">
         Re-submit Code
       </Link>
       <CRow>
         <CCol md="6">
-          <CCard className='card-container bg-black section-doughnut large border-0'>
+          <CCard className="card-container bg-black section-doughnut large border-0">
             <CCardBody>
               <div className="h-full d-flex flex-column justify-content-center align-items-center">
                 <div className="h-64 d-flex flex-column justify-content-center align-items-center">
@@ -203,13 +200,15 @@ export default function Page() {
                   />
                   <div className="percentage">{displayData.percentage} %</div>
                 </div>
-                <h3 className="mt-8 mb-1 font-light text-white">You reduced carbon emission by {displayData.reduce}g!</h3>
+                <h3 className="mt-8 mb-1 font-light text-white">
+                  You reduced carbon emission by {displayData.reduce}g!
+                </h3>
               </div>
             </CCardBody>
           </CCard>
         </CCol>
         <CCol md="3">
-          <CCard className='card-container large'>
+          <CCard className="card-container large">
             <CCardTitle className="card-title">Before & After</CCardTitle>
             <CCardBody>
               <CChart
@@ -226,7 +225,7 @@ export default function Page() {
                 options={{
                   plugins: {
                     legend: { display: false },
-                    tooltip: {  enabled: false },
+                    tooltip: { enabled: false },
                   },
                   events: [],
                   scales: {
@@ -244,34 +243,38 @@ export default function Page() {
                   maintainAspectRatio: false,
                 }}
                 style={{ height: '100%' }}
-          
               />
             </CCardBody>
           </CCard>
         </CCol>
         <CCol md="3">
-        <CCard className="card-container border-0">
-            <div className="flex flex-col h-100 rounded-xl bg-lime-200"> 
-              <CCardTitle className="card-title" style={{fontSize: "1.2rem", lineHeight: "1.8rem"}}>Comparing to Nature Consume</CCardTitle>
-              <CCardBody className='h-100 p-0'>
-                <CCarousel className='h-100' controls dark interval={false} >
+          <CCard className="card-container border-0">
+            <div className="flex flex-col h-100 rounded-xl bg-lime-200">
+              <CCardTitle
+                className="card-title"
+                style={{ fontSize: '1.2rem', lineHeight: '1.8rem' }}
+              >
+                Comparing to Nature Consume
+              </CCardTitle>
+              <CCardBody className="h-100 p-0">
+                <CCarousel className="h-100" controls dark interval={false}>
                   <CCarouselItem>
                     <div className="carousel-container-item m-auto mt-0.25 d-flex flex-column justify-content-center align-items-center">
-                      <CImage src={plantImages[0]} className="h-14 w-14 mt-4"/>
+                      <CImage src={plantImages[0]} className="h-14 w-14 mt-4" />
                       <h5 className="mt-1 mb-0"> {displayData.plantData[0]} year</h5>
                       <p className="text-gray-400">Oak Tree</p>
                     </div>
                   </CCarouselItem>
                   <CCarouselItem>
                     <div className="carousel-container-item m-auto mt-0.25 d-flex flex-column justify-content-center align-items-center">
-                      <CImage src={plantImages[1]} className="h-14 w-14 mt-4"/>
+                      <CImage src={plantImages[1]} className="h-14 w-14 mt-4" />
                       <h5 className="mt-1 mb-0"> {displayData.plantData[1]} year</h5>
                       <p className="text-gray-400">Maple Tree</p>
                     </div>
                   </CCarouselItem>
                   <CCarouselItem>
                     <div className="carousel-container-item m-auto mt-0.25 d-flex flex-column justify-content-center align-items-center">
-                    <CImage src={plantImages[2]} className="h-14 w-14 mt-4"/>
+                      <CImage src={plantImages[2]} className="h-14 w-14 mt-4" />
                       <h5 className="mt-1 mb-0"> {displayData.plantData[2]} year</h5>
                       <p className="text-gray-400">Pine Tree</p>
                     </div>
@@ -281,27 +284,27 @@ export default function Page() {
             </div>
           </CCard>
           <CCard className="card-container border-0">
-            <div className="flex flex-col h-100 rounded-xl bg-emerald-500"> 
+            <div className="flex flex-col h-100 rounded-xl bg-emerald-500">
               <CCardTitle className="card-title text-white">Comparing to Transport</CCardTitle>
-              <CCardBody className='p-0 grow'>
-                <CCarousel className='h-full' controls interval={false}>
+              <CCardBody className="p-0 grow">
+                <CCarousel className="h-full" controls interval={false}>
                   <CCarouselItem>
                     <div className="carousel-container-item m-auto mt-0.25 mb-10 d-flex flex-column justify-content-center align-items-center">
-                      <CImage src={transportImages[0]} className="h-14 w-14 mt-4"/>
+                      <CImage src={transportImages[0]} className="h-14 w-14 mt-4" />
                       <h5 className="mt-1 mb-0"> {displayData.transportData[0]} km</h5>
                       <p className="text-gray-400">Bicycle</p>
                     </div>
                   </CCarouselItem>
                   <CCarouselItem>
                     <div className="carousel-container-item m-auto mt-0.25 d-flex flex-column justify-content-center align-items-center">
-                      <CImage src={transportImages[1]} className="h-14 w-14 mt-4"/>
+                      <CImage src={transportImages[1]} className="h-14 w-14 mt-4" />
                       <h5 className="mt-1 mb-0"> {displayData.transportData[1]} km</h5>
                       <p className="text-gray-400">Car</p>
                     </div>
                   </CCarouselItem>
                   <CCarouselItem>
                     <div className="carousel-container-item m-auto mt-0.25 d-flex flex-column justify-content-center align-items-center">
-                    <CImage src={transportImages[2]} className="h-14 w-14 mt-4"/>
+                      <CImage src={transportImages[2]} className="h-14 w-14 mt-4" />
                       <h5 className="mt-1 mb-0"> {displayData.transportData[2]} km</h5>
                       <p className="text-gray-400">Airplane</p>
                     </div>
@@ -314,7 +317,7 @@ export default function Page() {
       </CRow>
       <CRow>
         <CCol md="9">
-          <CCard className='card-container'>
+          <CCard className="card-container">
             <CCardTitle className="card-title">Carbon Reduce History</CCardTitle>
             <CCardBody>
               <CChart
@@ -365,27 +368,27 @@ export default function Page() {
         </CCol>
         <CCol md="3">
           <CCard className="card-container border-0">
-            <div className="flex flex-col h-full rounded-xl bg-teal-900"> 
+            <div className="flex flex-col h-full rounded-xl bg-teal-900">
               <CCardTitle className="card-title text-white">Comparing to Food</CCardTitle>
-              <CCardBody className='p-0 grow'>
-                <CCarousel className='w-100 h-full' controls interval={false}>
+              <CCardBody className="p-0 grow">
+                <CCarousel className="w-100 h-full" controls interval={false}>
                   <CCarouselItem>
                     <div className="carousel-container-item m-auto mt-0.25 d-flex flex-column justify-content-center align-items-center">
-                      <CImage src={foodImages[0]} className="h-14 w-14 mt-4"/>
+                      <CImage src={foodImages[0]} className="h-14 w-14 mt-4" />
                       <h5 className="mt-1 mb-0"> {displayData.foodData[0]}</h5>
                       <p className="text-gray-400">Coffee</p>
                     </div>
                   </CCarouselItem>
                   <CCarouselItem>
                     <div className="carousel-container-item m-auto mt-0.25 d-flex flex-column justify-content-center align-items-center">
-                      <CImage src={foodImages[1]} className="h-14 w-14 mt-4"/>
+                      <CImage src={foodImages[1]} className="h-14 w-14 mt-4" />
                       <h5 className="mt-1 mb-0"> {displayData.foodData[1]}</h5>
                       <p className="text-gray-400">Chicken</p>
                     </div>
                   </CCarouselItem>
                   <CCarouselItem>
                     <div className="carousel-container-item m-auto mt-0.25 d-flex flex-column justify-content-center align-items-center">
-                    <CImage src={foodImages[2]} className="h-14 w-14 mt-4"/>
+                      <CImage src={foodImages[2]} className="h-14 w-14 mt-4" />
                       <h5 className="mt-1 mb-0"> {displayData.foodData[2]}</h5>
                       <p className="text-gray-400">Hamburger</p>
                     </div>

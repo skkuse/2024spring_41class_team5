@@ -32,16 +32,16 @@ export default function EditorWrapper({ setCode, setModifiedCode }: Props) {
       <Editor
         height="calc(100dvh - 246px)"
         defaultLanguage="java"
-        value={`class HelloWorld {
+        value={`public class UselessLoop {
     public static void main(String[] args) {
-        System.out.println("Hello, World!");
+        long startTime = System.currentTimeMillis();
+        for (int i = 0; i < 1000000; i++)
+        long endTime = System.currentTimeMillis();
+        System.out.println("실행 시간: " + (endTime - startTime) + " 밀리초");
     }
 }`}
       />
-      <button
-        type="submit"
-        className="rounded px-4 py-2 bg-green-900 text-white hover:bg-green-800"
-      >
+      <button type="submit" className="rounded px-4 py-2 bg-teal-900 text-white hover:bg-teal-800">
         Submit
       </button>
     </form>
