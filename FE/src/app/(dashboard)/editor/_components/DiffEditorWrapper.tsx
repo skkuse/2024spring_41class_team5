@@ -20,6 +20,7 @@ export default function DiffEditorWrapper({ originalCode, modifiedCode }: Props)
 
     const runtime = await submitCode(originalCode, mergedCode)
     if (!isNaN(runtime)) alert("merged code's runtime: " + runtime)
+    window.location.href = '/dashboard' // redirect with refresh
   }
 
   return (
