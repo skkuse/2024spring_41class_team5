@@ -10,7 +10,6 @@ export default function Header() {
 
   useEffect(() => {
     setAccessToken(sessionStorage.getItem('accessToken'))
-    console.log(sessionStorage.getItem('accessToken'))
   }, [])
 
   const onLogout = () => {

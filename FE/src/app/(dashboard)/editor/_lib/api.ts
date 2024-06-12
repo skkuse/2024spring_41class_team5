@@ -46,7 +46,9 @@ export const submitCode = async (originalCode: string, mergedCode: string) => {
 
   const message = response.data.message
   const detail = response.data.detail
-  if (message) alert('Error: ' + message + '\nDetail: ' + detail)
-
-  return Number(response.data.runtime)
+  if (message) {
+    alert('Error: \n' + message + '\n\nDetail: ' + detail)
+    return
+  }
+  return response.data
 }

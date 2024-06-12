@@ -3,18 +3,23 @@ import axios from 'axios'
 const host = process.env.NEXT_PUBLIC_API_HOST
 
 export const refresh = async () => {
-  const response = await axios.post(
-    `${host}/auth/refresh`,
-    {
-      refresh_token: sessionStorage.getItem('refreshToken'),
-    },
-    {
-      headers: {
-        Authorization: 'Bearer ' + process.env.NEXT_PUBLIC_CLIENT_SECRET,
-        'Cache-Control': 'no-cache',
+  const response = await axios
+    .post(
+      `${host}/auth/refresh`,
+      {
+        refresh_token: sessionStorage.getItem('refreshToken'),
       },
-    },
-  )
+      {
+        headers: {
+          Authorization: 'Bearer ' + process.env.NEXT_PUBLIC_CLIENT_SECRET,
+          'Cache-Control': 'no-cache',
+        },
+      },
+    )
+    .catch((error) => {
+      window.location.href = '/login'
+      return error.response
+    })
 
   const message = response.data.message
   if (message) alert(message)

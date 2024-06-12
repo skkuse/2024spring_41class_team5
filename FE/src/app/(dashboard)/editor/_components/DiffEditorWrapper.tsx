@@ -18,9 +18,11 @@ export default function DiffEditorWrapper({ originalCode, modifiedCode }: Props)
       .map((line: any) => line.textContent)
       .join('\n')
 
-    const runtime = await submitCode(originalCode, mergedCode)
-    if (!isNaN(runtime)) alert("merged code's runtime: " + runtime)
-    window.location.href = '/dashboard' // redirect with refresh
+    const history = await submitCode(originalCode, mergedCode)
+    if (history) {
+      alert('Eco merge!')
+      window.location.href = '/dashboard' // redirect with refresh
+    }
   }
 
   return (
