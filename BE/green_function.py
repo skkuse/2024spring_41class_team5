@@ -79,6 +79,7 @@ def execute_java_code(code: str):
 def calculate_carbon_footprint(runtime: float):
     energy_needed = runtime * (POWER_DRAW_FOR_CPU * USAGE + POWER_DRAW_FOR_MEMORY_PER_GB ) * PUE * PSF
     carbon_footprint = energy_needed * CARBON_INTENSITY
+    carbon_footprint  = carbon_footprint / 3600
     return carbon_footprint
 
 
