@@ -1,7 +1,7 @@
 var canvas = document.querySelector('canvas');
 
-canvas.width = window.innerWidth / 4;
-canvas.height = window.innerHeight / 2;
+canvas.width = window.innerWidth / 5;
+canvas.height = window.innerHeight / 2.5;
 
 var c = canvas.getContext('2d');
 var center = {x: canvas.width / 2, y: canvas.height / 2};

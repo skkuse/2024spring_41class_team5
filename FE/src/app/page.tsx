@@ -1,55 +1,50 @@
 "use client"
-import Script from 'next/script'
 import './style.css'
 import './(dashboard)/dashboard/_styles/style.scss'
 import { useState, useEffect } from 'react';
-import styled from 'styled-components';
 
 interface ApiResponse {
   total_original_fp: number;
   total_merged_fp: number;
   total_users: number;
 }
+interface CardProps {
+  children: React.ReactNode;
+}
+interface CardContentProps {
+  children: React.ReactNode;
+}
+interface CardOverlayProps {
+  position: 'before' | 'after';
+  children: React.ReactNode;
+}
 
-const Card = styled.div`
-  margin-top: 100px !important;
-  width: 400px;
-  margin: auto;
-  height: 400px;
-  position: relative;
-  transition: transform 4s ease-in;
-  overflow: hidden;
-  border: 4px solid #fff;
-`;
+const Card: React.FC<CardProps> = ({ children }) => {
+  return (
+    <div className="mt-24 w-full max-w-md mx-auto h-96 relative transition-transform duration-[4000ms] ease-in overflow-hidden border-4 border-teal-900 items-center">
+      {children}
+    </div>
+  );
+};
 
-const CardContent = styled.div`
-  &:hover .before,
-  &:hover .after {
-    transform: translateY(0%);
-  }
-`;
+const CardContent: React.FC<CardContentProps> = ({ children }) => {
+  return <div className="group">{children}</div>;
+};
 
-const CardOverlay = styled.div<{ $position: string }>`
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  font-size: 25px;
-  color: #fff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  background-color: rgba(2, 60, 40, 0.3);
-  z-index: 1;
-  transition: transform 0.4s ease-in;
-  border: 4px solid #04380f;
-  box-sizing: border-box;
-  transform: ${({ $position }) => ($position === 'before' ? 'translateY(-100%)' : 'translateY(100%))')};
-  transform: ${({ $position }) => ($position === 'after' ? 'translateY(+100%)' : 'translateY(-100%))')};
-`;
+const CardOverlay: React.FC<CardOverlayProps> = ({ position, children }) => {
+  const positionClass =
+    position === 'before'
+      ? 'transform -translate-y-full group-hover:translate-y-0'
+      : 'transform translate-y-full group-hover:translate-y-0';
 
+  return (
+    <div
+      className={`w-full h-full absolute top-0 left-0 text-2xl text-white flex justify-center items-center text-center bg-green-900 bg-opacity-30 z-10 transition-transform duration-[400ms] ease-in border-4 border-green-700 box-border ${positionClass}`}
+    >
+      {children}
+    </div>
+  );
+};
 
 export default function Page() {
   const teamMembers = [
@@ -104,7 +99,6 @@ export default function Page() {
     fetchData();
   }, []);
 
-
   useEffect(() => {
     const script = document.createElement('script');
     script.src = '/scripts/index.js';
@@ -116,44 +110,32 @@ export default function Page() {
     };
   }, []);
 
-  // if (error) {
-  //   return <div>Error: {error}</div>;
-  // }
   const reduced_fp = data ? Math.round((data.total_original_fp - data.total_merged_fp)*100)/100 : null;
   const total_user = data ? data.total_users : null;
 
   return (
     <>
-    {/* api test */}
-    {/* <div>
-      <h1>Data from API</h1>
-      <h1>Total Users: {data ? data.total_users : 'Loading...'}</h1>
-      <h1>reduced_fp: {reduced_fp !== null ? reduced_fp : 'Loading...'}</h1>
-      {data ? (
-        <pre>{JSON.stringify(data, null, 2)}</pre>
-      ) : (
-        'Loading...'
-      )}
-    </div> */}
-
       {/* product-description */}
-      <div className="product-description">
-        <div className="container mt-5">
-          <div className="row align-items-center bg-light p-4 rounded">
-            <div className="col-md-8">
+      <div className="container bg-teal-900 mx-auto max-w-7xl px-4 shadow-xl rounded-xl flex items-center">
+        <div className="container mt-5 flex gap-4 justify-center items-center">
+          <div className="row align-items-center bg-customBlue p-4 rounded">
+            <div className="col-md-8 text-white">
               <h1>Eco Merge</h1>
               <p>
-                에코 머지(Eco Merge)는 웹 기반 그린 코드 제안 코드 에디터로 프로그래머가 작성한
-                코드를 입력하면, 코드를 분석하여 그린 코드를 제안하고,
+                에코 머지(Eco Merge)는 웹 기반 그린 코드 제안 코드 에디터로
                 <br />
-                Git Merge의 형식으로 간편하게 그린 코드를 적용하는 프로그래머 친화적인 웹
-                서비스입니다.
+                프로그래머가 작성한 코드를 입력하면, 코드를 분석하여 그린 코드를 제안하고,
                 <br />
-                우리 웹 서비스를 통해 개선 코드를 통한 탄소배출량 감소를 확인하고, 그린코드 작성법을
-                익히세요.
+                Git Merge의 형식으로 간편하게 그린 코드를 적용하는 
+                <br />
+                프로그래머 친화적인 웹 서비스입니다.
+                <br />
+                우리 웹 서비스를 통해 개선 코드를 통한 탄소배출량 감소를 확인하고,
+                <br />
+                그린코드 작성법을 익히세요.
               </p>
             </div>
-            <div className="col-md-4 text-center">
+            <div className="col-md-4">
               {/* <img src="images/banners/earth.png" alt="Eco Merge" class="img-fluid rounded"> */}
               <canvas />
             </div>
@@ -162,45 +144,57 @@ export default function Page() {
       </div>
 
       {/* Effect */}
-      <div className="green-effect">
-        <div className="row position-relative">
-          <div className="col-12">
-            <h1 className="green-title">Why should you use Eco-Merge</h1>
-          </div>
-          <div className="col-4">
+      <div className="container bg-emerald-500 mx-auto max-w-7xl px-4 shadow-xl rounded-xl">
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-bold text-teal-900">Why should you use Eco-Merge</h1>
+        </div>
+        <div className="flex gap-4 justify-center">
+          <div className="w-full md:w-1/3 h-auto">
             <Card>
               <CardContent>
-                <img src="images/banners/carbon_emission.webp" alt="Tree" style={{ width: '100%', height: '400px', transition: 'transform 1s ease-in' }} />
-                <CardOverlay className="before" $position="before">
-                  매년 비효율적인 코드로 인한 <br /> 탄소 배출량이 증가하고 있습니다
+                <img
+                  src="images/banners/carbon_emission.webp"
+                  alt="Tree"
+                  className="w-full h-96 object-cover transition-transform duration-1000 ease-in transform group-hover:scale-105"
+                />
+                <CardOverlay position="before">
+                  매년 <br /> 비효율적인 코드로 인한 <br /> 탄소 배출량이 <br /> 증가하고 있습니다
                 </CardOverlay>
-                <CardOverlay className="after" $position="after">
-                  매년 비효율적인 코드로 인한 <br /> 탄소 배출량이 증가하고 있습니다
+                <CardOverlay position="after">
+                  매년 <br /> 비효율적인 코드로 인한 <br /> 탄소 배출량이 <br /> 증가하고 있습니다
                 </CardOverlay>
               </CardContent>
             </Card>
           </div>
-          <div className="col-4">
+          <div className="w-full md:w-1/3 h-auto">
             <Card>
               <CardContent>
-                <img src="images/banners/tree.webp" alt="Tree" style={{ width: '100%', height: '400px', transition: 'transform 1s ease-in' }} />
-                <CardOverlay className="before" $position="before">
-                  Eco-Merge로 지구 상에서  <br /> {reduced_fp}g의 탄소 배출 절감을 <br />  이뤄냈습니다 
+                <img
+                  src="images/banners/tree.webp"
+                  alt="Tree"
+                  className="w-full h-96 object-cover transition-transform duration-1000 ease-in transform group-hover:scale-105"
+                />
+                <CardOverlay position="before">
+                  Eco-Merge로  <br /> {reduced_fp}mg CO2e의 <br /> 탄소 배출 절감을 <br /> 이뤄냈습니다 
                 </CardOverlay>
-                <CardOverlay className="after" $position="after">
-                  Eco-Merge로 지구 상에서  <br /> {reduced_fp}g의 탄소 배출 절감을 <br />  이뤄냈습니다 
+                <CardOverlay position="after">
+                  Eco-Merge로  <br /> {reduced_fp}mg CO2e의 <br /> 탄소 배출 절감을 <br /> 이뤄냈습니다 
                 </CardOverlay>
               </CardContent>
             </Card>
           </div>
-          <div className="col-4">
+          <div className="w-full md:w-1/3 h-auto">
             <Card>
               <CardContent>
-                <img src="images/banners/nature_protector.webp" alt="Tree" style={{ width: '100%', height: '400px', transition: 'transform 1s ease-in' }} />
-                <CardOverlay className="before" $position="before">
+                <img
+                  src="images/banners/nature_protector.webp"
+                  alt="Tree"
+                  className="w-full h-96 object-cover transition-transform duration-1000 ease-in transform group-hover:scale-105"
+                />
+                <CardOverlay position="before">
                   현재 {total_user}명이 <br /> Eco-Merge를 이용해서 <br /> 탄소 배출 절감에 <br /> 참여하고 있습니다
                 </CardOverlay>
-                <CardOverlay className="after" $position="after">
+                <CardOverlay position="after">
                   현재 {total_user}명이 <br /> Eco-Merge를 이용해서 <br /> 탄소 배출 절감에 <br /> 참여하고 있습니다
                 </CardOverlay>
               </CardContent>
@@ -210,52 +204,55 @@ export default function Page() {
       </div>
 
       {/* user-manual */}
-      <div className="title">
-        <h1>How to Use</h1>
+      <div className="container bg-lime-200 mx-auto max-w-7xl px-4 shadow-xl rounded-xl">
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-bold text-green-700">User's guide of Eco Merge</h1>
+        </div>
+        <div className="user-manual justify-center bg-green-50">
+          <header>
+            <input type="radio" id="code-editor" defaultValue={1} name="tractor" defaultChecked />
+            <label htmlFor="code-editor">1</label>
+            <input type="radio" id="code-green" defaultValue={2} name="tractor" />
+            <label htmlFor="code-green">2</label>
+            <input type="radio" id="code-analysis" defaultValue={3} name="tractor" />
+            <label htmlFor="code-analysis">3</label>
+            <input type="radio" id="code-history" defaultValue={4} name="tractor" />
+            <label htmlFor="code-history">4</label>
+            <section className="visor">
+              <article className="code-editor">
+                <div>
+                  <h2>Step 1</h2>
+                  <p>코드 에디터에 <br /> 코드를 입력하고 <br /> 제안 버튼을 <br /> 클릭하세요</p>
+                </div>
+              </article>
+              <article className="code-green">
+                <div>
+                  <h2>Step 2</h2>
+                  <p>제안된 코드 중 <br /> 반영할 부분을 <br /> 선택하세요</p>
+                </div>
+              </article>
+              <article className="code-analysis">
+                <div>
+                  <h2>Step 3</h2>
+                  <p>최종 개선된 <br /> 코드로 인한 <br /> 탄소 배출량 감소를 <br /> 확인하세요</p>
+                </div>
+              </article>
+              <article className="code-history">
+                <div>
+                  <h2>Step 4</h2>
+                  <p>히스토리를 통해 <br /> 이전에 저장했던 <br /> 개선 코드를 확인하세요</p>
+                </div>
+              </article>
+            </section>
+          </header>
+        </div>
       </div>
-      <div className="user-manual">
-        <header>
-          <input type="radio" id="code-editor" defaultValue={1} name="tractor" defaultChecked />
-          <label htmlFor="code-editor">1</label>
-          <input type="radio" id="code-green" defaultValue={2} name="tractor" />
-          <label htmlFor="code-green">2</label>
-          <input type="radio" id="code-analysis" defaultValue={3} name="tractor" />
-          <label htmlFor="code-analysis">3</label>
-          <input type="radio" id="code-history" defaultValue={4} name="tractor" />
-          <label htmlFor="code-history">4</label>
-          <section className="visor">
-            <article className="unidad code-editor">
-              <div>
-                <h2>Step 1</h2>
-                <p>코드 에디터에 코드를 입력하고 제안 버튼을 클릭하세요</p>
-              </div>
-            </article>
-            <article className="unidad code-green">
-              <div>
-                <h2>Step 2</h2>
-                <p>제안된 코드 중 반영할 부분을 선택하세요</p>
-              </div>
-            </article>
-            <article className="unidad code-analysis">
-              <div>
-                <h2>Step 3</h2>
-                <p>최종 개선된 코드로 인한 탄소 배출량 감소를 확인하세요</p>
-              </div>
-            </article>
-            <article className="unidad code-history">
-              <div>
-                <h2>Step 4</h2>
-                <p>히스토리를 통해 이전에 저장했던 개선 코드를 확인하세요</p>
-              </div>
-            </article>
-          </section>
-        </header>
-      </div>
+
       {/* Team page */}
-      <div className="title">
-        <h1>Team 5</h1>
-      </div>
-      <div className="team-page">
+      <div className="container bg-green-50 mx-auto max-w-7xl px-4 shadow-xl rounded-xl">
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-bold text-green-700">Team 5</h1>
+        </div>
         <div className="container">
           <div className="row">
             {teamMembers.map((member, index) => (
@@ -278,7 +275,6 @@ export default function Page() {
           </div>
         </div>
       </div>
-      {/* <Script src="/scripts/index.js" /> */}
     </>
   )
 }

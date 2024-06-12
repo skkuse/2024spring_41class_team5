@@ -10,6 +10,7 @@ const config: Config = {
     extend: {
       colors: {
         /* Add new colors */
+        customBlue: 'rgb(10, 23, 66)',
       },
       fontFamily: {
         pretendard: ['pretendard', 'gothic'],
