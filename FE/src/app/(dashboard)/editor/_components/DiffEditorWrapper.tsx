@@ -40,7 +40,7 @@ export default function DiffEditorWrapper({ originalCode, modifiedCode }: Props)
       <div className="flex items-center gap-2">
         <button
           type="submit"
-          className="rounded px-4 py-2 bg-green-900 text-white hover:bg-green-800"
+          className="rounded px-4 py-2 bg-emerald-500 text-white hover:bg-emerald-400"
         >
           Submit
         </button>

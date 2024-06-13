@@ -2,7 +2,7 @@
 
 import EditorWrapper from './EditorWrapper'
 import DiffEditorWrapper from './DiffEditorWrapper'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 
 export default function EditorModal() {
@@ -14,13 +14,18 @@ export default function EditorModal() {
     router.back() // redirect without refresh
   }
 
+  useEffect(() => {
+    const accessToken = sessionStorage.getItem('accessToken')
+    if (!accessToken) router.push('/login')
+  }, [])
+
   return (
     <>
       <div
         className="fixed top-0 left-0 w-dvw h-dvh bg-black opacity-50 cursor-default z-10"
         onClick={onClose}
       />
-      <div className="fixed top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-10c p-4 bg-white z-20">
+      <div className="fixed top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-10c p-4 bg-white rounded-xl z-20">
         {originalCode == '' ? (
           <EditorWrapper setCode={setOriginalCode} setModifiedCode={setModifiedCode} />
         ) : (

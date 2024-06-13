@@ -161,7 +161,7 @@ export default function Page() {
         <div className="overlay">
           <div className="overlay-content">
             <h2 className="overlay-heading">Please submit code first</h2>
-            <Link href="/editor" className="overlay-button">
+            <Link href="/editor" className="overlay-button p-2 mt-2">
               Submit Code
             </Link>
           </div>

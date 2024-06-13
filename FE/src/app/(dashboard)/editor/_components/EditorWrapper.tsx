@@ -34,14 +34,15 @@ export default function EditorWrapper({ setCode, setModifiedCode }: Props) {
         defaultLanguage="java"
         value={`public class UselessLoop {
     public static void main(String[] args) {
-        long startTime = System.currentTimeMillis();
         for (int i = 0; i < 1000000; i++)
-        long endTime = System.currentTimeMillis();
-        System.out.println("실행 시간: " + (endTime - startTime) + " 밀리초");
+            System.out.println("Hello world!");
     }
 }`}
       />
-      <button type="submit" className="rounded px-4 py-2 bg-teal-900 text-white hover:bg-teal-800">
+      <button
+        type="submit"
+        className="rounded px-4 py-2 bg-emerald-500 text-white hover:bg-emerald-400"
+      >
         Submit
       </button>
     </form>
