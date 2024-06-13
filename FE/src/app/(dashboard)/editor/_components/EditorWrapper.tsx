@@ -5,11 +5,12 @@ import { Dispatch, FormEvent, SetStateAction } from 'react'
 import { getCode } from '../_lib/api'
 
 interface Props {
+  originalCode: string
   setCode: Dispatch<SetStateAction<string>>
   setModifiedCode: Dispatch<SetStateAction<string>>
 }
 
-export default function EditorWrapper({ setCode, setModifiedCode }: Props) {
+export default function EditorWrapper({ originalCode, setCode, setModifiedCode }: Props) {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
@@ -29,16 +30,7 @@ export default function EditorWrapper({ setCode, setModifiedCode }: Props) {
       <label htmlFor="comment" className="sr-only">
         Add your code
       </label>
-      <Editor
-        height="calc(100dvh - 246px)"
-        defaultLanguage="java"
-        value={`public class UselessLoop {
-    public static void main(String[] args) {
-        for (int i = 0; i < 1000000; i++)
-            System.out.println("Hello world!");
-    }
-}`}
-      />
+      <Editor height="calc(100dvh - 246px)" defaultLanguage="java" value={originalCode} />
       <button
         type="submit"
         className="rounded px-4 py-2 bg-emerald-500 text-white hover:bg-emerald-400"

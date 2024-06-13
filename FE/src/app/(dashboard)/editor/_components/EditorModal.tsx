@@ -6,9 +6,15 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 
 export default function EditorModal() {
+  const defaultCode = `public class UselessLoop {
+    public static void main(String[] args) {
+        for (int i = 0; i < 1000000; i++)
+            System.out.println("Hello world!");
+    }
+}`
   const router = useRouter()
-  const [originalCode, setOriginalCode] = useState('') // user typed code
-  const [modifiedCode, setModifiedCode] = useState('') // suggested code by LLM
+  const [originalCode, setOriginalCode] = useState(defaultCode) // user typed code
+  const [modifiedCode, setModifiedCode] = useState('now loading...') // suggested code by LLM
 
   const onClose = () => {
     router.back() // redirect without refresh
@@ -39,8 +45,12 @@ export default function EditorModal() {
         id="modal"
         className="fixed top-[50%] left-[50%] -translate-x-1/2 translate-y-96 scale-75 w-10c p-4 bg-white rounded-xl z-20 transition-all duration-1000"
       >
-        {originalCode == '' ? (
-          <EditorWrapper setCode={setOriginalCode} setModifiedCode={setModifiedCode} />
+        {originalCode == defaultCode ? (
+          <EditorWrapper
+            originalCode={originalCode}
+            setCode={setOriginalCode}
+            setModifiedCode={setModifiedCode}
+          />
         ) : (
           <DiffEditorWrapper originalCode={originalCode} modifiedCode={modifiedCode} />
         )}
