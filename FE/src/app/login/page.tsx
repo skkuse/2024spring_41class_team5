@@ -13,12 +13,12 @@ export default function Page() {
 
   return (
     <main className="flex flex-col gap-8 text-center w-6c mx-auto">
-      <h1 className="font-bold">Welcome Back :)</h1>
+      <h1 className="font-bold text-emerald-500">Welcome back to Eco Merge :)</h1>
       <form action="#" className="flex flex-col gap-4" onSubmit={onSubmit}>
         <div className="flex items-end gap-4">
           <label htmlFor="studentId">Student ID</label>
           <input
-            className="flex-1 border-solid border-b-2 border-black remove-arrow"
+            className="flex-1 border-solid border-b-2 border-black focus:outline-none focus:border-emerald-400 remove-arrow"
             type="number"
             id="studentId"
             required
@@ -27,14 +27,14 @@ export default function Page() {
         <div className="flex items-end gap-4">
           <label htmlFor="password">Password</label>
           <input
-            className="flex-1 border-solid border-b-2 border-black"
+            className="flex-1 border-solid border-b-2 border-black focus:outline-none focus:border-emerald-400"
             type="password"
             id="password"
             required
           />
         </div>
         <button
-          className="rounded px-4 py-2 bg-green-900 text-white hover:bg-green-800"
+          className="rounded px-4 py-2 bg-emerald-500 text-white hover:bg-emerald-400"
           type="submit"
         >
           Login
