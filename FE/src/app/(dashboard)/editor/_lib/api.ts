@@ -1,6 +1,4 @@
-import axios from 'axios'
-
-const host = process.env.NEXT_PUBLIC_API_HOST
+import instance from '../../../_lib/axios'
 
 /**
  *
@@ -8,8 +6,8 @@ const host = process.env.NEXT_PUBLIC_API_HOST
  * @return suggested code by LLM
  */
 export const getCode = async (code: string) => {
-  const response = await axios.post(
-    `${host}/green`,
+  const response = await instance.post(
+    '/green',
     {
       code,
     },
@@ -30,8 +28,8 @@ export const getCode = async (code: string) => {
  * @returns code excution runtime or null if error
  */
 export const submitCode = async (originalCode: string, mergedCode: string) => {
-  const response = await axios.post(
-    `${host}/green/codes`,
+  const response = await instance.post(
+    '/green/codes',
     {
       original_code: originalCode,
       merged_code: mergedCode,

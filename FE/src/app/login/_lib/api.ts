@@ -1,6 +1,4 @@
-import axios from 'axios'
-
-const host = process.env.NEXT_PUBLIC_API_HOST
+import instance from "../../_lib/axios"
 
 /**
  * @param studentId
@@ -8,15 +6,14 @@ const host = process.env.NEXT_PUBLIC_API_HOST
  * @return
  */
 export const login = async (studentId: number, password: string) => {
-  const response = await axios.post(
-    `${host}/auth/login`,
+  const response = await instance.post(
+    '/auth/login',
     {
       studentId,
     },
     {
       headers: {
         Authorization: 'Basic ' + window.btoa(studentId + ':' + password),
-        'Cache-Control': 'no-cache',
       },
     },
   )

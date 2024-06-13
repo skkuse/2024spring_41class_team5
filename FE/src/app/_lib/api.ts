@@ -1,18 +1,20 @@
-import axios from 'axios'
+import instance from './axios'
 
-const host = process.env.NEXT_PUBLIC_API_HOST
-
+/**
+ * Refreshes the access token.
+ * and stores the new access token and refresh token in the session storage.
+ * If the refresh token is invalid, the user is redirected to the login page.
+ */
 export const refresh = async () => {
-  const response = await axios
+  const response = await instance
     .post(
-      `${host}/auth/refresh`,
+      '/auth/refresh',
       {
         refresh_token: sessionStorage.getItem('refreshToken'),
       },
       {
         headers: {
           Authorization: 'Bearer ' + process.env.NEXT_PUBLIC_CLIENT_SECRET,
-          'Cache-Control': 'no-cache',
         },
       },
     )
