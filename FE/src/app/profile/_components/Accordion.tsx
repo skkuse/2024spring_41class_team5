@@ -53,7 +53,7 @@ const Accordion = ({ title, date, details, code }: AccordionProps) => {
             </tr>
           </tbody>
         </table>
-        <div className="relative p-2 flex whitespace-pre-wrap">
+        <div className="relative flex whitespace-pre-wrap">
           <div className="absolute top-2 right-2">
             <CopyToClipboard text={code}>
               <FontAwesomeIcon className="w-4 h-4" icon={faCopy} />
