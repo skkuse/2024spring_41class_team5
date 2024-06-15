@@ -1,0 +1,89 @@
+// Import styles
+@import '@coreui/coreui/scss/coreui';
+@import '@coreui/chartjs/scss/coreui-chartjs';
+
+
+.card-container {
+  width: 100%;
+  height: 12rem;
+  margin-bottom: 1rem;
+  background-color: white;
+
+  border-radius: 0.8rem;
+
+  &.large {
+    height: 25rem;
+  }
+}
+.card-title {
+  font-size: 24px;
+  text-align: center;
+  font-weight: lighter;
+  margin-top: 0.5rem;
+}
+
+.percentage {
+  position: absolute;
+  top: 42%;
+  left: 50%;
+
+  color: white;
+  font-size: 4rem;
+  font-weight: lighter;
+  transform: translate(-50%, -50%);
+}
+
+.carousel-container-item {
+  width: 8rem;
+  height: 8rem;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+}
+
+.carousel-inner {
+  height: 100%;
+}
+
+.section-doughnut {
+  background: linear-gradient(159deg, rgba(226,243,151,0.75) 0%, rgba(91,170,138,0.75) 59%, rgba(1,86,91,0.75) 100%);
+}
+
+.overlay {
+  position: fixed;
+  left: 0;
+  top: 4rem;
+
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 5; 
+}
+
+.overlay-content {
+  text-align: center;
+}
+
+.overlay-heading {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.overlay-button {
+  background-color: #10b981;
+  color: white;
+  text-decoration: none;
+
+  border-radius: 0.4rem;
+  padding: 0.3rem;
+}
