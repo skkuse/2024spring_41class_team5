@@ -7,10 +7,10 @@ import '../globals.css'
 
 const getLevel = (carbonEmission: number): number => {
   if (carbonEmission <= 0) {
-    return 1; // 경험치가 100 미만이면 레벨 1
+    return 1; 
   }
   const level = Math.floor(carbonEmission / 10) + 1
-  return Math.floor(level); // 소수점 이하를 버리고 정수로 반환
+  return Math.floor(level); 
 }
 
 const getMinCarbonForLevel = (lev: number): number => {
