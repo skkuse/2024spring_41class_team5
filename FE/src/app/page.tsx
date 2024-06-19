@@ -2,6 +2,8 @@
 import './style.css'
 import './(dashboard)/dashboard/_styles/style.scss'
 import { useState, useEffect } from 'react';
+import Latex from 'react-latex-next';
+import 'katex/dist/katex.min.css';
 
 interface ApiResponse {
   total_original_fp: number;
@@ -21,7 +23,7 @@ interface CardOverlayProps {
 
 const Card: React.FC<CardProps> = ({ children }) => {
   return (
-    <div className="mt-24 w-full max-w-md mx-auto h-96 relative transition-transform duration-[4000ms] ease-in overflow-hidden border-4 border-teal-900 items-center">
+    <div className="mt-12 w-full max-w-md mx-auto h-96 relative transition-transform duration-[4000ms] ease-in overflow-hidden border-4 border-teal-900 items-center">
       {children}
     </div>
   );
@@ -50,31 +52,37 @@ export default function Page() {
   const teamMembers = [
     {
       name: "김주영",
+      role: "Front-End Developer",
       email: "mailto:illuminoplanet@gmail.com",
       github: "https://github.com/illuminoplanet",
     },
     {
       name: "배정우",
+      role: "Front-End Developer",
       email: "mailto:bae.jungwoo@gmail.com",
       github: "https://github.com/BaeJungWoo",
     },
     {
       name: "이송목",
+      role: "Front-End Developer",
       email: "mailto:lsm3645@g.skku.edu",
       github: "https://github.com/fine-pine",
     },
     {
       name: "이병철",
+      role: "Front-End Developer",
       email: "mailto:bc6817@gmail.com",
       github: "https://github.com/2btlFe",
     },
     {
       name: "이원영",
+      role: ["Back-End Developer", "Green Pattern Developer"],
       email: "mailto:lwy970327@gmail.com",
       github: "https://github.com/wonleeyoung",
     },
     {
       name: "황정민",
+      role: "Back-End Developer",
       email: "mailto:minnie_00@naver.com",
       github: "https://github.com/yaongmeow",
     },
@@ -145,7 +153,7 @@ export default function Page() {
 
       {/* Effect */}
       <div className="container bg-emerald-500 mx-auto max-w-7xl px-4 shadow-xl rounded-xl">
-        <div className="text-center mb-8">
+        <div className="text-center">
           <h1 className="text-4xl font-bold text-teal-900">Why should you use Eco-Merge</h1>
         </div>
         <div className="flex gap-4 justify-center">
@@ -208,7 +216,8 @@ export default function Page() {
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-green-700">User's guide of Eco Merge</h1>
         </div>
-        <div className="user-manual justify-center bg-green-50">
+        {/* <div className="user-manual justify-center bg-green-50"> */}
+        <div className="user-manual bg-white shadow-md rounded-lg overflow-hidden flex mb-6">
           <header>
             <input type="radio" id="code-editor" defaultValue={1} name="tractor" defaultChecked />
             <label htmlFor="code-editor">1</label>
@@ -240,7 +249,7 @@ export default function Page() {
               <article className="code-history">
                 <div>
                   <h2>Step 4</h2>
-                  <p>히스토리를 통해 <br /> 이전에 저장했던 <br /> 개선 코드를 확인하세요</p>
+                  <p>히스토리를 통해 <br /> 이전에 저장했던 <br /> 개선 코드를 <br /> 확인하세요</p>
                 </div>
               </article>
             </section>
@@ -249,7 +258,7 @@ export default function Page() {
       </div>
 
       {/* Team page */}
-      <div className="container bg-green-50 mx-auto max-w-7xl px-4 shadow-xl rounded-xl">
+      <div className="container bg-teal-100 mx-auto max-w-7xl px-4 shadow-xl rounded-xl">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-green-700">Team 5</h1>
         </div>
@@ -263,7 +272,16 @@ export default function Page() {
                   </div>
                   <div className="team-content">
                     <h3 className="name">{member.name}</h3>
-                    <h4 className="title">Web Developer</h4>
+                    <h4 className="title">{
+                      typeof member.role === 'string' ? (member.role) : (
+                        member.role.map((role, index) => (
+                          <span key={index}>
+                            {role}
+                            {index !== member.role.length - 1 && <br />}
+                          </span>
+                        ))
+                      )
+                      }</h4>
                   </div>
                   <ul className="social">
                     <li><a href={member.email} className="fa fa-envelope" aria-hidden="true"></a></li>
@@ -272,6 +290,61 @@ export default function Page() {
                 </div>
               </div>
               ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Server Info */}
+      <div className="container bg-green-50 mx-auto max-w-7xl px-4 shadow-xl rounded-xl">
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-bold text-green-700">Additional Information</h1>
+        </div>
+        <div className="bg-white shadow-md rounded-lg overflow-hidden flex mb-6">
+          <div className="p-4 w-2/3">
+            <h2 className="text-2xl font-bold mb-2">Server Information</h2>
+            <p className="mb-2"><strong>OS:</strong> Ubuntu 20.04 LTS (Focal Fossa)</p>
+            <p className="mb-2"><strong>CPU:</strong> Intel(R) Xeon(R) Gold 5220 CPU @ 2.20GHz 2EA</p>
+            <p className="mb-2"><strong>Memory:</strong> 8GB</p>
+          </div>
+          <div className="flex items-center justify-center w-1/2">
+            <img className="h-1/2 object-cover" src="/images/banners/naver_platform.png" alt="server" />
+          </div>
+        </div>
+        <div className="bg-white shadow-md rounded-lg overflow-hidden flex mb-6">
+          <div className="p-4 w-max">
+            <h2 className="text-2xl font-bold mb-2">Carbon Calculator</h2>
+            <p className="mb-2">
+              <Latex>{`$Energy \\hspace{1mm} needed = t \\times (n_c \\times P_c \\times u_c + n_m \\times P_m) \\times PUE \\times PSF$`}</Latex>
+            </p>
+            <p className="mb-2">
+              <Latex>{`$Carbon \\hspace{1mm} footprint = energy \\hspace{1mm} needed \\times carbon \\hspace{1mm} intensity$`}</Latex>
+            </p>
+            <div className="grid grid-cols-3 gap-x-7 bg-teal-50 shadow-md rounded-lg">
+              <div className="mb-2">
+                <Latex>{`$t$`}</Latex> : code execution time(s)
+              </div>
+              <div className="mb-2">
+                <Latex>{`$n_c$`}</Latex> : number of cores
+              </div>
+              <div className="mb-2">
+                <Latex>{`$P_c$`}</Latex> : power draw of computing core
+              </div>
+              <div className="mb-2">
+                <Latex>{`$u_c$`}</Latex> : core usage factor
+              </div>
+              <div className="mb-2">
+                <Latex>{`$N_m$`}</Latex> : size of memory available
+              </div>
+              <div className="mb-2">
+                <Latex>{`$P_m$`}</Latex> : power draw of memory
+              </div>
+              <div className="mb-2">
+                <Latex>{`$PUE$`}</Latex> : efficiency coefficient of the data center
+              </div>
+              <div className="mb-2">
+                <Latex>{`$PSF$`}</Latex> : pragmatic scaling factor
+              </div>
+            </div>
           </div>
         </div>
       </div>
