@@ -10,7 +10,7 @@ interface AccordionProps {
   code: string
 }
 
-const Accordion = ({ title, date, details, code }: AccordionProps) => {
+const Accordion = ({ date, details, code }: AccordionProps) => {
   const [isOpen, setIsOpen] = useState(false)
 
   const toggleAccordion = () => {
@@ -20,27 +20,21 @@ const Accordion = ({ title, date, details, code }: AccordionProps) => {
   // Parse details to extract information
   const detailsArray = details.split(' ')
 
+
   return (
     <div className="w-full p-2 bg-gray-50 transition-all">
-      <div
-        className="flex items-center justify-between p-2 select-none cursor-pointer"
-        onClick={toggleAccordion}
-      >
-        <span>{title}</span>
-        <div className="flex gap-2 items-center">
-          <span>{date}</span>
-          <FontAwesomeIcon className="w-4 h-4" icon={isOpen ? faChevronUp : faChevronDown} />
-        </div>
-      </div>
-      <div className={`flex flex-col gap-2 overflow-hidden ${isOpen ? 'h-full' : 'h-0'}`}>
-        <table className="p-2 table-auto text-center border-collapse border-spacing-2">
+      <div className={`flex flex-col gap-2 overflow-hidden cursor-pointer`}>
+        <table className="p-2 table-auto text-center border-collapse border-spacing-2 hover:shadow-lg hover:shadow-gray-500/50" onClick={toggleAccordion}>
           <thead>
             <tr>
-              <th>아코디언 이름</th>
               <th>날짜</th>
               <th>기존 탄소배출량</th>
               <th>변화된 탄소배출량</th>
               <th>탄소배출량 변화량</th>
+              <th><FontAwesomeIcon
+                className="w-4 h-4"
+                icon={isOpen ? faChevronUp : faChevronDown}
+              /></th>
             </tr>
           </thead>
           <tbody>
@@ -48,18 +42,18 @@ const Accordion = ({ title, date, details, code }: AccordionProps) => {
               <td>{detailsArray[0]}</td>
               <td>{detailsArray[1]}</td>
               <td>{detailsArray[2]}</td>
-              <td>{detailsArray[4]}</td>
-              <td>{detailsArray[6]}</td>
+              <td>{detailsArray[3]}</td>
             </tr>
           </tbody>
         </table>
-        <div className="relative flex whitespace-pre-wrap">
+        <div className={`relative flex whitespace-pre-wrap bg-gray-200 ${isOpen ? 'h-full' : 'h-0'}`}>
           <div className="absolute top-2 right-2">
             <CopyToClipboard text={code}>
-              <FontAwesomeIcon className="w-4 h-4" icon={faCopy} />
+              <FontAwesomeIcon className="w-4 h-4 hover:text-blue-600" icon={faCopy} />
             </CopyToClipboard>
           </div>
-          <div className="flex-1">{code}</div>
+          {/*white color*/}
+          <div className="flex-1 p-5 cursor-default">{code}</div>
         </div>
       </div>
     </div>
