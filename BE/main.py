@@ -15,7 +15,8 @@ import os
 origins = [
     "http://localhost:3000",
     "https://swe-nz2sl01c3-fine-pines-projects.vercel.app",
-    "http://swe-nz2sl01c3-fine-pines-projects.vercel.app"
+    "http://swe-nz2sl01c3-fine-pines-projects.vercel.app",
+    "http://swe-env.ap-northeast-2.elasticbeanstalk.com"
 ]
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
