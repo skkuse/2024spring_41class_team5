@@ -1,6 +1,10 @@
 'use client'
 import './style.css'
+import './(dashboard)/dashboard/_styles/style.scss'
 import { useState, useEffect } from 'react'
+import Latex from 'react-latex-next'
+import 'katex/dist/katex.min.css'
+import Image from 'next/image'
 
 interface ApiResponse {
   total_original_fp: number
@@ -49,31 +53,37 @@ export default function Page() {
   const teamMembers = [
     {
       name: '김주영',
+      role: 'Front-End Developer',
       email: 'mailto:illuminoplanet@gmail.com',
       github: 'https://github.com/illuminoplanet',
     },
     {
       name: '배정우',
+      role: 'Front-End Developer',
       email: 'mailto:bae.jungwoo@gmail.com',
       github: 'https://github.com/BaeJungWoo',
     },
     {
       name: '이송목',
+      role: 'Front-End Developer',
       email: 'mailto:lsm3645@g.skku.edu',
       github: 'https://github.com/fine-pine',
     },
     {
       name: '이병철',
+      role: 'Front-End Developer',
       email: 'mailto:bc6817@gmail.com',
       github: 'https://github.com/2btlFe',
     },
     {
       name: '이원영',
+      role: ['Back-End Developer', 'Green Pattern Developer'],
       email: 'mailto:lwy970327@gmail.com',
       github: 'https://github.com/wonleeyoung',
     },
     {
       name: '황정민',
+      role: 'Back-End Developer',
       email: 'mailto:minnie_00@naver.com',
       github: 'https://github.com/yaongmeow',
     },
@@ -244,6 +254,75 @@ export default function Page() {
         </div>
       </section>
 
+      {/* Server Info */}
+      <section className="flex flex-col gap-4 text-center max-w-12c p-4 bg-green-50 shadow-xl rounded-xl">
+        <h1 className="text-3xl font-bold text-green-700">Information</h1>
+        <div className="flex items-center justify-around p-4 bg-white rounded-lg">
+          <div className="flex flex-col">
+            <h2 className="text-2xl font-bold">Server Information</h2>
+            <p>
+              <strong>OS:</strong> Ubuntu 20.04 LTS (Focal Fossa)
+              <br />
+              <strong>CPU:</strong> Intel(R) Xeon(R) Gold 5220 CPU @ 2.20GHz 2EA
+              <br />
+              <strong>Memory:</strong> 8GB
+            </p>
+          </div>
+          <Image
+            className="object-cover"
+            width={300}
+            height={70}
+            src="/images/banners/naver_platform.png"
+            alt="server"
+          />
+        </div>
+        <div className="flex flex-col rounded-lg">
+          <div className="flex flex-col gap-2 p-4 bg-white">
+            <h2 className="text-2xl font-bold">Carbon Calculator</h2>
+            <p>
+              <Latex>{`$Energy \\hspace{1mm} needed = t \\times (n_c \\times P_c \\times u_c + n_m \\times P_m) \\times PUE \\times PSF$`}</Latex>
+              <br />
+              <Latex>{`$Carbon \\hspace{1mm} footprint = energy \\hspace{1mm} needed \\times carbon \\hspace{1mm} intensity$`}</Latex>
+            </p>
+          </div>
+
+          <table className="bg-teal-50 rounded-lg">
+            <tbody>
+              <tr>
+                <td>
+                  <Latex>{`$t$`}</Latex> : code execution time(s)
+                </td>
+                <td>
+                  <Latex>{`$n_c$`}</Latex> : number of cores
+                </td>
+                <td>
+                  <Latex>{`$P_c$`}</Latex> : power draw of computing core
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <Latex>{`$u_c$`}</Latex> : core usage factor
+                </td>
+                <td>
+                  <Latex>{`$N_m$`}</Latex> : size of memory available
+                </td>
+                <td>
+                  <Latex>{`$P_m$`}</Latex> : power draw of memory
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <Latex>{`$PUE$`}</Latex> : efficiency coefficient of the data center
+                </td>
+                <td>
+                  <Latex>{`$PSF$`}</Latex> : pragmatic scaling factor
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
       {/* Team page */}
       <section className="flex flex-col gap-4 text-center max-w-12c p-4 bg-green-50 shadow-xl rounded-xl">
         <h1 className="text-3xl font-bold text-green-700">Team 5</h1>
@@ -261,7 +340,16 @@ export default function Page() {
                   </div>
                   <div className="flex flex-col gap-2 py-4">
                     <h3 className="name text-xl font-bold">{member.name}</h3>
-                    <h4 className="title">Web Developer</h4>
+                    <h4 className="title">
+                      {typeof member.role === 'string'
+                        ? member.role
+                        : member.role.map((role, index) => (
+                            <span key={index}>
+                              {role}
+                              {index !== member.role.length - 1 && <br />}
+                            </span>
+                          ))}
+                    </h4>
                   </div>
                   <ul className="social">
                     <li>

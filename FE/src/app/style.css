@@ -149,16 +149,16 @@
   text-shadow: 0 0 1px #fff;
 }
 .code-editor {
-  background-image: url('/images/banners/code-editor.png');
+  background-image: url('/images/banners/editor_main.png');
 }
 .code-green {
-  background-image: url('/images/banners/greencode.png');
+  background-image: url('/images/banners/change_main.png');
 }
 .code-analysis {
-  background-image: url('/images/banners/code-analysis.png');
+  background-image: url('/images/banners/dashboard_main.png');
 }
 .code-history {
-  background-image: url('/images/banners/code-history.png');
+  background-image: url('/images/banners/history_main.png');
 }
 .user-manual input[type='radio'] {
   z-index: 10;
