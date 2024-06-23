@@ -38,12 +38,12 @@ export default function EditorModal() {
     <>
       <div
         id="overlay"
-        className="fixed top-0 left-0 w-dvw h-dvh bg-black opacity-0 cursor-default z-10 transition-all duration-1000"
+        className="fixed top-0 left-0 w-dvw h-dvh bg-black opacity-0 cursor-default z-20 transition-all duration-1000"
         onClick={onClose}
       />
       <div
         id="modal"
-        className="fixed top-[50%] left-[50%] -translate-x-1/2 translate-y-96 scale-75 w-10c p-4 bg-white rounded-xl z-20 transition-all duration-1000"
+        className="fixed top-[50%] left-[50%] -translate-x-1/2 translate-y-96 scale-75 w-10c p-4 bg-white rounded-xl z-30 transition-all duration-1000"
       >
         {originalCode == defaultCode ? (
           <EditorWrapper

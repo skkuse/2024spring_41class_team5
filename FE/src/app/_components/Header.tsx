@@ -21,7 +21,7 @@ export default function Header() {
   }
 
   return (
-    <header className="w-full max-w-12c h-16 flex items-center justify-between">
+    <header className="w-full max-w-12c h-16 flex items-center justify-between z-10">
       <h1 className="font-bold text-green-800">Eco Merge</h1>
       <nav>
         <ul className="flex gap-8">

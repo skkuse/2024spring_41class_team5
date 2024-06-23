@@ -20,21 +20,22 @@ const Accordion = ({ date, details, code }: AccordionProps) => {
   // Parse details to extract information
   const detailsArray = details.split(' ')
 
-
   return (
     <div className="w-full p-2 bg-gray-50 transition-all">
       <div className={`flex flex-col gap-2 overflow-hidden cursor-pointer`}>
-        <table className="p-2 table-auto text-center border-collapse border-spacing-2 hover:shadow-lg hover:shadow-gray-500/50" onClick={toggleAccordion}>
+        <table
+          className="p-2 table-auto text-center border-collapse border-spacing-2 border-gray-300 hover:border-b-2 transition-all"
+          onClick={toggleAccordion}
+        >
           <thead>
             <tr>
               <th>날짜</th>
               <th>기존 탄소배출량</th>
               <th>변화된 탄소배출량</th>
               <th>탄소배출량 변화량</th>
-              <th><FontAwesomeIcon
-                className="w-4 h-4"
-                icon={isOpen ? faChevronUp : faChevronDown}
-              /></th>
+              <th>
+                <FontAwesomeIcon className="w-4 h-4" icon={isOpen ? faChevronUp : faChevronDown} />
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -46,7 +47,9 @@ const Accordion = ({ date, details, code }: AccordionProps) => {
             </tr>
           </tbody>
         </table>
-        <div className={`relative flex whitespace-pre-wrap bg-gray-200 ${isOpen ? 'h-full' : 'h-0'}`}>
+        <div
+          className={`relative flex whitespace-pre-wrap bg-gray-200 ${isOpen ? 'h-full' : 'h-0'}`}
+        >
           <div className="absolute top-2 right-2">
             <CopyToClipboard text={code}>
               <FontAwesomeIcon className="w-4 h-4 hover:text-blue-600" icon={faCopy} />

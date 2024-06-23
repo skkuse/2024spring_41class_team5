@@ -16,6 +16,7 @@ import {
   CCarouselItem,
 } from '@coreui/react'
 import './_styles/style.scss'
+import instance from '../../_lib/axios'
 
 function computeCompareData(merged_fp) {
   const coffee = 280000 // mg per cup // https://www.ucl.ac.uk/news/2021/jan/analysis-heres-carbon-cost-your-daily-coffee-and-how-make-it-climate-friendly
@@ -129,10 +130,9 @@ export default function Page() {
   useEffect(() => {
     const fetchHistory = async () => {
       try {
-        const response = await axios.get(`${host}/history`, {
+        const response = await instance.get(`${host}/history`, {
           headers: {
             Authorization: 'Bearer ' + sessionStorage.getItem('accessToken'),
-            'Cache-Control': 'no-cache',
           },
         })
 

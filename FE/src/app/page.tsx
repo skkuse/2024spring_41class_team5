@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react'
 import Latex from 'react-latex-next'
 import 'katex/dist/katex.min.css'
 import Image from 'next/image'
+import instance from './_lib/axios'
 
 interface ApiResponse {
   total_original_fp: number
@@ -92,12 +93,7 @@ export default function Page() {
   const [data, setData] = useState<ApiResponse | null>(null)
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch('http://223.130.143.176/statistics')
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
-      }
-      const result: ApiResponse = await response.json()
-      setData(result)
+      setData((await instance.get('/statistics')).data)
     }
 
     fetchData()
